@@ -1,6 +1,7 @@
 class PackArgs:
     def __init__(self):
         self.options = {}
+        self.pack_options = {}
 
     def set_options(self, val):
         self.options = val

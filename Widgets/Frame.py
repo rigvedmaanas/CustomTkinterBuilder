@@ -11,8 +11,14 @@ class Frame(CTkFrame, PackArgs):
         self.pack_propagate(False)
         self.configure(bg_color=self.master.master.cget("fg_color"))
         self.bind("<Button-1>", self.on_drag_start)
+        self.order = 0
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
+
+
+
+    def get_name(self):
+        return f"{self.type} {str(self.order)}"
 
     def save(self, func, key, val, arg):
         self.props[key] = val
