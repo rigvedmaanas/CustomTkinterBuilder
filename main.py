@@ -126,6 +126,16 @@ class MainWindow:
         #new_widget.place(x=x, y=y)
         self.drag_manager.update_children(children=widget.master.winfo_children())
 
+    def delete_from_dict(self, my_dict, key_list, value):
+        current_dict = my_dict
+        for key in key_list[:-1]:  # Iterate through all keys except the last one
+
+            current_dict = current_dict[key]  # Move to the nested dictionary
+
+        # If the current dict is not empty (There something already there)
+        if current_dict[key_list[-1]] != {}:
+            current_dict[key_list[-1]].pop(value)
+
 
 
 class WidgetButton(CTkButton):
@@ -152,6 +162,19 @@ class Hierarchy(CTkScrollableFrame):
             else:
                 child.configure(fg_color="#1F6AA5")
 
+    def delete_widget(self):
+
+        #self.widget.destroy()
+        self.main._parents = []
+        self.main.get_parents(self.widget)
+        self.main.delete_from_dict(self.main.widgets, self.main._parents, self.widget)
+        self.main._parents = []
+        print(self.main.widgets)
+        self.widget.destroy()
+        self.widget = None
+        self.current_selection = None
+        self.delete_children()
+        self.update_list(self.main.widgets, 5)
 
     def move_up(self):
         if self.current_selection != None:
@@ -269,10 +292,13 @@ class App(CTk):
 
         # Need to change those unicode with icons
         self.move_top_btn = CTkButton(self.hierarchy_tools_container, text="^", width=30, height=30, command=self.hierarchy.move_up)
-        self.move_top_btn.pack(side="left", padx=10)
+        self.move_top_btn.pack(side="left", padx=5)
 
         self.move_down_btn = CTkButton(self.hierarchy_tools_container, text="⌄", width=30, height=30, command=self.hierarchy.move_down)
-        self.move_down_btn.pack(side="left", padx=10)
+        self.move_down_btn.pack(side="left", padx=5)
+
+        self.delete_btn = CTkButton(self.hierarchy_tools_container, text="", image=CTkImage(Image.open("Icons/waste.png")), width=30, height=30, command=self.hierarchy.delete_widget)
+        self.delete_btn.pack(side="left", padx=5)
 
 
         self.properties_panel = PropertiesManager(self.container, main=self.main)
