@@ -29,7 +29,7 @@ class MainWindow:
 
     def redraw(self, d):
         for x in list(d.keys()):
-            print(x)
+
             if d[x] != {}:
                 #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
                 if x.pack_options == {}:
@@ -113,14 +113,14 @@ class MainWindow:
     def add_widget(self, w, properties, widget, x=0, y=0):
 
         new_widget = w(master=widget.master, **properties)
-        #print(self.widgets)
-        #print(widget.master, new_widget)
         self.get_parents(new_widget)
         self.add_to_dict(self.widgets, self._parents, new_widget)
 
         self._parents = []
         new_widget.pack(padx=(0, 0), pady=(0, 0))
         new_widget.configure(bg_color=widget.master.cget("fg_color"))
+        new_widget.bind("<Button-1>", new_widget.on_drag_start)
+
         self.hierarchy.delete_children()
         self.hierarchy.update_list(self.widgets, 5)
         #new_widget.place(x=x, y=y)
@@ -151,16 +151,60 @@ class Hierarchy(CTkScrollableFrame):
         self.widget = None
         self.main = None
         self.mainwindow = None
+        self.btns = []
 
     def set_current_selection(self, btn, x):
+        for b in self.btns:
+            b.configure(state="normal")
+
         self.current_selection = btn
         self.widget = x
 
         for child in self.winfo_children():
+
             if child != self.current_selection:
                 child.configure(fg_color="#113D5F")
             else:
                 child.configure(fg_color="#1F6AA5")
+
+    def clone_widget(self, widget=None, master=None):
+        # Code Snippet from https://stackoverflow.com/questions/46505982/is-there-a-way-to-clone-a-tkinter-widget. Thanks :)
+        # Changes Made Suitably
+        """
+        Create a cloned version o a widget
+
+
+
+        Returns
+        -------
+        cloned : tkinter widget
+            Clone of input widget onto master widget.
+
+        """
+        # Get main info
+
+        if widget is None:
+            widget = self.widget
+
+        parent = master if master else widget.master
+        cls = widget.__class__
+
+        # Clone the widget configuration
+        cfg = {key: widget.cget(key) for key in widget.props}
+        cloned = cls(parent, **cfg, properties=self.mainwindow.properties)
+        cloned.configure(bg_color=cloned.master.cget("fg_color"))
+        self.main._parents = []
+        self.main.get_parents(self.widget)
+        self.main.add_to_dict(self.main.widgets, self.main._parents, cloned)
+        self.main._parents = []
+        self.widget = None
+        self.current_selection = None
+        self.delete_children()
+        self.update_list(self.main.widgets, 5)
+        self.main.redraw(self.main.widgets[self.main.r])
+        for btn in self.btns:
+            btn.configure(state="disabled")
+        print(self.main.widgets)
 
     def delete_widget(self):
 
@@ -169,12 +213,15 @@ class Hierarchy(CTkScrollableFrame):
         self.main.get_parents(self.widget)
         self.main.delete_from_dict(self.main.widgets, self.main._parents, self.widget)
         self.main._parents = []
-        print(self.main.widgets)
+
         self.widget.destroy()
         self.widget = None
         self.current_selection = None
         self.delete_children()
         self.update_list(self.main.widgets, 5)
+        for btn in self.btns:
+            btn.configure(state="disabled")
+
 
     def move_up(self):
         if self.current_selection != None:
@@ -192,11 +239,16 @@ class Hierarchy(CTkScrollableFrame):
                 self.widget.order = sib.order - 1
                 self.widget.pack(**self.widget.pack_options, before=sib)
                 self.main.widgets = self.main.loop_order_sort(self.main.widgets)
-                print(self.main.widgets, "Last")
+
                 self.delete_children()
                 self.update_list(self.main.widgets, 5)
 
             self.main._parents = []
+            self.current_selection = None
+            self.widget = None
+            for btn in self.btns:
+                btn.configure(state="disabled")
+            print(self.main.widgets)
     def move_down(self):
         if self.current_selection != None:
             self.main.get_parents(self.widget)
@@ -213,12 +265,16 @@ class Hierarchy(CTkScrollableFrame):
                 self.widget.order = sib.order + 1
                 self.widget.pack(**self.widget.pack_options, after=sib)
                 self.main.widgets = self.main.loop_order_sort(self.main.widgets)
-                print(self.main.widgets, "Last")
+
                 self.delete_children()
                 self.update_list(self.main.widgets, 5)
 
             self.main._parents = []
-
+            self.current_selection = None
+            self.widget = None
+            for btn in self.btns:
+                btn.configure(state="disabled")
+            print(self.main.widgets)
 
     def update_list(self, d, pad):
         self.current_selection = None
@@ -226,12 +282,14 @@ class Hierarchy(CTkScrollableFrame):
         for x in list(d.keys()):
             if d[x] != {}:
                 btn = CTkButton(self, text=x.get_name(), fg_color="#113D5F")
+                x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                 btn.configure(command=lambda x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                 btn.pack(fill="x", padx=(pad, 5), pady=2.5)
                 self.update_list(d[x], pad+20)
             else:
 
                 btn = CTkButton(self, text=x.get_name(), fg_color="#113D5F")
+                x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                 btn.configure(command=lambda x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
 
                 btn.pack(fill="x", padx=(pad, 5), pady=2.5)
@@ -277,7 +335,7 @@ class App(CTk):
         self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
-        #print(self.main_window, self.main_window_panel)
+
         self.container = CTkFrame(self, width=350)
         self.container.pack(side=LEFT, padx=10, pady=10, fill="y")
         self.container.pack_propagate(False)
@@ -300,7 +358,12 @@ class App(CTk):
         self.delete_btn = CTkButton(self.hierarchy_tools_container, text="", image=CTkImage(Image.open("Icons/waste.png")), width=30, height=30, command=self.hierarchy.delete_widget)
         self.delete_btn.pack(side="left", padx=5)
 
+        self.dup_btn = CTkButton(self.hierarchy_tools_container, text="", image=CTkImage(Image.open("Icons/duplicate.png")), width=30, height=30, command=self.hierarchy.clone_widget)
+        self.dup_btn.pack(side="left", padx=5)
 
+        self.hierarchy.btns = [self.move_top_btn, self.move_down_btn, self.delete_btn, self.dup_btn]
+        for btn in self.hierarchy.btns:
+            btn.configure(state="disabled")
         self.properties_panel = PropertiesManager(self.container, main=self.main)
         self.properties_panel.pack(fill="both", expand=True)
         self.main_window.properties = self.properties_panel
