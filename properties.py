@@ -285,8 +285,13 @@ class PropertiesManager(CTkTabview):
                 head.pack(side="right", padx=(10, 10), pady=10)
 
             if vals["color"] != "transparent":
-                clr_1.configure(fg_color=vals["color"][0])
-                clr_2.configure(fg_color=vals["color"][1])
+                print(vals["color"])
+                if type(vals["color"]) == str:
+                    clr_1.configure(fg_color=vals["color"])
+                    clr_2.configure(fg_color=vals["color"])
+                else:
+                    clr_1.configure(fg_color=vals["color"][0])
+                    clr_2.configure(fg_color=vals["color"][1])
                 if type(head) == CTkCheckBox:
                     head.select()
             else:

@@ -9,7 +9,10 @@ class Frame(CTkFrame, PackArgs):
         self.properties = properties
         self.pack_options = {}
         self.pack_propagate(False)
-        self.configure(bg_color=self.master.master.cget("fg_color"))
+        if type(self.master.master.cget("fg_color")) == str:
+            self.configure(bg_color=(self.master.master.cget("fg_color"), self.master.master.cget("fg_color")))
+        else:
+            self.configure(bg_color=self.master.master.cget("fg_color"))
 
         self.order = 0
         #self.bind("<B1-Motion>", self.on_drag_motion)
@@ -45,6 +48,7 @@ class Frame(CTkFrame, PackArgs):
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Corner Radius", "SPINBOX", "Corner Radius", {"to": 100, "from": 0, "val": self.cget("corner_radius"), "callback": lambda val: self.save(lambda val: self.configure(corner_radius=val), "corner_radius", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Border Width", "SPINBOX", "Border Width", {"to": 100, "from": 0, "val": self.cget("border_width"), "callback": lambda val: self.save(lambda val: self.configure(border_width=val), "border_width", int(val), int(val))})
         self.properties.add_option(self.properties.STYLES, "FG Color", "COLOR_COMBO", "fg_color", {"color": self.cget("fg_color"), "key": "fg_color", "transparent": True, "callback": lambda val: self.save(lambda val: self.configure(fg_color=val), "fg_color", val, val)})
+        self.properties.add_option(self.properties.STYLES, "BG Color", "COLOR_COMBO", "bg_color", {"color": self.cget("bg_color"), "key": "bg_color", "transparent": True, "callback": lambda val: self.save(lambda val: self.configure(bg_color=val), "bg_color", val, val)})
         self.properties.add_option(self.properties.STYLES, "Border Color", "COLOR_COMBO", "border_color", {"color": self.cget("border_color"), "key": "border_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(border_color=val), "border_color", val, val)})
 
 
