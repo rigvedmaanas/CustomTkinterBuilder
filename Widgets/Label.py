@@ -20,9 +20,13 @@ class Label(CTkLabel, PackArgs):
 
     def __repr__(self):
 
-        return f"{self.type} {str(self.order)}"
+        return f"{self.type}_{str(self.order)}"
+
     def get_name(self):
-        return f"{self.type} {str(self.order)}"
+        return f"{self.type}_{str(self.order)}"
+
+    def get_class(self):
+        return "CTkLabel"
 
     def save(self, func, key, val, arg):
         self.props[key] = val
@@ -44,8 +48,8 @@ class Label(CTkLabel, PackArgs):
         #self._drag_start_y = event.y
         self.properties.destroy_children()
         #self.properties.add_seperator("Properties")
-        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", val, val)})
-        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", val, val)})
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", int(val), int(val))})
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Text", "TEXT", "text", {"val": self.cget("text"), "callback": lambda val: self.save(lambda val: self.configure(text=val), "text", val, val)})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Image", "IMAGE", "image", {"image": self.image, "key": "image", "callback": self.set_image})
 
@@ -54,8 +58,8 @@ class Label(CTkLabel, PackArgs):
         self.properties.add_option(self.properties.ARRANGEMENT, "Compound", "COMBO", "compound", {"vals": ["top", "bottom", "left", "right"], "default": self.cget("compound"), "callback": lambda val: self.save(lambda val: (self.configure(compound=val, image=None), self.set_compound(self.image)), "compound", val, val)})
         self.properties.add_option(self.properties.ARRANGEMENT, "Anchor", "COMBO", "anchor", {"vals": ["n", "ne", "e", "se", "s", "sw", "w", "nw", "center"], "default": self.cget("anchor"), "callback": lambda val: self.save(lambda val: self.configure(anchor=val), "anchor", val, val)})
         self.properties.add_option(self.properties.ARRANGEMENT, "Justify", "COMBO", "justify", {"vals": ["left", "right", "center"], "default": self.cget("justify"), "callback": lambda val: self.save(lambda val: self.configure(justify=val), "justify", val, val)})
-        self.properties.add_option(self.properties.ARRANGEMENT, "Padx", "SPINBOX", "PADX", {"to": 500, "from": 0, "val": int(self.cget("padx")), "callback": lambda val: self.save(lambda val: self.configure(padx=val), "padx", val, val)})
-        self.properties.add_option(self.properties.ARRANGEMENT, "Pady", "SPINBOX", "PADY", {"to": 500, "from": 0, "val": int(self.cget("pady")), "callback": lambda val: self.save(lambda val: self.configure(pady=val), "pady", val, val)})
+        self.properties.add_option(self.properties.ARRANGEMENT, "Padx", "SPINBOX", "PADX", {"to": 500, "from": 0, "val": int(self.cget("padx")), "callback": lambda val: self.save(lambda val: self.configure(padx=val), "padx", int(val), int(val))})
+        self.properties.add_option(self.properties.ARRANGEMENT, "Pady", "SPINBOX", "PADY", {"to": 500, "from": 0, "val": int(self.cget("pady")), "callback": lambda val: self.save(lambda val: self.configure(pady=val), "pady", int(val), int(val))})
 
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Corner Radius", "SPINBOX", "Corner Radius", {"to": 100, "from": 0, "val": self.cget("corner_radius"), "callback": lambda val: self.save(lambda val: self.configure(corner_radius=val), "corner_radius", int(val), int(val))})
         self.properties.add_option(self.properties.STYLES, "Font Family", "FONT_FAMILY", "font_family", {"key": "font_family", "default": "SF Display", "callback": lambda val: self.save(lambda val: self.cget("font").configure(family=val), "font_family", val, val)})

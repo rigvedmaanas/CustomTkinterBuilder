@@ -19,10 +19,13 @@ class Button(CTkButton, PackArgs):
 
     def __repr__(self):
 
-        return f"{self.type} {str(self.order)}"
+        return f"{self.type}_{str(self.order)}"
+
+    def get_class(self):
+        return "CTkButton"
 
     def get_name(self):
-        return f"{self.type} {str(self.order)}"
+        return f"{self.type}_{str(self.order)}"
 
     def save(self, func, key, val, arg):
         self.props[key] = val
@@ -44,8 +47,8 @@ class Button(CTkButton, PackArgs):
         #self._drag_start_y = event.y
         self.properties.destroy_children()
         #self.properties.add_seperator("Properties")
-        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", val, val)})
-        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", val, val)})
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", int(val), int(val))})
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Text", "TEXT", "text", {"val": self.cget("text"), "callback": lambda val: self.save(lambda val: self.configure(text=val), "text", val, val)})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Image", "IMAGE", "image", {"image": self.image, "key": "image", "callback": self.set_image})
 
