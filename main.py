@@ -79,13 +79,34 @@ app.mainloop()
         top.title("Export Code")
         top.configure(fg_color=["gray95", "gray10"])
 
+        self.codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=oop_code.get_code(), language="python", theme="monokai", font=CTkFont(size=20))
+        self.codeviewer.pack(expand=True, fill="both", padx=20, pady=20)
 
-        codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=oop_code.get_code(), language="python", theme="monokai", font=CTkFont(size=20))
-        codeviewer.pack(expand=True, fill="both", padx=20, pady=20)
+        self.oop_code_switch = CTkSwitch(top, text="OOP Code", command=self.change_oop)
+        self.oop_code_switch.pack(side="left", padx=20, pady=(0, 20))
+        self.oop_code_switch.select()
 
-        exp_btn = CTkButton(top, text="Export Code", command=lambda code=code: self.export(code.get_code()))
+        exp_btn = CTkButton(top, text="Export Code", command=lambda: self.export(self.current.get_code()))
         exp_btn.pack(side="right", padx=20, pady=(0, 20))
 
+        self.current = oop_code
+        self.not_current = code
+
+    def change_oop(self):
+
+        if self.oop_code_switch.get() == 0:
+            code = self.not_current
+            oop_code = self.current
+            self.current = code
+            self.not_current = oop_code
+
+        else:
+            oop_code = self.not_current
+            code = self.current
+            self.current = oop_code
+            self.not_current = code
+        self.codeviewer.delete(1.0, "end")
+        self.codeviewer._add_code(self.current.get_code(), "python")
 
     def escape_special_chars(self, text):
         escape_table = {
