@@ -25,16 +25,12 @@ class MainWindow:
 
         code = CodeGenerator(indentation="\t")
         code.add_line(f"""
-# from customtkinter import *
-
-
 root = CTkToplevel()
 root.title("CTk Window")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
 root.configure(fg_color=["gray95", "gray10"])
 """)
         self.loop_generate(d=self.widgets[self.r], parent="root", code=code)
-        #code.add_line("root.mainloop()")
         print(code.get_code())
         # I know this is not that safe. Do create an issue if there are any safer ways to do this
         exec(code.get_code())
@@ -50,7 +46,7 @@ root.configure(fg_color=["gray95", "gray10"])
         code = CodeGenerator(indentation="\t")
         code.add_line(f"""
 from customtkinter import *
-
+from PIL import Image
 
 root = CTk()
 root.title("CTk Window")
@@ -96,7 +92,9 @@ root.configure(fg_color=["gray95", "gray10"])
                 p = ""
                 font = "font=CTkFont("
                 for key in list(x.props.keys()):
-                    if key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
+                    if key == "image" and x.props["image"] != None:
+                        p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.size[0]}, {x.size[1]})), '
+                    elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                "font_overstrike"]:
                         if type(x.props[key]) == str:
 
