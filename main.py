@@ -7,6 +7,7 @@ from Widgets.Button import Button
 from Widgets.Label import Label
 from Widgets.Frame import Frame
 from Widgets.Entry import Entry
+from Widgets.Switch import Switch
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
@@ -548,6 +549,12 @@ class App(CTk):
         self.add_entry_btn = WidgetButton(master=self.widget_panel, text="CTk Entry", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Entry, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_entry_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_switch_btn = WidgetButton(master=self.widget_panel, text="CTk Switch", height=50,
+                                          on_drag=lambda x, y, widget: self.main.add_widget(Switch, properties={
+                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_switch_btn.pack(padx=10, pady=(10, 0), fill="x")
+
         self.main_window_panel = CTkFrame(self)
         self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
 
@@ -559,7 +566,7 @@ class App(CTk):
         self.main_window.type = "MAIN"
 
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn], self.main_window, self)
+        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
 
