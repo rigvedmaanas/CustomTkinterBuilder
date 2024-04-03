@@ -99,6 +99,52 @@ class Spinbox(CTkFrame):
     def set_command(self, command):
         self.command = command
 
+class TextExtension(CTkFrame):
+    """Extends Frame.  Intended as a container for a Text field.  Better related data handling
+    and has Y scrollbar."""
+
+
+    def __init__(self, master, textvariable=None, *args, **kwargs):
+
+        super(TextExtension, self).__init__(master)
+        # Init GUI
+
+
+
+        self._text_widget = CTkTextbox(self, *args, **kwargs)
+        self._text_widget.pack(side=LEFT, fill=BOTH, expand=1)
+
+        if textvariable is not None:
+            if not (isinstance(textvariable, Variable)):
+                raise TypeError("tkinter.Variable type expected, " + str(type(textvariable)) + " given.".format(type(textvariable)))
+            self._text_variable = textvariable
+            self.var_modified()
+            self._text_trace = self._text_widget.bind('<<Modified>>', self.text_modified)
+            self._var_trace = textvariable.trace("w", self.var_modified)
+
+    def text_modified(self, *args):
+            if self._text_variable is not None:
+                self._text_variable.trace_vdelete("w", self._var_trace)
+                self._text_variable.set(self._text_widget.get(1.0, 'end-1c'))
+                self._var_trace = self._text_variable.trace("w", self.var_modified)
+                self._text_widget.edit_modified(False)
+
+    def var_modified(self, *args):
+        self.set_text(self._text_variable.get())
+        self._text_widget.edit_modified(False)
+
+    def unhook(self):
+        if self._text_variable is not None:
+            self._text_variable.trace_vdelete("w", self._var_trace)
+
+
+    def clear(self):
+        self._text_widget.delete(1.0, END)
+
+    def set_text(self, _value):
+        self.clear()
+        if (_value is not None):
+            self._text_widget.insert(END, _value)
 
 class PropertiesManager(CTkTabview):
     def __init__(self, *args, main, **kwargs):
@@ -168,7 +214,7 @@ class PropertiesManager(CTkTabview):
 
             sv = StringVar()
             sv.trace_add("write", lambda e1, e2, e3: vals["callback"](sv.get()))
-            entry = CTkEntry(frame, width=150, textvariable=sv)
+            entry = TextExtension(frame, width=150, height=100, textvariable=sv)
             entry.pack(side="right", padx=10, pady=10)
             head = CTkLabel(frame, text=header)
             head.pack(side="right", padx=(10, 0), pady=10)
