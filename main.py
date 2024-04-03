@@ -311,7 +311,7 @@ class App(CTk):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.geometry("1900x1000+10+0")
-        self.title("Custom Tkinter Designer")
+        self.title("Custom Tkinter Builder")
         self.widget_panel = CTkScrollableFrame(self, width=350)
         self.widget_panel.pack(side=LEFT, padx=10, pady=10, fill="y")
 
