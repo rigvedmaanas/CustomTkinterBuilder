@@ -190,7 +190,14 @@ class Hierarchy(CTkScrollableFrame):
         cls = widget.__class__
 
         # Clone the widget configuration
-        cfg = {key: widget.cget(key) for key in widget.props}
+        cfg = {}
+
+        for key in widget.props:
+            if key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline", "font_overstrike"]:
+                cfg["font"] = widget.cget("font")
+            else:
+                cfg[key] = widget.cget(key)
+
         cloned = cls(parent, **cfg, properties=self.mainwindow.properties)
         cloned.configure(bg_color=cloned.master.cget("fg_color"))
         self.main._parents = []
