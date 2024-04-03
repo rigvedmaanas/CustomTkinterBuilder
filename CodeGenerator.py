@@ -11,7 +11,7 @@ class CodeGenerator:
         self.indent_level -= 1
 
     def add_line(self, line):
-        self.code += line + "\n"
+        self.code += (self.indentation * self.indent_level) + line + "\n"
 
     def get_code(self):
         return self.code

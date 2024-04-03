@@ -43,7 +43,7 @@ root.configure(fg_color=["gray95", "gray10"])
 
 
     def export_code(self):
-        code = CodeGenerator(indentation="\t")
+        code = CodeGenerator(indentation="    ")
         code.add_line(f"""
 from customtkinter import *
 from PIL import Image
@@ -56,18 +56,34 @@ root.configure(fg_color=["gray95", "gray10"])
         self.loop_generate(d=self.widgets[self.r], parent="root", code=code)
         code.add_line("root.mainloop()")
 
+        oop_code = CodeGenerator(indentation="    ")
+        oop_code.add_line("""
+from customtkinter import *
+from PIL import Image
+
+class Root(CTk):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+""")
+        oop_code.indent()
+        oop_code.indent()
+        self.loop_generate_oop(d=self.widgets[self.r], parent="self", code=oop_code)
+        oop_code.add_line("""
+app = App()
+app.mainloop()
+            """)
+
         top = CTkToplevel()
         top.geometry("1000x800+500+100")
         top.title("Export Code")
         top.configure(fg_color=["gray95", "gray10"])
 
 
-        codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=code.get_code(), language="python", theme="monokai", font=CTkFont(size=20))
+        codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=oop_code.get_code(), language="python", theme="monokai", font=CTkFont(size=20))
         codeviewer.pack(expand=True, fill="both", padx=20, pady=20)
 
         exp_btn = CTkButton(top, text="Export Code", command=lambda code=code: self.export(code.get_code()))
         exp_btn.pack(side="right", padx=20, pady=(0, 20))
-
 
 
     def escape_special_chars(self, text):
@@ -144,6 +160,74 @@ root.configure(fg_color=["gray95", "gray10"])
                 #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
 
                 self.loop_generate(d=d[x], parent=x.get_name(), code=code)
+
+    def loop_generate_oop(self, d, parent, code):
+
+        for x in list(d.keys()):
+            if x.props == {}:
+
+                code.add_line(f"self.{x.get_name()} = {x.get_class()}(master={parent})")
+                if x.type == "FRAME":
+                    code.add_line(f"self.{x.get_name()}.pack_propagate(False)")
+            else:
+
+
+                p = ""
+                font = "font=CTkFont("
+                for key in list(x.props.keys()):
+                    if key == "image" and x.props["image"] != None:
+                        p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.size[0]}, {x.size[1]})), '
+                    elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
+                               "font_overstrike"]:
+                        if type(x.props[key]) == str:
+
+                            font += f'{key[5::]}="{x.props[key]}", '
+                        else:
+                            font += f'{key[5::]}={x.props[key]}, '
+                    else:
+                        if type(x.props[key]) == str:
+                            k = self.escape_special_chars(x.props[key])
+                            p += f'{key}="{k}", '
+                        elif type(x.props[key]) == tuple:
+                            if type(x.props[key][0]) == str and type(x.props[key][1]) == str:
+                                p += f'{key}=("{x.props[key][0]}", "{x.props[key][1]}"), '
+                            else:
+                                p += f"{key}=({x.props[key][0]}, {x.props[key][1]}), "
+                        else:
+                            p += f"{key}={x.props[key]}, "
+
+                font = font[0:-2] # Delete ', ' at last part
+                font += ")"
+                print(font)
+                if font != "font=CTkFon)": # Which means there is no change in font
+                    p += font
+                else:
+                    p = p[0:-2]
+                code.add_line(f"self.{x.get_name()} = {x.get_class()}(master={parent}, {p})")
+                if x.type == "FRAME":
+                    code.add_line(f"self.{x.get_name()}.pack_propagate(False)")
+            if x.pack_options == {}:
+                code.add_line(f"self.{x.get_name()}.pack()")
+            else:
+                p = ""
+                for key in list(x.pack_options.keys()):
+                    if type(x.pack_options[key]) == str:
+                        p += f'{key}="{x.pack_options[key]}", '
+                    elif type(x.pack_options[key]) == tuple:
+                        if type(x.pack_options[key][0]) == str and type(x.pack_options[key][1]) == str:
+                            p += f'{key}=("{x.pack_options[key][0]}", "{x.pack_options[key][1]}"), '
+                        else:
+                            p += f"{key}=({x.pack_options[key][0]}, {x.pack_options[key][1]}), "
+                    else:
+                        p += f"{key}={x.pack_options[key]}, "
+
+                p = p[0:-2]  # Delete ', ' at last part
+                code.add_line(f"self.{x.get_name()}.pack({p})")
+            if d[x] != {}:
+                #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
+
+                self.loop_generate_oop(d=d[x], parent="self." + x.get_name(), code=code)
+
 
     def get_parents(self, widget):
         if widget == self.r:
@@ -297,7 +381,7 @@ class Hierarchy(CTkScrollableFrame):
         # Code Snippet from https://stackoverflow.com/questions/46505982/is-there-a-way-to-clone-a-tkinter-widget. Thanks :)
         # Changes Made Suitably
         """
-        Create a cloned version o a widget
+        Create a cloned version of a widget
 
 
 
@@ -515,7 +599,8 @@ class App(CTk):
         self.export_code_btn.configure(command=self.main.export_code)
 
 
-#set_default_color_theme("Extreme/extreme.json")
+# Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)
+set_default_color_theme("blue")
 #set_appearance_mode("dark")
 app = App()
 app.mainloop()
