@@ -1,3 +1,5 @@
+import json
+
 from properties import PropertiesManager
 from tkinter.filedialog import asksaveasfilename
 from customtkinter import *
@@ -183,6 +185,33 @@ app.mainloop()
                 #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
 
                 self.loop_generate(d=d[x], parent=x.get_name(), code=code)
+
+
+    def save_file(self):
+        self.s = {self.r.type: {}}
+        self.loop_save(self.widgets, self.r.type, self.s)
+        self.s = self.s["MAIN"]
+        print(self.s)
+
+        f = asksaveasfilename(filetypes=[(".json", "json")])
+        if f != "":
+            json_object = json.dumps(self.s, indent=4)
+            with open(f, "w") as outfile:
+                outfile.write(json_object)
+
+
+    def loop_save(self, d, parent, code):
+        for x in list(d.keys()):
+            props = x.props
+            if "image" in list(props.keys()):
+                props["image"] = {"image": str(x.props["image"].cget("dark_image").filename), "size": [x.size[0], x.size[1]]}
+
+            code[parent][x.type] = {"ID": x.get_name(),"parameters": props, "pack_options": x.pack_options}
+
+            if d[x] != {}:
+                self.loop_save(d[x], x.type, code[parent])
+
+        print(code)
 
     def loop_generate_oop(self, d, parent, code):
 
@@ -563,6 +592,9 @@ class App(CTk):
         self.tool_bar = CTkFrame(self, height=40)
         self.tool_bar.pack(side="top", fill="x", padx=10, pady=(10, 0))
 
+        self.save_btn = CTkButton(self.tool_bar, text="Save")
+        self.save_btn.pack(side="left", padx=5, pady=5)
+
         self.run_code_btn = CTkButton(self.tool_bar, text="Run Code")
         self.run_code_btn.pack(side="left", padx=5, pady=5)
 
@@ -642,6 +674,7 @@ class App(CTk):
 
         self.run_code_btn.configure(command=self.main.run_code)
         self.export_code_btn.configure(command=self.main.export_code)
+        self.save_btn.configure(command=self.main.save_file)
 
 
 # Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)
