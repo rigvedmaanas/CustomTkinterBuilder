@@ -22,6 +22,7 @@ class MainWindow:
         self.drag_manager = None
         self._parents = []
         self.temp_widgets = {}
+        self.file = ""
         self.total_num = 0
 
     def run_code(self):
@@ -301,13 +302,27 @@ app.mainloop()
         self.loop_save(self.widgets, self.r.type, self.s)
         self.s = self.s["MAIN"]
         print(self.s)
-
+        if self.file == "":
+            f = asksaveasfilename(filetypes=[(".json", "json")])
+            if f != "":
+                self.file = f
+                json_object = json.dumps(self.s, indent=4)
+                with open(f, "w") as outfile:
+                    outfile.write(json_object)
+        if self.file != "":
+            json_object = json.dumps(self.s, indent=4)
+            with open(self.file, "w") as outfile:
+                outfile.write(json_object)
+    def saveas_file(self):
+        self.s = {self.r.type: {}}
+        self.loop_save(self.widgets, self.r.type, self.s)
+        self.s = self.s["MAIN"]
+        print(self.s)
         f = asksaveasfilename(filetypes=[(".json", "json")])
         if f != "":
             json_object = json.dumps(self.s, indent=4)
             with open(f, "w") as outfile:
                 outfile.write(json_object)
-
 
     def loop_save(self, d, parent, code):
         for x in list(d.keys()):
@@ -585,8 +600,18 @@ class Hierarchy(CTkScrollableFrame):
         cloned = cls(parent, **cfg, properties=self.mainwindow.properties)
         cloned.configure(bg_color=cloned.master.cget("fg_color"))
         self.main._parents = []
+        cloned.num = self.main.total_num
+        cloned.name = cloned.type + str(cloned.num)
+        cloned.pack_options = widget.pack_options
+        cloned.props = widget.props
+
+        self.main.total_num += 1
         self.main.get_parents(self.widget)
         self.main.add_to_dict(self.main.widgets, self.main._parents, cloned)
+        cloned.pack(**widget.pack_options)
+        #cloned.configure(bg_color=widget.master.cget("fg_color"))
+        cloned.bind("<Button-1>", lambda e, nw=cloned: (nw.on_drag_start(None), self.main.hierarchy.set_current_selection(nw)))
+
         self.main._parents = []
         self.widget = None
         self.current_selection = None
@@ -704,6 +729,9 @@ class App(CTk):
         self.save_btn = CTkButton(self.tool_bar, text="Save")
         self.save_btn.pack(side="left", padx=5, pady=5)
 
+        self.saveas_btn = CTkButton(self.tool_bar, text="Save As")
+        self.saveas_btn.pack(side="left", padx=5, pady=5)
+
         self.open_btn = CTkButton(self.tool_bar, text="Open")
         self.open_btn.pack(side="left", padx=5, pady=5)
 
@@ -790,6 +818,8 @@ class App(CTk):
         self.run_code_btn.configure(command=self.main.run_code)
         self.export_code_btn.configure(command=self.main.export_code)
         self.save_btn.configure(command=self.main.save_file)
+        self.saveas_btn.configure(command=self.main.saveas_file)
+
         self.open_btn.configure(command=self.main.open_file)
 
 
