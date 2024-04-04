@@ -1,7 +1,6 @@
 import json
-
 from properties import PropertiesManager
-from tkinter.filedialog import asksaveasfilename
+from tkinter.filedialog import asksaveasfilename, askopenfilename
 from customtkinter import *
 from widgets import *
 from dragndrop import DragManager
@@ -32,7 +31,7 @@ class MainWindow:
 root = CTkToplevel()
 root.title("CTk Window")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
-root.configure(fg_color=["gray95", "gray10"])
+
 """)
         self.loop_generate(d=self.widgets[self.r], parent="root", code=code)
         print(code.get_code())
@@ -55,7 +54,7 @@ from PIL import Image
 root = CTk()
 root.title("CTk Window")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
-root.configure(fg_color=["gray95", "gray10"])
+
 """)
         self.loop_generate(d=self.widgets[self.r], parent="root", code=code)
         code.add_line("root.mainloop()")
@@ -186,6 +185,116 @@ app.mainloop()
 
                 self.loop_generate(d=d[x], parent=x.get_name(), code=code)
 
+    def open_file(self):
+        file = askopenfilename(filetypes=[(".json", "json")])
+        if file != "":
+            with open(file, 'r') as openfile:
+                d = json.load(openfile)
+            d = d["MAIN"]
+            d.pop("ID")
+            d.pop("parameters")
+            d.pop("pack_options")
+
+            self.loop_open(d, self.r)
+
+    def loop_open(self, d, parent):
+        # I could destroy every child in self.r but could not add new widgets after destroying the children.
+        for x in list(d.keys()):
+            if x == "FRAME":
+                w = Frame
+            elif x == "BUTTON":
+                w = Button
+            elif x == "LABEL":
+                w = Label
+            elif x == "SWITCH":
+                w = Switch
+            elif x == "ENTRY":
+                w = Entry
+            elif x == "MAIN":
+                w = Frame # I should create a new one for MAIN
+            else:
+                raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
+
+            f = CTkFont()
+            i = None
+            d_copy = dict(d[x]["parameters"])
+            for p in dict(d[x]["parameters"]):
+                if p == "image":
+                    i = CTkImage(light_image=Image.open(d[x]["parameters"]["image"]["image"]), dark_image=Image.open(d[x]["parameters"]["image"]["image"]), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
+                    d[x]["parameters"]["image"] = i
+
+                elif p == "font_family":
+                    print(d[x], p)
+                    f.configure(family=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("font_family")
+                    d[x]["parameters"]["font"] = f
+                elif p == "font_size":
+                    f.configure(size=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("font_size")
+                    d[x]["parameters"]["font"] = f
+                elif p == "font_weight":
+                    f.configure(weight=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("font_weight")
+                    d[x]["parameters"]["font"] = f
+                elif p == "font_slant":
+                    f.configure(slant=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("font_slant")
+                    d[x]["parameters"]["font"] = f
+                elif p == "font_underline":
+                    f.configure(underline=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("font_underline")
+                    d[x]["parameters"]["font"] = f
+                elif p == "font_overstrike":
+                    f.configure(overstrike=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("font_overstrike")
+                    d[x]["parameters"]["font"] = f
+
+
+            #print(w, parent.get_name(), d[x]["parameters"])
+            if d[x]["parameters"] != {}:
+                new_widget = w(master=parent, **d[x]["parameters"], properties=self.r.properties)
+                try:
+                    print(d_copy)
+                    new_widget.image = d_copy["image"]["image"]
+                    img = d[x]["parameters"]["image"]
+                    d_copy["image"] = img
+                    new_widget.size = (d[x]["parameters"]["image"].cget("size")[0], d[x]["parameters"]["image"].cget("size")[1])
+                    print(d_copy)
+                except KeyError as e:
+                    pass
+
+                new_widget.props = d_copy
+
+            else:
+                new_widget = w(master=parent, properties=self.r.properties)
+
+
+            new_widget.num = self.total_num
+            new_widget.name = d[x]["ID"]
+
+            self.total_num += 1
+            self.get_parents(new_widget)
+            self.add_to_dict(self.widgets, self._parents, new_widget)
+
+            self._parents = []
+            new_widget.pack(**d[x]["pack_options"])
+            new_widget.pack_options = d[x]["pack_options"]
+            #new_widget.configure(bg_color=parent.cget("fg_color"))
+            new_widget.bind("<Button-1>",
+                            lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+
+            # new_widget.bind("<Button-1>", new_widget.on_drag_start)
+
+            self.hierarchy.delete_children()
+            self.hierarchy.update_list(self.widgets, 5)
+            # new_widget.place(x=x, y=y)
+            self.drag_manager.update_children(children=parent.winfo_children())
+            d[x].pop("ID")
+            d[x].pop("pack_options")
+            d[x].pop("parameters")
+
+            if d[x] != {}:
+                self.loop_open(d[x], new_widget)
 
     def save_file(self):
         self.s = {self.r.type: {}}
@@ -595,6 +704,9 @@ class App(CTk):
         self.save_btn = CTkButton(self.tool_bar, text="Save")
         self.save_btn.pack(side="left", padx=5, pady=5)
 
+        self.open_btn = CTkButton(self.tool_bar, text="Open")
+        self.open_btn.pack(side="left", padx=5, pady=5)
+
         self.run_code_btn = CTkButton(self.tool_bar, text="Run Code")
         self.run_code_btn.pack(side="left", padx=5, pady=5)
 
@@ -626,9 +738,12 @@ class App(CTk):
         self.main_window_panel = CTkFrame(self)
         self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
 
+        self.temp = CTkFrame(self.main_window_panel)
+        self.temp.pack(fill="both", expand=True)
+
 
         # Need to create a seperate Class for main. This is just for now
-        self.main_window = Frame(self.main_window_panel, width=500, height=500, fg_color=["gray95", "gray10"], properties=None)
+        self.main_window = Frame(self.temp, width=500, height=500, properties=None, fg_color=["gray92", "gray14"])
         self.main_window.pack_propagate(False)
         self.main_window.place(anchor="center", relx=0.5, rely=0.5)
         self.main_window.type = "MAIN"
@@ -675,6 +790,8 @@ class App(CTk):
         self.run_code_btn.configure(command=self.main.run_code)
         self.export_code_btn.configure(command=self.main.export_code)
         self.save_btn.configure(command=self.main.save_file)
+        self.open_btn.configure(command=self.main.open_file)
+
 
 
 # Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)

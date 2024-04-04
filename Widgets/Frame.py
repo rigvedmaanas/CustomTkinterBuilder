@@ -4,15 +4,15 @@ from PackArgs import PackArgs
 
 class Frame(CTkFrame, PackArgs):
     def __init__(self, *args, properties, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(Frame, self).__init__(*args, **kwargs)
         self.type = "FRAME"
         self.properties = properties
         self.pack_options = {}
         self.pack_propagate(False)
         if type(self.master.master.cget("fg_color")) == str:
-            self.configure(bg_color=(self.master.master.cget("fg_color"), self.master.master.cget("fg_color")))
+            self.configure(bg_color=(self.master.cget("fg_color"), self.master.cget("fg_color")))
         else:
-            self.configure(bg_color=self.master.master.cget("fg_color"))
+            self.configure(bg_color=self.master.cget("fg_color"))
 
         self.order = 0
         self.num = 0

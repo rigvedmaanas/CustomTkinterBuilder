@@ -4,7 +4,7 @@ from PackArgs import PackArgs
 
 class Label(CTkLabel, PackArgs):
     def __init__(self, *args, properties, **kwargs):
-        super().__init__(*args, **kwargs)
+        super(Label, self).__init__(*args, **kwargs)
         self.type = "LABEL"
         self.properties = properties
         self.image = None
@@ -13,7 +13,7 @@ class Label(CTkLabel, PackArgs):
         self.pack_options = {}
         self.order = 0
         self.pack_propagate(False)
-        self.configure(bg_color=self.master.master.cget("fg_color"))
+        self.configure(bg_color=self.master.cget("fg_color"))
         self.num = 0
         self.name = None
 
@@ -70,7 +70,7 @@ class Label(CTkLabel, PackArgs):
         self.properties.add_option(self.properties.ARRANGEMENT, "Pady", "SPINBOX", "PADY", {"to": 500, "from": 0, "val": int(self.cget("pady")), "callback": lambda val: self.save(lambda val: self.configure(pady=val), "pady", int(val), int(val))})
 
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Corner Radius", "SPINBOX", "Corner Radius", {"to": 100, "from": 0, "val": self.cget("corner_radius"), "callback": lambda val: self.save(lambda val: self.configure(corner_radius=val), "corner_radius", int(val), int(val))})
-        self.properties.add_option(self.properties.STYLES, "Font Family", "FONT_FAMILY", "font_family", {"key": "font_family", "default": "SF Display", "callback": lambda val: self.save(lambda val: self.cget("font").configure(family=val), "font_family", val, val)})
+        self.properties.add_option(self.properties.STYLES, "Font Family", "FONT_FAMILY", "font_family", {"key": "font_family", "default": self.cget("font").cget("family"), "callback": lambda val: self.save(lambda val: self.cget("font").configure(family=val), "font_family", val, val)})
         self.properties.add_option(self.properties.STYLES, "Font Size", "SPINBOX", "font_size", {"to": 500, "from": -500, "val": self.cget("font").cget("size"), "callback": lambda val: self.save(lambda val: self.cget("font").configure(size=int(val)), "font_size", int(val), int(val))})
         self.properties.add_option(self.properties.STYLES, "Font Weight", "COMBO", "font_weight", {"vals": ["bold", "normal"], "default": self.cget("font").cget("weight"), "callback": lambda val: self.save(lambda val: self.cget("font").configure(weight=val), "font_weight", val, val)})
         self.properties.add_option(self.properties.STYLES, "Font Slant", "COMBO", "font_slant", {"vals": ["italic", "roman"], "default": self.cget("font").cget("slant"), "callback": lambda val: self.save(lambda val: self.cget("font").configure(slant=val), "font_slant", val, val)})
