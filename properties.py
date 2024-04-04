@@ -207,7 +207,7 @@ class PropertiesManager(CTkTabview):
 
             self.options[key] = [head, num_spinbox]
 
-        if TYPE == "TEXT":
+        elif TYPE == "TEXT":
             frame = CTkFrame(self.ctab, height=75)
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
@@ -222,7 +222,22 @@ class PropertiesManager(CTkTabview):
             sv.set(vals["val"])
             self.options[key] = [head, entry]
 
-        if TYPE == "TUPLE":
+        elif TYPE == "SINGLELINE_TEXT":
+            frame = CTkFrame(self.ctab, height=75)
+            frame.pack(padx=10, pady=(10, 0), fill="x")
+
+
+            sv = StringVar()
+            sv.trace_add("write", lambda e1, e2, e3: vals["callback"](sv.get()))
+            entry = CTkEntry(frame, width=150, textvariable=sv)
+            entry.pack(side="right", padx=10, pady=10)
+            head = CTkLabel(frame, text=header)
+            head.pack(side="right", padx=(10, 0), pady=10)
+
+            sv.set(vals["val"])
+            self.options[key] = [head, entry]
+
+        elif TYPE == "TUPLE":
             frame = CTkFrame(self.ctab, height=75)
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
@@ -247,7 +262,7 @@ class PropertiesManager(CTkTabview):
 
             self.options[key] = [head, num_spinbox_1, num_spinbox_2]
 
-        if TYPE == "COMBO":
+        elif TYPE == "COMBO":
             frame = CTkFrame(self.ctab, height=75)
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
@@ -260,7 +275,7 @@ class PropertiesManager(CTkTabview):
             head.pack(side="right", padx=(10, 0), pady=10)
             self.options[key] = [head, combo]
 
-        if TYPE == "COLOR_COMBO":
+        elif TYPE == "COLOR_COMBO":
             frame = CTkFrame(self.ctab, height=75)
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
@@ -304,7 +319,7 @@ class PropertiesManager(CTkTabview):
 
             self.options[key] = [head, clr_1, clr_1]
 
-        if TYPE == "FONT_FAMILY":
+        elif TYPE == "FONT_FAMILY":
             frame = CTkFrame(self.ctab, height=75)
             frame.pack(padx=10, pady=(10, 0), fill="x")
             fonts = list(font.families())
@@ -316,7 +331,7 @@ class PropertiesManager(CTkTabview):
             head.pack(side="right", padx=(10, 0), pady=10)
             self.options[key] = [head, combo]
 
-        if TYPE == "IMAGE":
+        elif TYPE == "IMAGE":
             frame = CTkFrame(self.ctab, height=75)
             frame.pack(padx=10, pady=(10, 0), fill="x")
 

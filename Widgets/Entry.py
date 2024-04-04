@@ -13,6 +13,9 @@ class Entry(CTkEntry, PackArgs):
         self.configure(bg_color=self.master.master.cget("fg_color"))
 
         self.order = 0
+        self.num = 0
+        self.name = None
+
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
 
@@ -20,7 +23,7 @@ class Entry(CTkEntry, PackArgs):
 
         return f"{self.type}_{str(self.order)}"
     def get_name(self):
-        return f"{self.type}_{str(self.order)}"
+        return self.name.replace(" ", "_")
 
     def get_class(self):
         return "CTkEntry"
@@ -41,11 +44,16 @@ class Entry(CTkEntry, PackArgs):
         elif val == "False":
             return False
 
+    def change_name(self, name):
+        self.name = name
+
+
     def on_drag_start(self, event):
         #self._drag_start_x = event.x
         #self._drag_start_y = event.y
         self.properties.destroy_children()
         #self.properties.add_seperator("Properties")
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "ID", "SINGLELINE_TEXT", "id", {"val": self.name, "callback": lambda val: (self.properties.main.hierarchy.update_text(self.name, val), self.change_name(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", int(val), int(val))})
 
@@ -67,7 +75,7 @@ class Entry(CTkEntry, PackArgs):
         self.properties.add_option(self.properties.STYLES, "Text Color", "COLOR_COMBO", "text_color", {"color": self.cget("text_color"), "key": "text_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(text_color=val), "text_color", val, val)})
         self.properties.add_option(self.properties.ARRANGEMENT, "Justify", "COMBO", "justify", {"vals": ["left", "right", "center"], "default": self.cget("justify"), "callback": lambda val: self.save(lambda val: self.configure(justify=val), "justify", val, val)})
         self.properties.add_option(self.properties.STYLES, "Placeholder Text Color", "COLOR_COMBO", "placeholder_text_color", {"color": self.cget("placeholder_text_color"), "key": "placeholder_text_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(placeholder_text_color=val), "placeholder_text_color", val, val)})
-        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Placeholder Text", "TEXT", "placeholder_text", {"val": self.cget("placeholder_text"), "callback": lambda val: self.save(lambda val: self.configure(placeholder_text=val), "placeholder_text", val, val)})
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Placeholder Text", "SINGLELINE_TEXT", "placeholder_text", {"val": self.cget("placeholder_text"), "callback": lambda val: self.save(lambda val: self.configure(placeholder_text=val), "placeholder_text", val, val)})
 
 
 

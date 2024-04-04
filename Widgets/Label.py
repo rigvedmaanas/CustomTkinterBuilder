@@ -14,6 +14,8 @@ class Label(CTkLabel, PackArgs):
         self.order = 0
         self.pack_propagate(False)
         self.configure(bg_color=self.master.master.cget("fg_color"))
+        self.num = 0
+        self.name = None
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
@@ -23,7 +25,7 @@ class Label(CTkLabel, PackArgs):
         return f"{self.type}_{str(self.order)}"
 
     def get_name(self):
-        return f"{self.type}_{str(self.order)}"
+        return self.name.replace(" ", "_")
 
     def get_class(self):
         return "CTkLabel"
@@ -43,11 +45,17 @@ class Label(CTkLabel, PackArgs):
         elif val == "False":
             return False
 
+    def change_name(self, name):
+        self.name = name
+
+
     def on_drag_start(self, event):
         #self._drag_start_x = event.x
         #self._drag_start_y = event.y
         self.properties.destroy_children()
         #self.properties.add_seperator("Properties")
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "ID", "SINGLELINE_TEXT", "id", {"val": self.name, "callback": lambda val: (self.properties.main.hierarchy.update_text(self.name, val), self.change_name(val))})
+
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Text", "TEXT", "text", {"val": self.cget("text"), "callback": lambda val: self.save(lambda val: self.configure(text=val), "text", val, val)})

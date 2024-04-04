@@ -21,6 +21,7 @@ class MainWindow:
         self.drag_manager = None
         self._parents = []
         self.temp_widgets = {}
+        self.total_num = 0
 
     def run_code(self):
 
@@ -345,13 +346,19 @@ app.mainloop()
     def add_widget(self, w, properties, widget, x=0, y=0):
 
         new_widget = w(master=widget.master, **properties)
+        new_widget.num = self.total_num
+        new_widget.name = new_widget.type + str(new_widget.num)
+
+        self.total_num += 1
         self.get_parents(new_widget)
         self.add_to_dict(self.widgets, self._parents, new_widget)
 
         self._parents = []
         new_widget.pack(padx=(0, 0), pady=(0, 0))
         new_widget.configure(bg_color=widget.master.cget("fg_color"))
-        new_widget.bind("<Button-1>", new_widget.on_drag_start)
+        new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+
+        #new_widget.bind("<Button-1>", new_widget.on_drag_start)
 
         self.hierarchy.delete_children()
         self.hierarchy.update_list(self.widgets, 5)
@@ -385,19 +392,26 @@ class Hierarchy(CTkScrollableFrame):
         self.mainwindow = None
         self.btns = []
 
-    def set_current_selection(self, btn, x):
+    def set_current_selection(self, x):
         for b in self.btns:
             b.configure(state="normal")
 
-        self.current_selection = btn
+        #self.current_selection = btn
         self.widget = x
 
         for child in self.winfo_children():
 
-            if child != self.current_selection:
+            if child.cget("text") != self.widget.get_name():
                 child.configure(fg_color="#113D5F")
             else:
+                self.current_selection = child
                 child.configure(fg_color="#1F6AA5")
+
+    def update_text(self, old_name, new_text):
+
+        for child in self.winfo_children():
+            if child.widget == self.widget and child.cget("text") == old_name:
+                child.configure(text=new_text)
 
     def clone_widget(self, widget=None, master=None):
         # Code Snippet from https://stackoverflow.com/questions/46505982/is-there-a-way-to-clone-a-tkinter-widget. Thanks :)
@@ -521,16 +535,17 @@ class Hierarchy(CTkScrollableFrame):
         for x in list(d.keys()):
             if d[x] != {}:
                 btn = CTkButton(self, text=x.get_name(), fg_color="#113D5F")
-                x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
-                btn.configure(command=lambda x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
+                #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
+                btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
+                btn.widget = x
                 btn.pack(fill="x", padx=(pad, 5), pady=2.5)
                 self.update_list(d[x], pad+20)
             else:
 
                 btn = CTkButton(self, text=x.get_name(), fg_color="#113D5F")
-                x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
-                btn.configure(command=lambda x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
-
+                #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
+                btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
+                btn.widget = x
                 btn.pack(fill="x", padx=(pad, 5), pady=2.5)
 
 
@@ -585,6 +600,8 @@ class App(CTk):
         self.main_window.pack_propagate(False)
         self.main_window.place(anchor="center", relx=0.5, rely=0.5)
         self.main_window.type = "MAIN"
+        self.main_window.num = -1
+        self.main_window.name = self.main_window.type + str(self.main_window.num)
 
 
         self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn], self.main_window, self)
