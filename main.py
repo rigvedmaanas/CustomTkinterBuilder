@@ -191,8 +191,8 @@ app.mainloop()
         if file != "":
             with open(file, 'r') as openfile:
                 d = json.load(openfile)
-            d = d["MAIN"]
-            d.pop("ID")
+            d = d["MAIN-1"]
+            d.pop("TYPE")
             d.pop("parameters")
             d.pop("pack_options")
 
@@ -201,17 +201,18 @@ app.mainloop()
     def loop_open(self, d, parent):
         # I could destroy every child in self.r but could not add new widgets after destroying the children.
         for x in list(d.keys()):
-            if x == "FRAME":
+            y = d[x]["TYPE"]
+            if y == "FRAME":
                 w = Frame
-            elif x == "BUTTON":
+            elif y == "BUTTON":
                 w = Button
-            elif x == "LABEL":
+            elif y == "LABEL":
                 w = Label
-            elif x == "SWITCH":
+            elif y == "SWITCH":
                 w = Switch
-            elif x == "ENTRY":
+            elif y == "ENTRY":
                 w = Entry
-            elif x == "MAIN":
+            elif y == "MAIN":
                 w = Frame # I should create a new one for MAIN
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
@@ -271,7 +272,7 @@ app.mainloop()
 
 
             new_widget.num = self.total_num
-            new_widget.name = d[x]["ID"]
+            new_widget.name = x
 
             self.total_num += 1
             self.get_parents(new_widget)
@@ -290,7 +291,7 @@ app.mainloop()
             self.hierarchy.update_list(self.widgets, 5)
             # new_widget.place(x=x, y=y)
             self.drag_manager.update_children(children=parent.winfo_children())
-            d[x].pop("ID")
+            d[x].pop("TYPE")
             d[x].pop("pack_options")
             d[x].pop("parameters")
 
@@ -298,9 +299,9 @@ app.mainloop()
                 self.loop_open(d[x], new_widget)
 
     def save_file(self):
-        self.s = {self.r.type: {}}
-        self.loop_save(self.widgets, self.r.type, self.s)
-        self.s = self.s["MAIN"]
+        self.s = {self.r.get_name(): {}}
+        self.loop_save(self.widgets, self.r.get_name(), self.s)
+        self.s = self.s[self.r.get_name()]
         print(self.s)
         if self.file == "":
             f = asksaveasfilename(filetypes=[(".json", "json")])
@@ -314,9 +315,9 @@ app.mainloop()
             with open(self.file, "w") as outfile:
                 outfile.write(json_object)
     def saveas_file(self):
-        self.s = {self.r.type: {}}
-        self.loop_save(self.widgets, self.r.type, self.s)
-        self.s = self.s["MAIN"]
+        self.s = {self.r.get_name(): {}}
+        self.loop_save(self.widgets, self.r.get_name(), self.s)
+        self.s = self.s[self.r.get_name()]
         print(self.s)
         f = asksaveasfilename(filetypes=[(".json", "json")])
         if f != "":
@@ -325,15 +326,16 @@ app.mainloop()
                 outfile.write(json_object)
 
     def loop_save(self, d, parent, code):
+        print(d)
         for x in list(d.keys()):
             props = x.props
             if "image" in list(props.keys()):
                 props["image"] = {"image": str(x.props["image"].cget("dark_image").filename), "size": [x.size[0], x.size[1]]}
 
-            code[parent][x.type] = {"ID": x.get_name(),"parameters": props, "pack_options": x.pack_options}
+            code[parent][x.get_name()] = {"TYPE": x.type, "parameters": props, "pack_options": x.pack_options}
 
             if d[x] != {}:
-                self.loop_save(d[x], x.type, code[parent])
+                self.loop_save(d[x], x.get_name(), code[parent])
 
         print(code)
 
