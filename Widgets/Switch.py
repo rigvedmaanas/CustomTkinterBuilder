@@ -8,7 +8,7 @@ class Switch(CTkSwitch, PackArgs):
         self.properties = properties
         self.pack_options = {}
         self.pack_propagate(False)
-        self.configure(bg_color=self.master.cget("fg_color"))
+        #self.configure(bg_color=self.master.cget("fg_color"))
         self.order = 0
         self.num = 0
         self.name = None

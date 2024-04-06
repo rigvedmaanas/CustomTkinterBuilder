@@ -324,11 +324,14 @@ class PropertiesManager(CTkTabview):
             frame.pack(padx=10, pady=(10, 0), fill="x")
             fonts = list(font.families())
             fonts.sort()
-            combo = CTkOptionMenu(frame, width=150, values=fonts, command=vals["callback"], dynamic_resizing=False)
+            combo = CTkOptionMenu(frame, width=150, values=fonts, dynamic_resizing=False)
             combo.set(vals["default"])
             combo.pack(side="right", padx=10, pady=10)
+            combo.configure(command=vals["callback"])
             head = CTkLabel(frame, text=header)
             head.pack(side="right", padx=(10, 0), pady=10)
+            frame.after(100, lambda: vals["callback"](vals["default"])) # Added this because sometimes the font family changes randomly. Probably a bug in customtkinter.
+
             self.options[key] = [head, combo]
 
         elif TYPE == "IMAGE":

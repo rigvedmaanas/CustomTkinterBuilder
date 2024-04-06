@@ -250,8 +250,10 @@ app.mainloop()
                     f.configure(overstrike=d[x]["parameters"][p])
                     d[x]["parameters"].pop("font_overstrike")
                     d[x]["parameters"]["font"] = f
-
-
+            try:
+                print(d[x]["parameters"]["font"].cget("size"))
+            except Exception as e:
+                print(e)
             #print(w, parent.get_name(), d[x]["parameters"])
             if d[x]["parameters"] != {}:
                 new_widget = w(master=parent, **d[x]["parameters"], properties=self.r.properties)

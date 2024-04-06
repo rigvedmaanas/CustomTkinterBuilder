@@ -8,9 +8,9 @@ class Entry(CTkEntry, PackArgs):
         self.type = "ENTRY"
         self.properties = properties
         self.pack_options = {}
-        self.configure(font=CTkFont())
+        #self.configure(font=CTkFont())
         self.pack_propagate(False)
-        self.configure(bg_color=self.master.cget("fg_color"))
+        #self.configure(bg_color=self.master.cget("fg_color"))
 
         self.order = 0
         self.num = 0

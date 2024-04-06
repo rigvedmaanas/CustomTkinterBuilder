@@ -9,11 +9,11 @@ class Frame(CTkFrame, PackArgs):
         self.properties = properties
         self.pack_options = {}
         self.pack_propagate(False)
-        if type(self.master.master.cget("fg_color")) == str:
+        """if type(self.master.master.cget("fg_color")) == str:
             self.configure(bg_color=(self.master.cget("fg_color"), self.master.cget("fg_color")))
         else:
             self.configure(bg_color=self.master.cget("fg_color"))
-
+"""
         self.order = 0
         self.num = 0
         self.name = None

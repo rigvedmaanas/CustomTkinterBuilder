@@ -13,9 +13,11 @@ class Label(CTkLabel, PackArgs):
         self.pack_options = {}
         self.order = 0
         self.pack_propagate(False)
-        self.configure(bg_color=self.master.cget("fg_color"))
+        #self.configure(bg_color=self.master.cget("fg_color"))
         self.num = 0
         self.name = None
+        self.family = self.cget("font").cget("family")
+        print(self.family)
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
@@ -31,11 +33,14 @@ class Label(CTkLabel, PackArgs):
         return "CTkLabel"
 
     def save(self, func, key, val, arg):
+        if key == "font_family":
+            self.family = val
+            print("save", self.family)
         self.props[key] = val
         func(arg)
 
     def configure(self, require_redraw=False, **kwargs):
-        print(kwargs)
+        #print(kwargs)
         super().configure(require_redraw, **kwargs)
 
 
@@ -70,7 +75,8 @@ class Label(CTkLabel, PackArgs):
         self.properties.add_option(self.properties.ARRANGEMENT, "Pady", "SPINBOX", "PADY", {"to": 500, "from": 0, "val": int(self.cget("pady")), "callback": lambda val: self.save(lambda val: self.configure(pady=val), "pady", int(val), int(val))})
 
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Corner Radius", "SPINBOX", "Corner Radius", {"to": 100, "from": 0, "val": self.cget("corner_radius"), "callback": lambda val: self.save(lambda val: self.configure(corner_radius=val), "corner_radius", int(val), int(val))})
-        self.properties.add_option(self.properties.STYLES, "Font Family", "FONT_FAMILY", "font_family", {"key": "font_family", "default": self.cget("font").cget("family"), "callback": lambda val: self.save(lambda val: self.cget("font").configure(family=val), "font_family", val, val)})
+        print("Properties", self.family)
+        self.properties.add_option(self.properties.STYLES, "Font Family", "FONT_FAMILY", "font_family", {"key": "font_family", "default": self.family, "callback": lambda val: self.save(lambda val: self.cget("font").configure(family=val), "font_family", val, val)})
         self.properties.add_option(self.properties.STYLES, "Font Size", "SPINBOX", "font_size", {"to": 500, "from": -500, "val": self.cget("font").cget("size"), "callback": lambda val: self.save(lambda val: self.cget("font").configure(size=int(val)), "font_size", int(val), int(val))})
         self.properties.add_option(self.properties.STYLES, "Font Weight", "COMBO", "font_weight", {"vals": ["bold", "normal"], "default": self.cget("font").cget("weight"), "callback": lambda val: self.save(lambda val: self.cget("font").configure(weight=val), "font_weight", val, val)})
         self.properties.add_option(self.properties.STYLES, "Font Slant", "COMBO", "font_slant", {"vals": ["italic", "roman"], "default": self.cget("font").cget("slant"), "callback": lambda val: self.save(lambda val: self.cget("font").configure(slant=val), "font_slant", val, val)})
@@ -82,7 +88,7 @@ class Label(CTkLabel, PackArgs):
         self.properties.add_option(self.properties.STYLES, "Text Color", "COLOR_COMBO", "text_color", {"color": self.cget("text_color"), "key": "text_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(text_color=val), "text_color", val, val)})
 
         self.default()
-        self.on_drag_motion(event)  # Some awkward problem
+        #self.on_drag_motion(event)  # Some awkward problem
 
     def set_image(self, img, size):
         if img is not None:
