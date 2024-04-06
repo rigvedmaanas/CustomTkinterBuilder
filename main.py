@@ -9,6 +9,7 @@ from Widgets.Label import Label
 from Widgets.Frame import Frame
 from Widgets.Entry import Entry
 from Widgets.Switch import Switch
+from Widgets.TextBox import TextBox
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
@@ -83,6 +84,7 @@ app.mainloop()
         top.configure(fg_color=["gray95", "gray10"])
 
         self.codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=oop_code.get_code(), language="python", theme="monokai", font=CTkFont(size=20))
+        self.codeviewer.configure(wrap="none")
         self.codeviewer.pack(expand=True, fill="both", padx=20, pady=20)
 
         self.oop_code_switch = CTkSwitch(top, text="OOP Code", command=self.change_oop)
@@ -214,6 +216,8 @@ app.mainloop()
                 w = Entry
             elif y == "MAIN":
                 w = Frame # I should create a new one for MAIN
+            elif y == "TEXTBOX":
+                w = TextBox
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
 
@@ -712,6 +716,11 @@ class App(CTk):
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_switch_btn.pack(padx=10, pady=(10, 0), fill="x")
 
+        self.add_textbox_btn = WidgetButton(master=self.widget_panel, text="CTk TextBox", height=50,
+                                          on_drag=lambda x, y, widget: self.main.add_widget(TextBox, properties={
+                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_textbox_btn.pack(padx=10, pady=(10, 0), fill="x")
+
         self.main_window_panel = CTkFrame(self)
         self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
 
@@ -728,7 +737,7 @@ class App(CTk):
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn], self.main_window, self)
+        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
 
