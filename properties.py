@@ -455,6 +455,7 @@ class PropertiesManager(CTkTabview):
 
             img = CTkImage(img, size=img.size)
             lbl.configure(image=img)
+            #print("       ", (int(num_spinbox.get()), int(num_spinbox2.get())))
             callback(file, (int(num_spinbox.get()), int(num_spinbox2.get())))
 
 

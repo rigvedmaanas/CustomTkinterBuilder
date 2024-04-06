@@ -101,6 +101,7 @@ class Button(CTkButton, PackArgs):
             self.img = img
             self.size = size
             self.props["image"] = img
+            print("🎆", self.size)
         else:
             self.image = None
             # Bug - 1
@@ -120,7 +121,7 @@ class Button(CTkButton, PackArgs):
             self.configure(image=None, width=with_img_width, height=with_img_height)
             self.update()
             self.configure(width=real_width, height=real_height)
-
+            self.size = None
 
             #self.properties.main.redraw(self.properties.main.widgets[self.properties.main.r])
 

@@ -134,7 +134,7 @@ app.mainloop()
                 font = "font=CTkFont("
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
-                        p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.size[0]}, {x.size[1]})), '
+                        p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                "font_overstrike"]:
                         if type(x.props[key]) == str:
@@ -328,8 +328,9 @@ app.mainloop()
     def loop_save(self, d, parent, code):
         print(d)
         for x in list(d.keys()):
-            props = x.props
+            props = dict(x.props)
             if "image" in list(props.keys()):
+                print(x.get_name(), x.props)
                 props["image"] = {"image": str(x.props["image"].cget("dark_image").filename), "size": [x.size[0], x.size[1]]}
 
             code[parent][x.get_name()] = {"TYPE": x.type, "parameters": props, "pack_options": x.pack_options}
@@ -354,7 +355,7 @@ app.mainloop()
                 font = "font=CTkFont("
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
-                        p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.size[0]}, {x.size[1]})), '
+                        p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                "font_overstrike"]:
                         if type(x.props[key]) == str:
@@ -568,62 +569,6 @@ class Hierarchy(CTkScrollableFrame):
             if child.widget == self.widget and child.cget("text") == old_name:
                 child.configure(text=new_text)
 
-    def clone_widget(self, widget=None, master=None):
-        # Code Snippet from https://stackoverflow.com/questions/46505982/is-there-a-way-to-clone-a-tkinter-widget. Thanks :)
-        # Changes Made Suitably
-        """
-        Create a cloned version of a widget
-
-
-
-        Returns
-        -------
-        cloned : tkinter widget
-            Clone of input widget onto master widget.
-
-        """
-        # Get main info
-
-        if widget is None:
-            widget = self.widget
-
-        parent = master if master else widget.master
-        cls = widget.__class__
-
-        # Clone the widget configuration
-        cfg = {}
-
-        for key in widget.props:
-            if key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline", "font_overstrike"]:
-                cfg["font"] = widget.cget("font")
-            else:
-                cfg[key] = widget.cget(key)
-
-        cloned = cls(parent, **cfg, properties=self.mainwindow.properties)
-        cloned.configure(bg_color=cloned.master.cget("fg_color"))
-        self.main._parents = []
-        cloned.num = self.main.total_num
-        cloned.name = cloned.type + str(cloned.num)
-        cloned.pack_options = widget.pack_options
-        cloned.props = widget.props
-
-        self.main.total_num += 1
-        self.main.get_parents(self.widget)
-        self.main.add_to_dict(self.main.widgets, self.main._parents, cloned)
-        cloned.pack(**widget.pack_options)
-        #cloned.configure(bg_color=widget.master.cget("fg_color"))
-        cloned.bind("<Button-1>", lambda e, nw=cloned: (nw.on_drag_start(None), self.main.hierarchy.set_current_selection(nw)))
-
-        self.main._parents = []
-        self.widget = None
-        self.current_selection = None
-        self.delete_children()
-        self.update_list(self.main.widgets, 5)
-        self.main.redraw(self.main.widgets[self.main.r])
-        for btn in self.btns:
-            btn.configure(state="disabled")
-        print(self.main.widgets)
-
     def delete_widget(self):
 
         #self.widget.destroy()
@@ -807,10 +752,7 @@ class App(CTk):
         self.delete_btn = CTkButton(self.hierarchy_tools_container, text="", image=CTkImage(Image.open("Icons/waste.png")), width=30, height=30, command=self.hierarchy.delete_widget)
         self.delete_btn.pack(side="left", padx=5)
 
-        self.dup_btn = CTkButton(self.hierarchy_tools_container, text="", image=CTkImage(Image.open("Icons/duplicate.png")), width=30, height=30, command=self.hierarchy.clone_widget)
-        self.dup_btn.pack(side="left", padx=5)
-
-        self.hierarchy.btns = [self.move_top_btn, self.move_down_btn, self.delete_btn, self.dup_btn]
+        self.hierarchy.btns = [self.move_top_btn, self.move_down_btn, self.delete_btn]
         for btn in self.hierarchy.btns:
             btn.configure(state="disabled")
         self.properties_panel = PropertiesManager(self.container, main=self.main)
