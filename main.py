@@ -10,6 +10,7 @@ from Widgets.Frame import Frame
 from Widgets.Entry import Entry
 from Widgets.Switch import Switch
 from Widgets.TextBox import TextBox
+from Widgets.ProgressBar import ProgressBar
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
@@ -218,6 +219,8 @@ app.mainloop()
                 w = Frame # I should create a new one for MAIN
             elif y == "TEXTBOX":
                 w = TextBox
+            elif y == "PROGRESSBAR":
+                w = ProgressBar
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
 
@@ -721,6 +724,11 @@ class App(CTk):
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_textbox_btn.pack(padx=10, pady=(10, 0), fill="x")
 
+        self.add_progressbar_btn = WidgetButton(master=self.widget_panel, text="CTk Progress Bar", height=50,
+                                          on_drag=lambda x, y, widget: self.main.add_widget(ProgressBar, properties={
+                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_progressbar_btn.pack(padx=10, pady=(10, 0), fill="x")
+
         self.main_window_panel = CTkFrame(self)
         self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
 
@@ -737,7 +745,7 @@ class App(CTk):
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn], self.main_window, self)
+        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
 
