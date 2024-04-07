@@ -50,6 +50,10 @@ class ProgressBar(CTkProgressBar, PackArgs):
         self.properties.destroy_children()
         #self.properties.add_seperator("Properties")
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "ID", "SINGLELINE_TEXT", "id", {"val": self.name, "callback": lambda val: (self.properties.main.hierarchy.update_text(self.name, val), self.change_name(val))})
+
+        # Delete This afterwards
+        # self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Values", "LISTBOX", "list", {"default_vals": ["Test 1", "Test 2", "Test 3"], "key": "list", "callback": lambda vals: print(vals)})
+
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", int(val), int(val))})
         # self.configure() Doesn't support it. I will add this option in V2
@@ -62,7 +66,6 @@ class ProgressBar(CTkProgressBar, PackArgs):
         self.properties.add_option(self.properties.STYLES, "BG Color", "COLOR_COMBO", "bg_color", {"color": self.cget("bg_color"), "key": "bg_color", "transparent": True, "callback": lambda val: self.save(lambda val: self.configure(bg_color=val), "bg_color", val, val)})
         self.properties.add_option(self.properties.STYLES, "Border Color", "COLOR_COMBO", "border_color", {"color": self.cget("border_color"), "key": "border_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(border_color=val), "border_color", val, val)})
         self.properties.add_option(self.properties.STYLES, "Progress Color", "COLOR_COMBO", "progress_color", {"color": self.cget("progress_color"), "key": "progress_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(progress_color=val), "progress_color", val, val)})
-
 
 
         self.default()

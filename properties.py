@@ -334,6 +334,27 @@ class PropertiesManager(CTkTabview):
 
             self.options[key] = [head, combo]
 
+        elif TYPE == "LISTBOX":
+            frame = CTkFrame(self.ctab, height=250)
+            frame.pack(padx=10, pady=(10, 0), fill="x")
+
+            scrl_box = CTkScrollableFrame(frame, label_text=header)
+            scrl_box.pack(padx=5, pady=5, fill="x")
+
+            for l in vals["default_vals"]:
+                self.add_value(scrl_box, l, vals["callback"])
+
+
+            temp = CTkFrame(frame, height=35, fg_color="transparent")
+            temp.pack(padx=5, pady=(0, 5), fill="x")
+            temp.pack_propagate(False)
+
+            entry = CTkEntry(temp, placeholder_text="Enter value")
+            entry.pack(side="left", fill="x", expand="True")
+
+            btn = CTkButton(temp, text="Add", width=50, command=lambda: (self.add_value_and_call_callback(scrl_box, entry.get(), vals["callback"]), entry.delete(0, "end")))
+            btn.pack(side="right", padx=(3, 0))
+
         elif TYPE == "IMAGE":
             frame = CTkFrame(self.ctab, height=75)
             frame.pack(padx=10, pady=(10, 0), fill="x")
@@ -403,6 +424,47 @@ class PropertiesManager(CTkTabview):
                 img = CTkImage(img, size=img.size)
                 img_lbl.configure(image=img)
             self.options[key] = [head, image_btn]
+
+    def get_vals(self, scrl):
+        l = []
+        for widgets in scrl.winfo_children():
+            for widget in widgets.winfo_children():
+                print(widget)
+                if type(widget) == CTkLabel:
+                    l.append(widget.cget("text"))
+        return l
+
+    def add_value(self, scrl, val, callback):
+
+        temp = CTkFrame(scrl, height=40)
+        temp.pack(fill="x", pady=(5, 0))
+        temp.pack_propagate(False)
+
+        delete_btn = CTkButton(temp, text="X", width=20, height=20,
+                               command=lambda: (temp.destroy(), callback(self.get_vals(scrl))))
+        delete_btn.pack(side="left", padx=(10, 6))
+
+        lbl = CTkLabel(temp, text=val, anchor="w")
+        lbl.pack(side="left")
+
+
+
+    def add_value_and_call_callback(self, scrl, val, callback):
+
+        temp = CTkFrame(scrl, height=40)
+        temp.pack(fill="x", pady=(5, 0))
+        temp.pack_propagate(False)
+
+        delete_btn = CTkButton(temp, text="X", width=20, height=20, command=lambda : (temp.destroy(), callback(self.get_vals(scrl))))
+        delete_btn.pack(side="left", padx=(10, 6))
+
+        lbl = CTkLabel(temp, text=val, anchor="w")
+        lbl.pack(side="left")
+
+        callback(self.get_vals(scrl))
+
+
+
 
     def update_color_and_call_callback(self, head, clr_1, clr_2, vals):
 
