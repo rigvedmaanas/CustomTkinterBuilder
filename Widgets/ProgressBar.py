@@ -51,9 +51,6 @@ class ProgressBar(CTkProgressBar, PackArgs):
         #self.properties.add_seperator("Properties")
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "ID", "SINGLELINE_TEXT", "id", {"val": self.name, "callback": lambda val: (self.properties.main.hierarchy.update_text(self.name, val), self.change_name(val))})
 
-        # Delete This afterwards
-        # self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Values", "LISTBOX", "list", {"default_vals": ["Test 1", "Test 2", "Test 3"], "key": "list", "callback": lambda vals: print(vals)})
-
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", int(val), int(val))})
         # self.configure() Doesn't support it. I will add this option in V2

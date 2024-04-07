@@ -11,6 +11,7 @@ from Widgets.Entry import Entry
 from Widgets.Switch import Switch
 from Widgets.TextBox import TextBox
 from Widgets.ProgressBar import ProgressBar
+from Widgets.SegmentedButton import SegmentedButton
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
@@ -221,6 +222,8 @@ app.mainloop()
                 w = TextBox
             elif y == "PROGRESSBAR":
                 w = ProgressBar
+            elif y == "SEGMENTEDBUTTON":
+                w = SegmentedButton
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
 
@@ -291,15 +294,18 @@ app.mainloop()
             new_widget.pack(**d[x]["pack_options"])
             new_widget.pack_options = d[x]["pack_options"]
             #new_widget.configure(bg_color=parent.cget("fg_color"))
-            new_widget.bind("<Button-1>",
-                            lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+            if new_widget.__class__ == SegmentedButton:
+                new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+            else:
+                new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
             # new_widget.bind("<Button-1>", new_widget.on_drag_start)
 
             self.hierarchy.delete_children()
             self.hierarchy.update_list(self.widgets, 5)
             # new_widget.place(x=x, y=y)
-            self.drag_manager.update_children(children=parent.winfo_children())
+            if new_widget.__class__ != SegmentedButton:
+                self.drag_manager.update_children(children=parent.winfo_children())
             d[x].pop("TYPE")
             d[x].pop("pack_options")
             d[x].pop("parameters")
@@ -520,15 +526,19 @@ app.mainloop()
 
         self._parents = []
         new_widget.pack(padx=(0, 0), pady=(0, 0))
-        new_widget.configure(bg_color=widget.master.cget("fg_color"))
-        new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+        #new_widget.configure(bg_color=widget.master.cget("fg_color"))
+        if new_widget.__class__ == SegmentedButton:
+            new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+        else:
+            new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
         #new_widget.bind("<Button-1>", new_widget.on_drag_start)
 
         self.hierarchy.delete_children()
         self.hierarchy.update_list(self.widgets, 5)
         #new_widget.place(x=x, y=y)
-        self.drag_manager.update_children(children=widget.master.winfo_children())
+        if new_widget.__class__ != SegmentedButton:
+            self.drag_manager.update_children(children=widget.master.winfo_children())
 
     def delete_from_dict(self, my_dict, key_list, value):
         current_dict = my_dict
@@ -729,6 +739,14 @@ class App(CTk):
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_progressbar_btn.pack(padx=10, pady=(10, 0), fill="x")
 
+        self.add_segmentedbutton_btn = WidgetButton(master=self.widget_panel, text="CTk Segmented Button", height=50,
+                                               on_drag=lambda x, y, widget: self.main.add_widget(SegmentedButton,
+                                                                                                 properties={
+                                                                                                     "properties": self.properties_panel},
+                                                                                                 x=x, y=y,
+                                                                                                 widget=widget))
+        self.add_segmentedbutton_btn.pack(padx=10, pady=(10, 0), fill="x")
+
         self.main_window_panel = CTkFrame(self)
         self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
 
@@ -745,7 +763,7 @@ class App(CTk):
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn], self.main_window, self)
+        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
 
