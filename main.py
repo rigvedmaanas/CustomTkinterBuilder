@@ -1,6 +1,11 @@
 import json
+import shutil
+import tkinter.messagebox
+
+import userpaths
+
 from properties import PropertiesManager
-from tkinter.filedialog import asksaveasfilename, askopenfilename
+from tkinter.filedialog import asksaveasfilename, askopenfilename, askdirectory
 from customtkinter import *
 from widgets import *
 from dragndrop import DragManager
@@ -17,6 +22,48 @@ from Widgets.OptionMenu import OptionMenu
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
+
+class SaveFileDialog(CTkToplevel):
+    def __init__(self, *args, callback, **kwargs):
+        super().__init__(*args, **kwargs)
+        #self.pack_propagate(False)
+        self.callback = callback
+        self.geometry("500x280+600+200")
+
+        self.project_name_lbl = CTkLabel(self, text="Project Name", anchor="w", padx=5, font=CTkFont(size=20))
+        self.project_name_lbl.pack(pady=(20, 0), padx=20, fill="x")
+
+        self.project_name_entry = CTkEntry(self, placeholder_text="Enter Project Name")
+        self.project_name_entry.pack(padx=20, pady=10, fill="x")
+        self.project_name_entry.insert(0, "Untitled")
+
+        self.fr = CTkFrame(self, fg_color="transparent")
+        self.fr.pack(fill="x")
+
+        self.dir_lbl = CTkLabel(self.fr, text="Location", anchor="w", padx=5, font=CTkFont(size=20))
+        self.dir_lbl.pack(pady=(20, 10), padx=20, fill="x")
+
+        self.dir_entry = CTkEntry(self.fr)
+        self.dir_entry.pack(padx=(20, 5), pady=(0, 20), fill="x", side="left", expand=True)
+        self.dir_entry.insert(0, userpaths.get_my_documents())
+        self.dir_entry.configure(state="disabled")
+
+        self.select_dir = CTkButton(self.fr, text="...", width=20, command=self.choose_dir)
+        self.select_dir.pack(side="right", padx=(0, 20), pady=(0, 20))
+
+        self.save_btn = CTkButton(self, text="Save", height=35, command=lambda: self.callback(dir_=self.dir_entry.get(), name=self.project_name_entry.get()))
+        self.save_btn.pack(fill="x", padx=20, pady=20)
+
+    def choose_dir(self):
+        dir = askdirectory()
+        if dir != "":
+            self.dir_entry.configure(state="normal")
+            self.dir_entry.delete(0, "end")
+            self.dir_entry.insert(0, dir)
+            self.dir_entry.configure(state="disabled")
+
+
+
 class MainWindow:
     def __init__(self, root):
         self.type = "ROOT"
@@ -29,6 +76,7 @@ class MainWindow:
         self.temp_widgets = {}
         self.file = ""
         self.total_num = 0
+        self.files_to_copy = []
 
     def run_code(self):
 
@@ -78,7 +126,7 @@ class Root(CTk):
         oop_code.indent()
         self.loop_generate_oop(d=self.widgets[self.r], parent="self", code=oop_code)
         oop_code.add_line("""
-app = App()
+app = Root()
 app.mainloop()
             """)
 
@@ -140,6 +188,7 @@ app.mainloop()
                 font = "font=CTkFont("
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
+
                         p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                "font_overstrike"]:
@@ -193,9 +242,14 @@ app.mainloop()
                 self.loop_generate(d=d[x], parent=x.get_name(), code=code)
 
     def open_file(self):
-        file = askopenfilename(filetypes=[(".json", "json")])
+        file = askdirectory()
         if file != "":
-            with open(file, 'r') as openfile:
+            self.file = [os.path.dirname(file), os.path.basename(file)]
+
+            os.rmdir("temp")
+            shutil.copytree(os.path.join(file, "Assets"), "temp")
+
+            with open(os.path.join(file, f"{os.path.basename(file)}.json"), 'r') as openfile:
                 d = json.load(openfile)
             d = d["MAIN-1"]
             d.pop("TYPE")
@@ -238,7 +292,10 @@ app.mainloop()
             d_copy = dict(d[x]["parameters"])
             for p in dict(d[x]["parameters"]):
                 if p == "image":
-                    i = CTkImage(light_image=Image.open(d[x]["parameters"]["image"]["image"]), dark_image=Image.open(d[x]["parameters"]["image"]["image"]), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
+                    path = d[x]["parameters"]["image"]["image"]
+                    file_name = os.path.basename(path)
+                    img = os.path.join("temp", file_name)
+                    i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
                     d[x]["parameters"]["image"] = i
 
                 elif p == "font_family":
@@ -319,32 +376,46 @@ app.mainloop()
             if d[x] != {}:
                 self.loop_open(d[x], new_widget)
 
+    def save(self, dir_, name):
+        try:
+            os.mkdir(path=os.path.join(dir_, name))
+            os.mkdir(path=os.path.join(os.path.join(dir_, name), "Assets"))
+            #shutil.copytree("temp", os.path.join(os.path.join(dir_, name), "Assets"))
+
+            self.s = {self.r.get_name(): {}}
+            self.loop_save(self.widgets, self.r.get_name(), self.s)
+            self.s = self.s[self.r.get_name()]
+            print(self.s)
+            self.file = [dir_, name]
+            json_object = json.dumps(self.s, indent=4)
+            with open(os.path.join(os.path.join(dir_, name), f"{name}.json"), "w") as outfile:
+                outfile.write(json_object)
+        except FileExistsError as e:
+            self.file = ""
+            tkinter.messagebox.showerror("Error", f"File Exists: {os.path.join(dir_, name)}")
+        #os.mkdir(path=os.path.join(os.path.join(dir_, name), "Assets"))
+    def set_file(self, dir_, name):
+        self.file = [dir_, name]
+        self.save(dir_, name)
+
     def save_file(self):
-        self.s = {self.r.get_name(): {}}
-        self.loop_save(self.widgets, self.r.get_name(), self.s)
-        self.s = self.s[self.r.get_name()]
-        print(self.s)
+
         if self.file == "":
-            f = asksaveasfilename(filetypes=[(".json", "json")])
-            if f != "":
-                self.file = f
-                json_object = json.dumps(self.s, indent=4)
-                with open(f, "w") as outfile:
-                    outfile.write(json_object)
+            f = SaveFileDialog(callback=self.set_file)
+
         if self.file != "":
+            shutil.rmtree(os.path.join(os.path.join(self.file[0], self.file[1]), "Assets"))
+            #shutil.copytree("temp", os.path.join(os.path.join(self.file[0], self.file[1]), "Assets"))
+            os.mkdir(path=os.path.join(os.path.join(self.file[0], self.file[1]), "Assets"))
+            self.s = {self.r.get_name(): {}}
+            self.loop_save(self.widgets, self.r.get_name(), self.s)
+            self.s = self.s[self.r.get_name()]
             json_object = json.dumps(self.s, indent=4)
-            with open(self.file, "w") as outfile:
+            with open(os.path.join(os.path.join(self.file[0], self.file[1]), f"{self.file[1]}.json"), "w") as outfile:
                 outfile.write(json_object)
+
     def saveas_file(self):
-        self.s = {self.r.get_name(): {}}
-        self.loop_save(self.widgets, self.r.get_name(), self.s)
-        self.s = self.s[self.r.get_name()]
-        print(self.s)
-        f = asksaveasfilename(filetypes=[(".json", "json")])
-        if f != "":
-            json_object = json.dumps(self.s, indent=4)
-            with open(f, "w") as outfile:
-                outfile.write(json_object)
+        f = SaveFileDialog(callback=self.save)
 
     def loop_save(self, d, parent, code):
         print(d)
@@ -352,7 +423,11 @@ app.mainloop()
             props = dict(x.props)
             if "image" in list(props.keys()):
                 print(x.get_name(), x.props)
-                props["image"] = {"image": str(x.props["image"].cget("dark_image").filename), "size": [x.size[0], x.size[1]]}
+                img = os.path.basename(x.props["image"].cget("dark_image").filename)
+                path = os.path.join("Assets", img)
+
+                shutil.copy2(x.props["image"].cget("dark_image").filename, f"{self.file[0]}/{self.file[1]}/Assets")
+                props["image"] = {"image": path, "size": [x.size[0], x.size[1]]}
 
             code[parent][x.get_name()] = {"TYPE": x.type, "parameters": props, "pack_options": x.pack_options}
 
@@ -830,5 +905,7 @@ class App(CTk):
 # Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)
 set_default_color_theme("blue")
 #set_appearance_mode("dark")
+shutil.rmtree("temp")
+os.mkdir("temp")
 app = App()
 app.mainloop()

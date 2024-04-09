@@ -1,9 +1,232 @@
 from tkinter.colorchooser import askcolor
 from tkinter.filedialog import askopenfilename
+from tkinterdnd2 import TkinterDnD, DND_ALL
+import math
 from customtkinter import *
 from typing import Union, Callable
 from tkinter import font
 from PIL import Image
+import requests
+
+
+
+class Toplevel(CTkToplevel, TkinterDnD.DnDWrapper):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.TkdndVersion = TkinterDnD._require(self)
+
+class ImageChooser(Toplevel):
+    def __init__(self, *args, callback, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.callback = callback
+        self.geometry("700x550+600+200")
+        self.protocol("WM_DELETE_WINDOW", self.kill)
+        #self.attributes('-topmost', True)
+        self.title("Choose Image or Icon")
+        self.image = ""
+
+        self.tab = CTkTabview(self)
+        self.tab.pack(fill="both", expand=True, padx=20, pady=20)
+
+        self.tab.add("Icon")
+        self.tab.add("Image")
+
+        self.fr = CTkFrame(self.tab.tab("Icon"), fg_color="transparent")
+        self.fr.pack(expand=True, fill="both", padx=20, pady=20)
+
+        self.name_fr = CTkFrame(self.fr)
+        self.name_fr.grid(row=0, column=0)
+
+        self.instruct_lbl = CTkLabel(self.name_fr, text="Name", font=CTkFont(size=20), anchor="w")
+        self.instruct_lbl.pack(padx=20, pady=(10, 0), fill="x")
+
+        self.icon_name = CTkEntry(self.name_fr, width=250, placeholder_text="Name of the Icon")
+        self.icon_name.pack(pady=10, side="left", padx=20)
+
+
+        self.type_fr = CTkFrame(self.fr)
+        self.type_fr.grid(row=1, column=0)
+
+        self.instruct_lbl2 = CTkLabel(self.type_fr, text="Type", font=CTkFont(size=20), anchor="w")
+        self.instruct_lbl2.pack(padx=20, pady=(10, 0), fill="x")
+
+        self.icon_type = CTkOptionMenu(self.type_fr, width=250, values=["Filled", "Outlined", "Round", "Sharp", "Two Tone"])
+        self.icon_type.pack(pady=10, side="left", padx=20)
+
+        self.size_fr = CTkFrame(self.fr)
+        self.size_fr.grid(row=0, column=1)
+
+        self.instruct_lbl3 = CTkLabel(self.size_fr, text="Size", font=CTkFont(size=20), anchor="w")
+        self.instruct_lbl3.pack(padx=20, pady=(10, 0), fill="x")
+
+        self.icon_size = CTkOptionMenu(self.size_fr, width=250,
+                                       values=["18dp", "24dp", "36dp", "48dp"])
+        self.icon_size.pack(pady=10, side="left", padx=20)
+
+        self.density_fr = CTkFrame(self.fr)
+        self.density_fr.grid(row=1, column=1)
+
+        self.instruct_lbl4 = CTkLabel(self.density_fr, text="Density", font=CTkFont(size=20), anchor="w")
+        self.instruct_lbl4.pack(padx=20, pady=(10, 0), fill="x")
+
+        self.icon_density = CTkOptionMenu(self.density_fr, width=250,
+                                       values=["1x", "2x"])
+        self.icon_density.pack(pady=10, side="left", padx=20)
+
+        self.color_fr = CTkFrame(self.fr)
+        self.color_fr.grid(row=2, column=0)
+
+        self.instruct_lbl5 = CTkLabel(self.color_fr, text="Color", font=CTkFont(size=20), anchor="w")
+        self.instruct_lbl5.pack(padx=20, pady=(10, 0), fill="x")
+
+        self.icon_color = CTkOptionMenu(self.color_fr, width=250,
+                                          values=["Black", "White"])
+        self.icon_color.pack(pady=10, side="left", padx=20)
+
+        self.img_lbl = CTkLabel(self.fr, text="")
+        self.img_lbl.grid(row=2, column=1, pady=20, padx=20)
+
+
+        self.temp_fr = CTkFrame(self.tab.tab("Icon"))
+        self.temp_fr.pack(fill="x")
+
+        self.download_btn = CTkButton(self.temp_fr, text="Download", height=40, command=lambda : self.get_icon(self.icon_name.get(), self.icon_type.get(), self.icon_size.get(), self.icon_density.get(), self.icon_color.get(), self.img_lbl))
+        self.download_btn.pack(pady=20, padx=40, side="left")
+
+        self.use_btn = CTkButton(self.temp_fr, text="Use", height=40, state="disabled", command=lambda : self.callback(self.image))
+        self.use_btn.pack(pady=20, padx=40, side="right")
+
+        self.frame = CTkFrame(self.tab.tab("Image"))
+        self.frame.pack(padx=20, pady=20, expand=True, fill="both")
+
+        self.text = CTkLabel(self.frame, text="Drag and Drop the Image or Choose the File", font=CTkFont(size=20))
+        self.text.pack(pady=20)
+
+        self.dnd_frame = CTkFrame(self.frame)
+        self.dnd_frame.pack(padx=30, pady=(10, 30), expand=True, fill="both")
+
+        self.dnd_frame.drop_target_register(DND_ALL)
+        self.dnd_frame.dnd_bind("<<Drop>>", self.open_file)
+
+        self.lbl = CTkButton(self.dnd_frame, text="Click to choose the file or Drag and Drop the File", font=CTkFont(size=13),
+                        hover=False, fg_color="transparent", command=self.choose_file)
+        self.lbl.pack(expand=True, fill="both")
+
+    def kill(self):
+        self.callback(self.image)
+        self.destroy()
+
+    def choose_file(self):
+        file = askopenfilename(filetypes=[(".png", "png"), (".jpg", "jpg"), (".PNG", "PNG"), (".JPG", "JPG"), (".jpeg", "jpeg"), (".JPEG", "JPEG")])
+        if file != "":
+            self.image = file
+            self.callback(self.image)
+
+            print(self.image)
+    def open_file(self, event):
+        if event.data.endswith(".png") or event.data.endswith(".PNG") or event.data.endswith(".jpg") or event.data.endswith(".JPG") or event.data.endswith(".JPEG") or event.data.endswith(".jpeg"):
+            print(event.data)
+            self.image = event.data
+            self.callback(self.image)
+
+
+
+    def map_range(self, value, start1, stop1, start2, stop2):
+        """
+        Map a value from one range to another range.
+
+        Parameters:
+            value (float): The value to be mapped.
+            start1 (float): Lower bound of the input range.
+            stop1 (float): Upper bound of the input range.
+            start2 (float): Lower bound of the output range.
+            stop2 (float): Upper bound of the output range.
+
+        Returns:
+            float: The mapped value.
+        """
+        return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1))
+
+    def change_color_to_white(self, img):
+
+
+
+        width, height = img.size
+        new_img = img.copy()
+
+
+        # Loop through each pixel
+        for x in range(width):
+            for y in range(height):
+                # Get the pixel value (R, G, B) tuple
+                pixel = img.getpixel((x, y))
+
+                # Access individual color channels (modify as needed)
+                red = pixel[0]
+                green = pixel[1]
+                blue = pixel[2]
+                alpha = pixel[3]
+                red_new = math.floor(self.map_range(red, 0, 255, 255, 0))
+                green_new = math.floor(self.map_range(green, 0, 255, 255, 0))
+                blue_new = math.floor(self.map_range(blue, 0, 255, 255, 0))
+
+                new_img.putpixel((x, y), (red_new, green_new, blue_new, alpha))
+        # Save the grayscale image
+        return new_img
+
+    def get_icon(self, name, type_, size, density, color, display):
+
+
+        if type_ == "Filled":
+            type_ = "materialicons"
+            n = "baseline"
+        elif type_ == "Outlined":
+            type_ = "materialiconsoutlined"
+            n = "outline"
+        elif type_ == "Round":
+            type_ = "materialiconsround"
+            n = "round"
+        elif type_ == "Sharp":
+            type_ = "materialiconssharp"
+            n = "sharp"
+        elif type_ == "Two Tone":
+            type_ = "materialiconstwotone"
+            n = "twotone"
+
+        name = name.lower().replace(" ", "_")
+
+        url = f"https://raw.githubusercontent.com/rigvedmaanas/material-design-icons/main/icons/{name}/{type_}/{size}/{density}/{n}_{name}_black_{size}.png"
+        print(url)
+
+        response = requests.get(url, stream=True)
+        response.raw.decode_content = True
+
+        if response.ok:
+            image = Image.open(response.raw)
+            if image.mode == "LA":
+                image = image.convert("RGBA")
+            if color == "White":
+                image = self.change_color_to_white(image)
+
+            self.image = image
+            if color == "White":
+                self.image.color_type = "white"
+            else:
+                self.image.color_type = "black"
+            self.image.url = url
+            self.image.save(f"temp/{n}_{name}_{self.image.color_type}_{size}_{density}.png")
+            self.image = f"temp/{n}_{name}_{self.image.color_type}_{size}_{density}.png"
+            display.configure(image=CTkImage(light_image=image, dark_image=image, size=(image.size[0], image.size[1])))
+
+            self.use_btn.configure(state="normal")
+
+        else:
+            print("Invalid Name of Icon")
+
+
+
+        
+
 
 class Spinbox(CTkFrame):
     def __init__(self, *args,
@@ -402,10 +625,13 @@ class PropertiesManager(CTkTabview):
             frame = frame1 # I am toooooo Lazy. I should rename it properly
             if vals["image"] is not None:
                 n = 15
-                if len(vals["image"]) > n:
-                    txt = "..." + vals["image"][len(vals["image"]) - (n - 3)::]
+                if type(vals["image"]) == str:
+                    if len(vals["image"]) > n:
+                        txt = "..." + vals["image"][len(vals["image"]) - (n - 3)::]
+                    else:
+                        txt = vals["image"]
                 else:
-                    txt = vals["image"]
+                    txt = "Icon"
                 # txt = textwrap.shorten(file, width=10, placeholder="...")
                 num_spinbox.set_command(command=lambda val: (vals["callback"](vals["image"], (val, num_spinbox2.get()))))
                 num_spinbox2.set_command(command=lambda val: (vals["callback"](vals["image"], (num_spinbox.get(), val))))
@@ -497,19 +723,23 @@ class PropertiesManager(CTkTabview):
         num_spinbox2.set_command(command=None)
         frame2.pack_forget()
 
-
-    def _choose_image(self, callback, btn, lbl, frame, num_spinbox, frame2, num_spinbox2):
-        file = askopenfilename(filetypes=[(".png", "png"), (".jpg", "jpg"), (".jpeg", "jpeg"), (".JPEG", "JPEG"), (".PNG", "PNG")])
+    def choose(self, callback, btn, lbl, frame, num_spinbox, frame2, num_spinbox2, file):
         if file != "":
             n = 15
-            if len(file) > n:
-                txt = "..." + file[len(file)-(n-3)::]
+            if type(file) == str:
+                if len(file) > n:
+                    txt = "..." + file[len(file)-(n-3)::]
+                else:
+                    txt = file
             else:
-                txt = file
+                txt = "Icon"
             #txt = textwrap.shorten(file, width=10, placeholder="...")
             btn.configure(text=txt, width=120)
-            img = Image.open(file)
-            img.thumbnail((200, 200))
+            if type(file) == str:
+                img = Image.open(file)
+                img.thumbnail((200, 200))
+            else:
+                img = file.thumbnail((200, 200))
             frame.pack(padx=10, pady=(0, 10), fill="x")
             num_spinbox.set(img.size[0])
             num_spinbox.set_command(command=lambda val: callback(file, (int(val), int(num_spinbox2.get()))))
@@ -522,6 +752,12 @@ class PropertiesManager(CTkTabview):
             lbl.configure(image=img)
             #print("       ", (int(num_spinbox.get()), int(num_spinbox2.get())))
             callback(file, (int(num_spinbox.get()), int(num_spinbox2.get())))
+
+    def _choose_image(self, callback, btn, lbl, frame, num_spinbox, frame2, num_spinbox2):
+        #file = askopenfilename(filetypes=[(".png", "png"), (".jpg", "jpg"), (".jpeg", "jpeg"), (".JPEG", "JPEG"), (".PNG", "PNG")])
+        file = ImageChooser(callback=lambda file: self.choose(callback, btn, lbl, frame, num_spinbox, frame2, num_spinbox2, file))
+
+
 
 
     def _color_chooser_btn1(self, btn, btn2, callback):
