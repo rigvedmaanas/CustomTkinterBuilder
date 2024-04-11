@@ -18,6 +18,7 @@ from Widgets.SegmentedButton import SegmentedButton
 from Widgets.Slider import Slider
 from Widgets.OptionMenu import OptionMenu
 from Widgets.CheckBox import CheckBox
+from Widgets.ScrollableFrame import ScrollableFrame
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
@@ -285,6 +286,8 @@ app.mainloop()
                 w = OptionMenu
             elif y == "CHECKBOX":
                 w = CheckBox
+            elif y == "SCROLLABLEFRAME":
+                w = ScrollableFrame
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
 
@@ -303,31 +306,45 @@ app.mainloop()
                     print(d[x], p)
                     f.configure(family=d[x]["parameters"][p])
                     d[x]["parameters"].pop("font_family")
-                    d[x]["parameters"]["font"] = f
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
                 elif p == "font_size":
                     f.configure(size=d[x]["parameters"][p])
                     d[x]["parameters"].pop("font_size")
-                    d[x]["parameters"]["font"] = f
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
                 elif p == "font_weight":
                     f.configure(weight=d[x]["parameters"][p])
                     d[x]["parameters"].pop("font_weight")
-                    d[x]["parameters"]["font"] = f
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
                 elif p == "font_slant":
                     f.configure(slant=d[x]["parameters"][p])
                     d[x]["parameters"].pop("font_slant")
-                    d[x]["parameters"]["font"] = f
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
                 elif p == "font_underline":
                     f.configure(underline=d[x]["parameters"][p])
                     d[x]["parameters"].pop("font_underline")
-                    d[x]["parameters"]["font"] = f
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
                 elif p == "font_overstrike":
                     f.configure(overstrike=d[x]["parameters"][p])
                     d[x]["parameters"].pop("font_overstrike")
-                    d[x]["parameters"]["font"] = f
-            try:
-                print(d[x]["parameters"]["font"].cget("size"))
-            except Exception as e:
-                print(e)
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
             #print(w, parent.get_name(), d[x]["parameters"])
             if d[x]["parameters"] != {}:
                 new_widget = w(master=parent, **d[x]["parameters"], properties=self.r.properties)
@@ -510,8 +527,14 @@ app.mainloop()
             self._parents.reverse()
             pass
         else:
-            self._parents.append(widget.master)
-            self.get_parents(widget.master)
+            if type(widget) != ScrollableFrame:
+                self._parents.append(widget.master)
+                self.get_parents(widget.master)
+            else:
+                self._parents.append(widget.master.master.master)
+                self.get_parents(widget.master.master.master)
+
+
 
     def redraw(self, d):
         for x in list(d.keys()):
@@ -853,6 +876,14 @@ class App(CTk):
                                                                                                  widget=widget))
         self.add_checkbox_btn.pack(padx=10, pady=(10, 0), fill="x")
 
+        self.add_scrollableframe_btn = WidgetButton(master=self.widget_panel, text="CTk Scrollable Frame", height=50,
+                                             on_drag=lambda x, y, widget: self.main.add_widget(ScrollableFrame,
+                                                                                               properties={
+                                                                                                   "properties": self.properties_panel},
+                                                                                               x=x, y=y,
+                                                                                               widget=widget))
+        self.add_scrollableframe_btn.pack(padx=10, pady=(10, 0), fill="x")
+
 
         self.main_window_panel = CTkFrame(self)
         self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
@@ -869,7 +900,7 @@ class App(CTk):
         self.main_window.num = -1
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_slider_btn, self.add_optionmenu_btn, self.add_checkbox_btn], self.main_window, self)
+        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_slider_btn, self.add_optionmenu_btn, self.add_checkbox_btn, self.add_scrollableframe_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
 

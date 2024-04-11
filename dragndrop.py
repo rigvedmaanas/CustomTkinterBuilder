@@ -1,5 +1,8 @@
 from customtkinter import CTkLabel
 
+import Widgets.ScrollableFrame
+
+
 class DragManager:
     def __init__(self, buttons, window, root):
         self.add_buttons = buttons
@@ -17,14 +20,26 @@ class DragManager:
         self.main_window.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
         self.main_window.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
         for w in self.main_window.winfo_children():
-            w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
-            w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
+            if w.__class__ != Widgets.ScrollableFrame.ScrollableFrame:
+
+                w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
+                w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
+            else:
+                print(w)
+                w.master.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
+                w.master.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
 
     def update_children(self, children):
         for w in children:
 
-            w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
-            w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
+            if w.__class__ != Widgets.ScrollableFrame.ScrollableFrame:
+
+                w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
+                w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
+            else:
+                print("w", w)
+                w.master.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
+                w.master.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
 
 
     def set_on_top(self, state, widget):
@@ -50,7 +65,7 @@ class DragManager:
             abs_coord_x = self.main_window.winfo_pointerx() - self.main_window.winfo_rootx() + 10
             abs_coord_y = self.main_window.winfo_pointery() - self.main_window.winfo_rooty() + 10
             #print(abs_coord_x, abs_coord_y, self.called_widget.master)
-
+            print(self.called_widget)
             e(x=abs_coord_x, y=abs_coord_y, widget=self.called_widget)
     def released(self, e):
 
