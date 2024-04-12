@@ -22,6 +22,7 @@ from Widgets.CheckBox import CheckBox
 from Widgets.ScrollableFrame import ScrollableFrame
 from Widgets.RadioButton import RadioButton
 from Widgets.Scrollbar import Scrollbar
+from Widgets.ComboBox import ComboBox
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
@@ -293,6 +294,8 @@ app.mainloop()
                 w = RadioButton
             elif y == "SCROLLBAR":
                 w = Scrollbar
+            elif y == "COMBOBOX":
+                w = ComboBox
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
 
@@ -918,6 +921,14 @@ class App(CTk):
                                                                                                 widget=widget))
         self.add_verticalscrollbar_btn.pack(padx=10, pady=(10, 0), fill="x")
 
+        self.add_combobox_btn = WidgetButton(master=self.widget_panel, text="Combo Box", height=50,
+                                                      on_drag=lambda x, y, widget: self.main.add_widget(ComboBox,
+                                                                                                        properties={
+                                                                                                            "properties": self.properties_panel},
+                                                                                                        x=x, y=y,
+                                                                                                        widget=widget))
+        self.add_combobox_btn.pack(padx=10, pady=(10, 0), fill="x")
+
         self.main_window_panel = CTkFrame(self)
         self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
 
@@ -933,7 +944,7 @@ class App(CTk):
         self.main_window.num = -1
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_horizontalslider_btn, self.add_verticalslider_btn,self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn, self.add_horizontalscrollbar_btn, self.add_verticalscrollbar_btn], self.main_window, self)
+        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_horizontalslider_btn, self.add_verticalslider_btn,self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn, self.add_horizontalscrollbar_btn, self.add_verticalscrollbar_btn, self.add_combobox_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
 
