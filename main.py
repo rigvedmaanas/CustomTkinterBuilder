@@ -2,9 +2,8 @@ import json
 import shutil
 import tkinter.messagebox
 import userpaths
-from icecream import ic
 from properties import PropertiesManager
-from tkinter.filedialog import asksaveasfilename, askopenfilename, askdirectory
+from tkinter.filedialog import asksaveasfilename, askdirectory
 from customtkinter import *
 from widgets import *
 from dragndrop import DragManager
@@ -23,6 +22,7 @@ from Widgets.ScrollableFrame import ScrollableFrame
 from Widgets.RadioButton import RadioButton
 from Widgets.Scrollbar import Scrollbar
 from Widgets.ComboBox import ComboBox
+from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
@@ -81,13 +81,19 @@ class MainWindow:
         self.file = ""
         self.total_num = 0
         self.files_to_copy = []
+        self.title = "Window"
+
+    def change(self, **kwargs):
+        for key in list(kwargs.keys()):
+            if key == "title":
+                self.title = kwargs[key]
 
     def run_code(self):
 
         code = CodeGenerator(indentation="\t")
         code.add_line(f"""
 root = CTkToplevel()
-root.title("CTk Window")
+root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
 
 """)
@@ -110,7 +116,7 @@ from customtkinter import *
 from PIL import Image
 
 root = CTk()
-root.title("CTk Window")
+root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
 
 """)
@@ -129,8 +135,10 @@ class Root(CTk):
         oop_code.indent()
         oop_code.indent()
         self.loop_generate_oop(d=self.widgets[self.r], parent="self", code=oop_code)
-        oop_code.add_line("""
+        oop_code.add_line(f"""
 app = Root()
+app.geometry({self.r.cget("width")}x{self.r.cget("height")})
+app.title("{self.escape_special_chars(self.title)}")
 app.mainloop()
             """)
 
@@ -256,10 +264,16 @@ app.mainloop()
             with open(os.path.join(file, f"{os.path.basename(file)}.json"), 'r') as openfile:
                 d = json.load(openfile)
             d = d["MAIN-1"]
+
+            self.r.props = d["parameters"]
+            for key in list(d["parameters"].keys()):
+                if key == "width":
+                    self.r.configure(width=d["parameters"]["width"])
+                elif key == "height":
+                    self.r.configure(height=d["parameters"]["height"])
             d.pop("TYPE")
             d.pop("parameters")
             d.pop("pack_options")
-
             self.loop_open(d, self.r)
 
     def loop_open(self, d, parent):
@@ -277,7 +291,7 @@ app.mainloop()
             elif y == "ENTRY":
                 w = Entry
             elif y == "MAIN":
-                w = Frame # I should create a new one for MAIN
+                w = Main
             elif y == "TEXTBOX":
                 w = TextBox
             elif y == "PROGRESSBAR":
@@ -686,8 +700,13 @@ class Hierarchy(CTkScrollableFrame):
         self.btns = []
 
     def set_current_selection(self, x):
-        for b in self.btns:
-            b.configure(state="normal")
+        if x != self.main.r:
+            for b in self.btns:
+                b.configure(state="normal")
+        else:
+
+            for b in self.btns:
+                b.configure(state="disabled")
 
         #self.current_selection = btn
         self.widget = x
@@ -937,7 +956,7 @@ class App(CTk):
 
 
         # Need to create a seperate Class for main. This is just for now
-        self.main_window = Frame(self.temp, width=500, height=500, properties=None, fg_color=["gray92", "gray14"])
+        self.main_window = Main(self.temp, properties=None, width=500, height=500, fg_color=["gray92", "gray14"])
         self.main_window.pack_propagate(False)
         self.main_window.place(anchor="center", relx=0.5, rely=0.5)
         self.main_window.type = "MAIN"
@@ -976,15 +995,15 @@ class App(CTk):
         self.properties_panel = PropertiesManager(self.container, main=self.main)
         self.properties_panel.pack(fill="both", expand=True)
         self.main_window.properties = self.properties_panel
-
+        self.main_window.bind("<Button-1>", lambda e, nw=self.main_window: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
         self.run_code_btn.configure(command=self.main.run_code)
         self.export_code_btn.configure(command=self.main.export_code)
         self.save_btn.configure(command=self.main.save_file)
         self.saveas_btn.configure(command=self.main.saveas_file)
 
         self.open_btn.configure(command=self.main.open_file)
-
-
+        self.hierarchy.delete_children()
+        self.hierarchy.update_list(self.main.widgets, 5)
 
 # Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)
 set_default_color_theme("blue")
