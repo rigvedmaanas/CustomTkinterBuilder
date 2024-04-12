@@ -1,9 +1,10 @@
-from customtkinter import CTkScrollableFrame
+from customtkinter import CTkScrollableFrame, CTkLabel
 from PackArgs import PackArgs
+
 
 class ScrollableFrame(CTkScrollableFrame, PackArgs):
     def __init__(self, *args, properties, **kwargs):
-        super(ScrollableFrame, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.type = "SCROLLABLEFRAME"
         self.properties = properties
         self.pack_options = {}
@@ -12,7 +13,8 @@ class ScrollableFrame(CTkScrollableFrame, PackArgs):
         self.order = 0
         self.num = None
         self.name = None
-        print(self.master.master.master.pack_info())
+
+
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
@@ -33,8 +35,8 @@ class ScrollableFrame(CTkScrollableFrame, PackArgs):
 
     def configure(self, require_redraw=False, **kwargs):
         print(kwargs)
+        kwargs["require_redraw"] = require_redraw
         super().configure(**kwargs)
-
 
     def _bool_change(self, val):
         if val == "True":
@@ -76,12 +78,6 @@ class ScrollableFrame(CTkScrollableFrame, PackArgs):
         self.properties.add_option(self.properties.STYLES, "Label FG Color", "COLOR_COMBO", "label_fg_color", {"color": self.cget("label_fg_color"), "key": "label_fg_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(label_fg_color=val), "label_fg_color", val, val)})
         # self.properties.add_option(self.properties.STYLES, "Label Text Color", "COLOR_COMBO", "label_text_color", {"color": self.cget("label_text_color"), "key": "label_text_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(label_text_color=val), "label_text_color", val, val)})
         # self.properties.add_option(self.properties.ARRANGEMENT, "Orientation", "COMBO", "orientation", {"vals": ["vertical", "horizontal"], "default": self.cget("orientation"), "callback": lambda val: self.save(lambda val: self.configure(orientation=val), "orientation", val, val)})
-
-
-
-
-
-
 
         self.default()
         self.on_drag_motion(event)  # Some awkward problem

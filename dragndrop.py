@@ -20,26 +20,14 @@ class DragManager:
         self.main_window.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
         self.main_window.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
         for w in self.main_window.winfo_children():
-            if w.__class__ != Widgets.ScrollableFrame.ScrollableFrame:
-
-                w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
-                w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
-            else:
-                print(w)
-                w.master.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
-                w.master.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
+            w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
+            w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
 
     def update_children(self, children):
         for w in children:
 
-            if w.__class__ != Widgets.ScrollableFrame.ScrollableFrame:
-
-                w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
-                w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
-            else:
-                print("w", w)
-                w.master.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
-                w.master.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
+            w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
+            w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
 
 
     def set_on_top(self, state, widget):

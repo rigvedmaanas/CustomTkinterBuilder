@@ -2,6 +2,7 @@ import json
 import shutil
 import tkinter.messagebox
 import userpaths
+from icecream import ic
 from properties import PropertiesManager
 from tkinter.filedialog import asksaveasfilename, askopenfilename, askdirectory
 from customtkinter import *
@@ -19,6 +20,7 @@ from Widgets.Slider import Slider
 from Widgets.OptionMenu import OptionMenu
 from Widgets.CheckBox import CheckBox
 from Widgets.ScrollableFrame import ScrollableFrame
+from Widgets.RadioButton import RadioButton
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
@@ -286,8 +288,8 @@ app.mainloop()
                 w = OptionMenu
             elif y == "CHECKBOX":
                 w = CheckBox
-            elif y == "SCROLLABLEFRAME":
-                w = ScrollableFrame
+            elif y == "RADIOBUTTON":
+                w = RadioButton
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
 
@@ -637,6 +639,8 @@ app.mainloop()
         else:
             new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
+
+
         #new_widget.bind("<Button-1>", new_widget.on_drag_start)
 
         self.hierarchy.delete_children()
@@ -876,14 +880,13 @@ class App(CTk):
                                                                                                  widget=widget))
         self.add_checkbox_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_scrollableframe_btn = WidgetButton(master=self.widget_panel, text="CTk Scrollable Frame", height=50,
-                                             on_drag=lambda x, y, widget: self.main.add_widget(ScrollableFrame,
+        self.add_radiobutton_btn = WidgetButton(master=self.widget_panel, text="CTk Radio Button", height=50,
+                                             on_drag=lambda x, y, widget: self.main.add_widget(RadioButton,
                                                                                                properties={
                                                                                                    "properties": self.properties_panel},
                                                                                                x=x, y=y,
                                                                                                widget=widget))
-        self.add_scrollableframe_btn.pack(padx=10, pady=(10, 0), fill="x")
-
+        self.add_radiobutton_btn.pack(padx=10, pady=(10, 0), fill="x")
 
         self.main_window_panel = CTkFrame(self)
         self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
@@ -900,7 +903,7 @@ class App(CTk):
         self.main_window.num = -1
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_slider_btn, self.add_optionmenu_btn, self.add_checkbox_btn, self.add_scrollableframe_btn], self.main_window, self)
+        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_slider_btn, self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
 
