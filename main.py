@@ -21,6 +21,7 @@ from Widgets.OptionMenu import OptionMenu
 from Widgets.CheckBox import CheckBox
 from Widgets.ScrollableFrame import ScrollableFrame
 from Widgets.RadioButton import RadioButton
+from Widgets.Scrollbar import Scrollbar
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 
@@ -290,6 +291,8 @@ app.mainloop()
                 w = CheckBox
             elif y == "RADIOBUTTON":
                 w = RadioButton
+            elif y == "SCROLLBAR":
+                w = Scrollbar
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
 
@@ -627,7 +630,7 @@ app.mainloop()
         new_widget.num = self.total_num
         new_widget.name = new_widget.type + str(new_widget.num)
 
-        if new_widget.__class__ == Slider:
+        if new_widget.__class__ == Slider or new_widget.__class__ == Scrollbar:
             new_widget.props["orientation"] = properties["orientation"]
 
         self.total_num += 1
@@ -822,36 +825,36 @@ class App(CTk):
         self.widget_panel = CTkScrollableFrame(self, width=350)
         self.widget_panel.pack(side=LEFT, padx=10, pady=10, fill="y")
 
-        self.add_frame_btn = WidgetButton(master=self.widget_panel, text="CTk Frame", height=50,
+        self.add_frame_btn = WidgetButton(master=self.widget_panel, text="Frame", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Frame, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_frame_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_button_btn = WidgetButton(master=self.widget_panel, text="CTk Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Button, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_btn = WidgetButton(master=self.widget_panel, text="Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Button, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_button_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_label_btn = WidgetButton(master=self.widget_panel, text="CTk Label", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Label, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_label_btn = WidgetButton(master=self.widget_panel, text="Label", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Label, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_label_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_entry_btn = WidgetButton(master=self.widget_panel, text="CTk Entry", height=50,
+        self.add_entry_btn = WidgetButton(master=self.widget_panel, text="Entry", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Entry, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_entry_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_switch_btn = WidgetButton(master=self.widget_panel, text="CTk Switch", height=50,
+        self.add_switch_btn = WidgetButton(master=self.widget_panel, text="Switch", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Switch, properties={
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_switch_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_textbox_btn = WidgetButton(master=self.widget_panel, text="CTk TextBox", height=50,
+        self.add_textbox_btn = WidgetButton(master=self.widget_panel, text="TextBox", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(TextBox, properties={
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_textbox_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_progressbar_btn = WidgetButton(master=self.widget_panel, text="CTk Progress Bar", height=50,
+        self.add_progressbar_btn = WidgetButton(master=self.widget_panel, text="Progress Bar", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(ProgressBar, properties={
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_progressbar_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_segmentedbutton_btn = WidgetButton(master=self.widget_panel, text="CTk Segmented Button", height=50,
+        self.add_segmentedbutton_btn = WidgetButton(master=self.widget_panel, text="Segmented Button", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(SegmentedButton,
                                                                                                  properties={
                                                                                                      "properties": self.properties_panel},
@@ -875,7 +878,7 @@ class App(CTk):
                                                                                              widget=widget))
         self.add_verticalslider_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_optionmenu_btn = WidgetButton(master=self.widget_panel, text="CTk Option Menu", height=50,
+        self.add_optionmenu_btn = WidgetButton(master=self.widget_panel, text="Option Menu", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(OptionMenu,
                                                                                                  properties={
                                                                                                      "properties": self.properties_panel},
@@ -883,7 +886,7 @@ class App(CTk):
                                                                                                  widget=widget))
         self.add_optionmenu_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_checkbox_btn = WidgetButton(master=self.widget_panel, text="CTk Check Box", height=50,
+        self.add_checkbox_btn = WidgetButton(master=self.widget_panel, text="Check Box", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(CheckBox,
                                                                                                  properties={
                                                                                                      "properties": self.properties_panel},
@@ -891,13 +894,29 @@ class App(CTk):
                                                                                                  widget=widget))
         self.add_checkbox_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_radiobutton_btn = WidgetButton(master=self.widget_panel, text="CTk Radio Button", height=50,
+        self.add_radiobutton_btn = WidgetButton(master=self.widget_panel, text="Radio Button", height=50,
                                              on_drag=lambda x, y, widget: self.main.add_widget(RadioButton,
                                                                                                properties={
                                                                                                    "properties": self.properties_panel},
                                                                                                x=x, y=y,
                                                                                                widget=widget))
         self.add_radiobutton_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_horizontalscrollbar_btn = WidgetButton(master=self.widget_panel, text="Horizontal Scrollbar", height=50,
+                                                on_drag=lambda x, y, widget: self.main.add_widget(Scrollbar,
+                                                                                                  properties={
+                                                                                                      "properties": self.properties_panel, "orientation": "horizontal"},
+                                                                                                  x=x, y=y,
+                                                                                                  widget=widget))
+        self.add_horizontalscrollbar_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_verticalscrollbar_btn = WidgetButton(master=self.widget_panel, text="Vertical Scrollbar", height=50,
+                                              on_drag=lambda x, y, widget: self.main.add_widget(Scrollbar,
+                                                                                                properties={
+                                                                                                    "properties": self.properties_panel, "orientation": "vertical"},
+                                                                                                x=x, y=y,
+                                                                                                widget=widget))
+        self.add_verticalscrollbar_btn.pack(padx=10, pady=(10, 0), fill="x")
 
         self.main_window_panel = CTkFrame(self)
         self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
@@ -914,7 +933,7 @@ class App(CTk):
         self.main_window.num = -1
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_horizontalslider_btn, self.add_verticalslider_btn,self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn], self.main_window, self)
+        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_horizontalslider_btn, self.add_verticalslider_btn,self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn, self.add_horizontalscrollbar_btn, self.add_verticalscrollbar_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
 
