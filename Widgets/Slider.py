@@ -8,14 +8,15 @@ class Slider(CTkSlider, PackArgs):
         self.properties = properties
         self.pack_options = {}
         self.pack_propagate(False)
-        self.configure(from_=0, to=100, number_of_steps=10)
+        self.configure(from_=0, to=100, number_of_steps=100)
+
         self.set(50)
         self.order = 0
         self.num = None
         self.name = None
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
-        self.props = {}
+        self.props = {"from_": 0, "to":100, "number_of_steps":100}
 
     def __repr__(self):
 

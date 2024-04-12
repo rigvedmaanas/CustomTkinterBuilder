@@ -627,6 +627,9 @@ app.mainloop()
         new_widget.num = self.total_num
         new_widget.name = new_widget.type + str(new_widget.num)
 
+        if new_widget.__class__ == Slider:
+            new_widget.props["orientation"] = properties["orientation"]
+
         self.total_num += 1
         self.get_parents(new_widget)
         self.add_to_dict(self.widgets, self._parents, new_widget)
@@ -856,13 +859,21 @@ class App(CTk):
                                                                                                  widget=widget))
         self.add_segmentedbutton_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_slider_btn = WidgetButton(master=self.widget_panel, text="CTk Slider", height=50,
+        self.add_horizontalslider_btn = WidgetButton(master=self.widget_panel, text="Horizontal Slider", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(Slider,
                                                                                                  properties={
-                                                                                                     "properties": self.properties_panel},
+                                                                                                     "properties": self.properties_panel, "orientation": "horizontal"},
                                                                                                  x=x, y=y,
                                                                                                  widget=widget))
-        self.add_slider_btn.pack(padx=10, pady=(10, 0), fill="x")
+        self.add_horizontalslider_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_verticalslider_btn = WidgetButton(master=self.widget_panel, text="Vertical Slider", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(Slider,
+                                                                                             properties={
+                                                                                                 "properties": self.properties_panel, "orientation": "vertical"},
+                                                                                             x=x, y=y,
+                                                                                             widget=widget))
+        self.add_verticalslider_btn.pack(padx=10, pady=(10, 0), fill="x")
 
         self.add_optionmenu_btn = WidgetButton(master=self.widget_panel, text="CTk Option Menu", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(OptionMenu,
@@ -903,7 +914,7 @@ class App(CTk):
         self.main_window.num = -1
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_slider_btn, self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn], self.main_window, self)
+        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_horizontalslider_btn, self.add_verticalslider_btn,self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn], self.main_window, self)
         self.main = MainWindow(self.main_window)
         self.main.drag_manager = self.drag_manager
 
