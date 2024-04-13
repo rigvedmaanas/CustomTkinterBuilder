@@ -150,7 +150,7 @@ root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("bl
 set_default_color_theme("{self.theme_manager.name}")
 """)
         self.loop_generate(d=self.widgets[self.r], parent="root", code=code, run=True)
-        print(code.get_code())
+        #print(code.get_code())
         # I know this is not that safe. Do create an issue if there are any safer ways to do this
         exec(code.get_code())
 
@@ -280,7 +280,7 @@ app.mainloop()
 
                 font = font[0:-2] # Delete ', ' at last part
                 font += ")"
-                print(font)
+                #print(font)
                 if font != "font=CTkFon)": # Which means there is no change in font
                     p += font
                 else:
@@ -387,7 +387,7 @@ app.mainloop()
                     d[x]["parameters"]["image"] = i
 
                 elif p == "font_family":
-                    print(d[x], p)
+                    #print(d[x], p)
                     f.configure(family=d[x]["parameters"][p])
                     d[x]["parameters"].pop("font_family")
                     if w != ScrollableFrame:
@@ -443,12 +443,12 @@ app.mainloop()
                     new_widget.configure(**d[x]["parameters"])
 
                 try:
-                    print(d_copy)
+                    #print(d_copy)
                     new_widget.image = d_copy["image"]["image"]
                     img = d[x]["parameters"]["image"]
                     d_copy["image"] = img
                     new_widget.size = (d[x]["parameters"]["image"].cget("size")[0], d[x]["parameters"]["image"].cget("size")[1])
-                    print(d_copy)
+                    #print(d_copy)
 
                 except KeyError as e:
                     pass
@@ -502,7 +502,7 @@ app.mainloop()
             self.s = {self.r.get_name(): {}}
             self.loop_save(self.widgets, self.r.get_name(), self.s)
             self.s = self.s[self.r.get_name()]
-            print(self.s)
+            #print(self.s)
             self.s[self.r.get_name()]["theme"] = self.theme_manager.name
             self.file = [dir_, name]
             json_object = json.dumps(self.s, indent=4)
@@ -537,14 +537,14 @@ app.mainloop()
         f = SaveFileDialog(callback=self.save)
 
     def loop_save(self, d, parent, code):
-        print(d)
+        #print(d)
         for x in list(d.keys()):
             props = dict(x.props)
             if "image" in list(props.keys()):
-                print(x.get_name(), x.props)
+                #print(x.get_name(), x.props)
                 img = os.path.basename(x.props["image"].cget("dark_image").filename)
                 path = os.path.join("Assets", img)
-                ic(x.props["image"].cget("dark_image").filename, self.file)
+                #ic(x.props["image"].cget("dark_image").filename, self.file)
                 shutil.copy2(x.props["image"].cget("dark_image").filename, f"{self.file[0]}/{self.file[1]}/Assets")
                 props["image"] = {"image": path, "size": [x.size[0], x.size[1]]}
 
@@ -553,7 +553,7 @@ app.mainloop()
             if d[x] != {}:
                 self.loop_save(d[x], x.get_name(), code[parent])
 
-        print(code)
+        #print(code)
 
     def loop_generate_oop(self, d, parent, code):
 
@@ -593,7 +593,7 @@ app.mainloop()
 
                 font = font[0:-2] # Delete ', ' at last part
                 font += ")"
-                print(font)
+                #print(font)
                 if font != "font=CTkFon)": # Which means there is no change in font
                     p += font
                 else:
@@ -847,7 +847,7 @@ class Hierarchy(CTkScrollableFrame):
             self.widget = None
             for btn in self.btns:
                 btn.configure(state="disabled")
-            print(self.main.widgets)
+            #print(self.main.widgets)
     def move_down(self):
         if self.current_selection != None:
             self.main.get_parents(self.widget)
@@ -873,7 +873,7 @@ class Hierarchy(CTkScrollableFrame):
             self.widget = None
             for btn in self.btns:
                 btn.configure(state="disabled")
-            print(self.main.widgets)
+            #print(self.main.widgets)
 
     def update_list(self, d, pad):
         self.current_selection = None
@@ -897,7 +897,7 @@ class Hierarchy(CTkScrollableFrame):
 
     def duplicate_widget(self):
         # This method is not efficient
-        ic(self.main.widgets)
+        #ic(self.main.widgets)
         self.s = {self.widget.get_name(): {}}
         self.main._parents = []
         self.main.get_parents(self.widget)
@@ -909,16 +909,16 @@ class Hierarchy(CTkScrollableFrame):
 
         val = d[self.widget]
         d = {self.widget: val}
-        ic(self.main.widgets)
+        #ic(self.main.widgets)
 
-        ic(d)
+        #ic(d)
         self.main._parents = []
         self.main.loop_save(d, self.widget.get_name(), self.s)
         self.s = self.s[self.widget.get_name()]
-        ic(self.main.widgets)
+        #ic(self.main.widgets)
         self.main.loop_open(self.s, self.widget.master, copy=True)
         #self.s[self.r.get_name()]["theme"] = self.theme_manager.name
-        ic(self.main.widgets)
+        #ic(self.main.widgets)
 
 
     def delete_children(self):
