@@ -1,7 +1,11 @@
 import json
 import shutil
 import tkinter.messagebox
+from copy import deepcopy
+
 import userpaths
+from icecream import ic
+
 from properties import PropertiesManager
 from tkinter.filedialog import asksaveasfilename, askdirectory
 from customtkinter import *
@@ -334,7 +338,7 @@ app.mainloop()
             d.pop("theme")
             self.loop_open(d, self.r)
 
-    def loop_open(self, d, parent):
+    def loop_open(self, d, parent, copy=False):
         # I could destroy every child in self.r but could not add new widgets after destroying the children.
         for x in list(d.keys()):
             y = d[x]["TYPE"]
@@ -455,11 +459,14 @@ app.mainloop()
                 new_widget = w(master=parent, properties=self.r.properties)
                 self.apply_theme_to_widget(new_widget)
 
-
             new_widget.num = self.total_num
-            new_widget.name = x
 
+            if not copy:
+                new_widget.name = x
+            else:
+                new_widget.name = new_widget.type + str(new_widget.num + 1) + "_copy"
             self.total_num += 1
+
             self.get_parents(new_widget)
             self.add_to_dict(self.widgets, self._parents, new_widget)
 
@@ -484,7 +491,7 @@ app.mainloop()
             d[x].pop("parameters")
 
             if d[x] != {}:
-                self.loop_open(d[x], new_widget)
+                self.loop_open(d[x], new_widget, copy=copy)
 
     def save(self, dir_, name):
         try:
@@ -537,7 +544,7 @@ app.mainloop()
                 print(x.get_name(), x.props)
                 img = os.path.basename(x.props["image"].cget("dark_image").filename)
                 path = os.path.join("Assets", img)
-
+                ic(x.props["image"].cget("dark_image").filename, self.file)
                 shutil.copy2(x.props["image"].cget("dark_image").filename, f"{self.file[0]}/{self.file[1]}/Assets")
                 props["image"] = {"image": path, "size": [x.size[0], x.size[1]]}
 
@@ -888,6 +895,32 @@ class Hierarchy(CTkScrollableFrame):
                 btn.pack(fill="x", padx=(pad, 5), pady=2.5)
 
 
+    def duplicate_widget(self):
+        # This method is not efficient
+        ic(self.main.widgets)
+        self.s = {self.widget.get_name(): {}}
+        self.main._parents = []
+        self.main.get_parents(self.widget)
+
+        #ic(self.main._parents)
+        d = self.main.widgets.copy()
+        for key in self.main._parents:
+            d = d[key]
+
+        val = d[self.widget]
+        d = {self.widget: val}
+        ic(self.main.widgets)
+
+        ic(d)
+        self.main._parents = []
+        self.main.loop_save(d, self.widget.get_name(), self.s)
+        self.s = self.s[self.widget.get_name()]
+        ic(self.main.widgets)
+        self.main.loop_open(self.s, self.widget.master, copy=True)
+        #self.s[self.r.get_name()]["theme"] = self.theme_manager.name
+        ic(self.main.widgets)
+
+
     def delete_children(self):
         for widget in self.winfo_children():
             widget.destroy()
@@ -1064,7 +1097,12 @@ class App(CTk):
         self.delete_btn = CTkButton(self.hierarchy_tools_container, text="delete", font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30, command=self.hierarchy.delete_widget)
         self.delete_btn.pack(side="left", padx=5)
 
-        self.hierarchy.btns = [self.move_top_btn, self.move_down_btn, self.delete_btn]
+        self.duplicate_btn = CTkButton(self.hierarchy_tools_container, text="content_copy",
+                                    font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30,
+                                    command=self.hierarchy.duplicate_widget)
+        self.duplicate_btn.pack(side="left", padx=5)
+
+        self.hierarchy.btns = [self.move_top_btn, self.move_down_btn, self.delete_btn, self.duplicate_btn]
         for btn in self.hierarchy.btns:
             btn.configure(state="disabled")
         self.properties_panel = PropertiesManager(self.container, main=self.main)
