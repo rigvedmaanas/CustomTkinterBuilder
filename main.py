@@ -142,9 +142,10 @@ class MainWindow:
 root = CTkToplevel()
 root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
+root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("blue"), root.destroy()))
 set_default_color_theme("{self.theme_manager.name}")
 """)
-        self.loop_generate(d=self.widgets[self.r], parent="root", code=code)
+        self.loop_generate(d=self.widgets[self.r], parent="root", code=code, run=True)
         print(code.get_code())
         # I know this is not that safe. Do create an issue if there are any safer ways to do this
         exec(code.get_code())
@@ -239,7 +240,7 @@ app.mainloop()
             formatted_text = formatted_text.replace(char, escape_seq)
         return formatted_text
 
-    def loop_generate(self, d, parent, code):
+    def loop_generate(self, d, parent, code, run=False):
         for x in list(d.keys()):
             if x.props == {}:
                 code.add_line(f"{x.get_name()} = {x.get_class()}(master={parent})")
@@ -250,8 +251,10 @@ app.mainloop()
                 font = "font=CTkFont("
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
-
-                        p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                        if not run:
+                            p += f'image=CTkImage(Image.open("Assets/{os.path.basename(x.props["image"].cget("dark_image").filename)}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                        else:
+                            p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                "font_overstrike"]:
                         if type(x.props[key]) == str:
@@ -301,7 +304,7 @@ app.mainloop()
             if d[x] != {}:
                 #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
 
-                self.loop_generate(d=d[x], parent=x.get_name(), code=code)
+                self.loop_generate(d=d[x], parent=x.get_name(), code=code, run=run)
 
     def open_file(self):
         file = askdirectory()
@@ -442,6 +445,7 @@ app.mainloop()
                     d_copy["image"] = img
                     new_widget.size = (d[x]["parameters"]["image"].cget("size")[0], d[x]["parameters"]["image"].cget("size")[1])
                     print(d_copy)
+
                 except KeyError as e:
                     pass
 
@@ -469,7 +473,7 @@ app.mainloop()
                 new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
             # new_widget.bind("<Button-1>", new_widget.on_drag_start)
-
+            new_widget.on_drag_start(None)
             self.hierarchy.delete_children()
             self.hierarchy.update_list(self.widgets, 5)
             # new_widget.place(x=x, y=y)
@@ -517,6 +521,7 @@ app.mainloop()
             self.s = {self.r.get_name(): {}}
             self.loop_save(self.widgets, self.r.get_name(), self.s)
             self.s = self.s[self.r.get_name()]
+            self.s[self.r.get_name()]["theme"] = self.theme_manager.name
             json_object = json.dumps(self.s, indent=4)
             with open(os.path.join(os.path.join(self.file[0], self.file[1]), f"{self.file[1]}.json"), "w") as outfile:
                 outfile.write(json_object)
@@ -558,7 +563,8 @@ app.mainloop()
                 font = "font=CTkFont("
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
-                        p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+
+                        p += f'image=CTkImage(Image.open("Assets/{os.path.basename(x.props["image"].cget("dark_image").filename)}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                "font_overstrike"]:
                         if type(x.props[key]) == str:

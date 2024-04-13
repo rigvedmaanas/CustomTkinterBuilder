@@ -629,6 +629,7 @@ class PropertiesManager(CTkTabview):
                 n = 15
                 if os.path.basename(os.path.dirname(vals["image"])) == "Assets":
                     vals["image"] = os.path.join(os.path.join(str(pathlib.PurePath(vals["image"]).parent.parent), "temp"), str(pathlib.PurePath(vals["image"]).name))
+
                 if type(vals["image"]) == str:
                     if len(vals["image"]) > n:
                         txt = "..." + vals["image"][len(vals["image"]) - (n - 3)::]
@@ -648,8 +649,7 @@ class PropertiesManager(CTkTabview):
                 frame2.pack(padx=10, pady=(0, 10), fill="x")
                 num_spinbox.set(img.size[0])
                 num_spinbox2.set(img.size[1])
-
-
+                vals["callback"](vals["image"], (int(num_spinbox.get()), int(num_spinbox2.get())))
 
                 img = CTkImage(img, size=img.size)
                 img_lbl.configure(image=img)
