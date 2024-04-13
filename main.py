@@ -65,7 +65,7 @@ class SaveFileDialog(CTkToplevel):
         self.select_dir = CTkButton(self.fr, text="...", width=20, command=self.choose_dir)
         self.select_dir.pack(side="right", padx=(0, 20), pady=(0, 20))
 
-        self.save_btn = CTkButton(self, text="Save", height=35, command=lambda: self.callback(dir_=self.dir_entry.get(), name=self.project_name_entry.get()))
+        self.save_btn = CTkButton(self, text="Save", height=35, command=lambda: (self.callback(dir_=self.dir_entry.get(), name=self.project_name_entry.get()), self.destroy()))
         self.save_btn.pack(fill="x", padx=20, pady=20)
 
     def choose_dir(self):
@@ -92,7 +92,7 @@ class MainWindow:
         self.total_num = 0
         self.files_to_copy = []
         self.title = "Window"
-        self.theme_manager = (ThemeUtl(theme_dir=f"Themes", theme_name=theme_name))
+        self.theme_manager = ThemeUtl(theme_dir=f"Themes", theme_name=theme_name)
         self.theme = self.theme_manager.get_theme_by_name()
 
     def apply_theme_to_widget(self, widget):
@@ -324,6 +324,11 @@ app.mainloop()
             d.pop("TYPE")
             d.pop("parameters")
             d.pop("pack_options")
+
+            self.theme_manager = ThemeUtl(theme_dir=f"Themes", theme_name=d["theme"])
+            self.theme = self.theme_manager.get_theme_by_name()
+
+            d.pop("theme")
             self.loop_open(d, self.r)
 
     def loop_open(self, d, parent):
@@ -419,8 +424,16 @@ app.mainloop()
                         d[x]["parameters"]["label_font"] = f
             #print(w, parent.get_name(), d[x]["parameters"])
             if d[x]["parameters"] != {}:
-                new_widget = w(master=parent, **d[x]["parameters"], properties=self.r.properties)
-                self.apply_theme_to_widget(new_widget)
+                if "orientation" in list(d[x]["parameters"].keys()):
+                    new_widget = w(master=parent, orientation=d[x]["parameters"]["orientation"], properties=self.r.properties)
+                    g = dict(d)
+                    g[x]["parameters"].pop("orientation")
+                    self.apply_theme_to_widget(new_widget)
+                    new_widget.configure(**g[x]["parameters"])
+                else:
+                    new_widget = w(master=parent, properties=self.r.properties)
+                    self.apply_theme_to_widget(new_widget)
+                    new_widget.configure(**d[x]["parameters"])
 
                 try:
                     print(d_copy)
@@ -479,6 +492,7 @@ app.mainloop()
             self.loop_save(self.widgets, self.r.get_name(), self.s)
             self.s = self.s[self.r.get_name()]
             print(self.s)
+            self.s[self.r.get_name()]["theme"] = self.theme_manager.name
             self.file = [dir_, name]
             json_object = json.dumps(self.s, indent=4)
             with open(os.path.join(os.path.join(dir_, name), f"{name}.json"), "w") as outfile:

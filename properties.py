@@ -1,3 +1,4 @@
+import pathlib
 from tkinter.colorchooser import askcolor
 from tkinter.filedialog import askopenfilename
 from tkinterdnd2 import TkinterDnD, DND_ALL
@@ -93,7 +94,7 @@ class ImageChooser(Toplevel):
         self.download_btn = CTkButton(self.temp_fr, text="Download", height=40, command=lambda : self.get_icon(self.icon_name.get(), self.icon_type.get(), self.icon_size.get(), self.icon_density.get(), self.icon_color.get(), self.img_lbl))
         self.download_btn.pack(pady=20, padx=40, side="left")
 
-        self.use_btn = CTkButton(self.temp_fr, text="Use", height=40, state="disabled", command=lambda : self.callback(self.image))
+        self.use_btn = CTkButton(self.temp_fr, text="Use", height=40, state="disabled", command=lambda : (self.callback(self.image), self.destroy()))
         self.use_btn.pack(pady=20, padx=40, side="right")
 
         self.frame = CTkFrame(self.tab.tab("Image"))
@@ -121,13 +122,14 @@ class ImageChooser(Toplevel):
         if file != "":
             self.image = file
             self.callback(self.image)
-
             print(self.image)
+            self.destroy()
     def open_file(self, event):
         if event.data.endswith(".png") or event.data.endswith(".PNG") or event.data.endswith(".jpg") or event.data.endswith(".JPG") or event.data.endswith(".JPEG") or event.data.endswith(".jpeg"):
             print(event.data)
             self.image = event.data
             self.callback(self.image)
+            self.destroy()
 
 
 
@@ -625,6 +627,8 @@ class PropertiesManager(CTkTabview):
             frame = frame1 # I am toooooo Lazy. I should rename it properly
             if vals["image"] is not None:
                 n = 15
+                if os.path.basename(os.path.dirname(vals["image"])) == "Assets":
+                    vals["image"] = os.path.join(os.path.join(str(pathlib.PurePath(vals["image"]).parent.parent), "temp"), str(pathlib.PurePath(vals["image"]).name))
                 if type(vals["image"]) == str:
                     if len(vals["image"]) > n:
                         txt = "..." + vals["image"][len(vals["image"]) - (n - 3)::]
