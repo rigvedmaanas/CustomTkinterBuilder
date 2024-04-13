@@ -12,13 +12,14 @@ class ComboBox(CTkComboBox, PackArgs):
         self.order = 0
         self.num = None
         self.name = None
-        self.color_disabled = self.cget("text_color_disabled")
-        self.configure(state="disabled", text_color_disabled=self.cget("text_color"))
-
+        self.set_nonvisible_disable()
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
 
+    def set_nonvisible_disable(self):
+        self.color_disabled = self.cget("text_color_disabled")
+        self.configure(state="disabled", text_color_disabled=self.cget("text_color"))
 
     def change_disabled_color(self, color):
         self.color_disabled = color

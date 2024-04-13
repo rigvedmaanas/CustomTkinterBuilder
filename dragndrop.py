@@ -1,6 +1,5 @@
 from customtkinter import CTkLabel
-
-import Widgets.ScrollableFrame
+from Widgets.SegmentedButton import SegmentedButton
 
 
 class DragManager:
@@ -25,9 +24,10 @@ class DragManager:
 
     def update_children(self, children):
         for w in children:
+            if w.__class__ != SegmentedButton:
 
-            w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
-            w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
+                w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
+                w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
 
 
     def set_on_top(self, state, widget):

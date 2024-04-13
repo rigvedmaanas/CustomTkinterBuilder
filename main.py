@@ -25,7 +25,17 @@ from Widgets.ComboBox import ComboBox
 from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
+from customtkinter.windows.widgets.theme import ThemeManager
+class ThemeUtl:
+    def __init__(self, theme_dir, theme_name):
+        path = os.path.join(theme_dir, f"{theme_name}.json")
+        with open(path, "r") as f:
+            self.theme = json.load(f)
+        self.path = path
+        self.name = theme_name
 
+    def get_theme_by_name(self):
+        return self.theme
 
 class SaveFileDialog(CTkToplevel):
     def __init__(self, *args, callback, **kwargs):
@@ -69,7 +79,7 @@ class SaveFileDialog(CTkToplevel):
 
 
 class MainWindow:
-    def __init__(self, root):
+    def __init__(self, root, theme_name):
         self.type = "ROOT"
         self.widgets = {}
         self.hierarchy = None
@@ -82,6 +92,43 @@ class MainWindow:
         self.total_num = 0
         self.files_to_copy = []
         self.title = "Window"
+        self.theme_manager = (ThemeUtl(theme_dir=f"Themes", theme_name=theme_name))
+        self.theme = self.theme_manager.get_theme_by_name()
+
+    def apply_theme_to_widget(self, widget):
+        x = self.theme[widget.get_class()]
+
+
+
+        for key in list(x.keys()):
+            if key == "top_fg_color":
+
+                if widget.get_class() == "CTkFrame":
+                    if widget.master._fg_color == x["fg_color"]:
+                        widget.configure(fg_color=x["top_fg_color"])
+                    else:
+                        widget.configure(fg_color=x["fg_color"])
+            else:
+                d = {key: x[key]}
+
+
+            widget.configure(**d)
+        if widget.__class__ not in [Frame, ProgressBar, Scrollbar, Slider, Main]:
+            for y in list(self.theme["CTkFont"].keys()):
+                if sys.platform == "darwin":
+                    d = {"font": CTkFont(family=self.theme["CTkFont"]["macOS"]["family"], size=self.theme["CTkFont"]["macOS"]["size"],
+                                      weight=self.theme["CTkFont"]["macOS"]["weight"])}
+                elif sys.platform.startswith("win"):
+                    d = {"font": CTkFont(family=self.theme["CTkFont"]["Windows"]["family"], size=self.theme["CTkFont"]["Windows"]["size"],
+                                      weight=self.theme["CTkFont"]["Windows"]["weight"])}
+                else:
+                    d = {"font": CTkFont(family=self.theme["CTkFont"]["Linux"]["family"], size=self.theme["CTkFont"]["Linux"]["size"],
+                                      weight=self.theme["CTkFont"]["Linux"]["weight"])}
+            widget.configure(**d)
+
+        if widget.__class__ in [ComboBox, OptionMenu]:
+            widget.set_nonvisible_disable()
+
 
     def change(self, **kwargs):
         for key in list(kwargs.keys()):
@@ -95,7 +142,7 @@ class MainWindow:
 root = CTkToplevel()
 root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
-
+set_default_color_theme("{self.theme_manager.name}")
 """)
         self.loop_generate(d=self.widgets[self.r], parent="root", code=code)
         print(code.get_code())
@@ -114,6 +161,8 @@ root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
         code.add_line(f"""
 from customtkinter import *
 from PIL import Image
+
+set_default_color_theme("{self.theme_manager.name}")
 
 root = CTk()
 root.title("{self.escape_special_chars(self.title)}")
@@ -136,6 +185,7 @@ class Root(CTk):
         oop_code.indent()
         self.loop_generate_oop(d=self.widgets[self.r], parent="self", code=oop_code)
         oop_code.add_line(f"""
+set_default_color_theme("{self.theme_manager.name}")
 app = Root()
 app.geometry({self.r.cget("width")}x{self.r.cget("height")})
 app.title("{self.escape_special_chars(self.title)}")
@@ -370,6 +420,8 @@ app.mainloop()
             #print(w, parent.get_name(), d[x]["parameters"])
             if d[x]["parameters"] != {}:
                 new_widget = w(master=parent, **d[x]["parameters"], properties=self.r.properties)
+                self.apply_theme_to_widget(new_widget)
+
                 try:
                     print(d_copy)
                     new_widget.image = d_copy["image"]["image"]
@@ -384,6 +436,7 @@ app.mainloop()
 
             else:
                 new_widget = w(master=parent, properties=self.r.properties)
+                self.apply_theme_to_widget(new_widget)
 
 
             new_widget.num = self.total_num
@@ -646,7 +699,7 @@ app.mainloop()
         new_widget = w(master=widget.master, **properties)
         new_widget.num = self.total_num
         new_widget.name = new_widget.type + str(new_widget.num)
-
+        self.apply_theme_to_widget(new_widget)
         if new_widget.__class__ == Slider or new_widget.__class__ == Scrollbar:
             new_widget.props["orientation"] = properties["orientation"]
 
@@ -825,6 +878,8 @@ class App(CTk):
         super().__init__(**kwargs)
         self.geometry("1900x1000+10+0")
         self.title("Custom Tkinter Builder")
+        self.app_theme = "blue"
+        self.canvas_theme = "green"
 
         self.tool_bar = CTkFrame(self, height=40)
         self.tool_bar.pack(side="top", fill="x", padx=10, pady=(10, 0))
@@ -964,7 +1019,7 @@ class App(CTk):
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
         self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_horizontalslider_btn, self.add_verticalslider_btn,self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn, self.add_horizontalscrollbar_btn, self.add_verticalscrollbar_btn, self.add_combobox_btn], self.main_window, self)
-        self.main = MainWindow(self.main_window)
+        self.main = MainWindow(self.main_window, self.canvas_theme)
         self.main.drag_manager = self.drag_manager
 
         self.container = CTkFrame(self, width=350)
@@ -980,13 +1035,13 @@ class App(CTk):
         self.hierarchy_tools_container.pack(fill="x", pady=(0, 10))
 
         # Need to change those unicode with icons
-        self.move_top_btn = CTkButton(self.hierarchy_tools_container, text="^", width=30, height=30, command=self.hierarchy.move_up)
+        self.move_top_btn = CTkButton(self.hierarchy_tools_container, text="south", font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30, command=self.hierarchy.move_up)
         self.move_top_btn.pack(side="left", padx=5)
 
-        self.move_down_btn = CTkButton(self.hierarchy_tools_container, text="⌄", width=30, height=30, command=self.hierarchy.move_down)
+        self.move_down_btn = CTkButton(self.hierarchy_tools_container, text="north", font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30, command=self.hierarchy.move_down)
         self.move_down_btn.pack(side="left", padx=5)
 
-        self.delete_btn = CTkButton(self.hierarchy_tools_container, text="", image=CTkImage(Image.open("Icons/waste.png")), width=30, height=30, command=self.hierarchy.delete_widget)
+        self.delete_btn = CTkButton(self.hierarchy_tools_container, text="delete", font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30, command=self.hierarchy.delete_widget)
         self.delete_btn.pack(side="left", padx=5)
 
         self.hierarchy.btns = [self.move_top_btn, self.move_down_btn, self.delete_btn]
@@ -1004,6 +1059,8 @@ class App(CTk):
         self.open_btn.configure(command=self.main.open_file)
         self.hierarchy.delete_children()
         self.hierarchy.update_list(self.main.widgets, 5)
+
+        self.main.apply_theme_to_widget(self.main_window)
 
 # Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)
 set_default_color_theme("blue")
