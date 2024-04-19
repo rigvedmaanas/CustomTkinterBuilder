@@ -1,9 +1,10 @@
 from customtkinter import CTkSlider
 from PackArgs import PackArgs
-
-class Slider(CTkSlider, PackArgs):
+from widgets import BaseWidgetClass
+class Slider(CTkSlider, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(Slider, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "SLIDER"
         self.properties = properties
         self.pack_options = {}

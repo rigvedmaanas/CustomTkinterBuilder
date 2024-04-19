@@ -1,10 +1,11 @@
 from customtkinter import CTkScrollableFrame, CTkLabel
 from PackArgs import PackArgs
 
-
-class ScrollableFrame(CTkScrollableFrame, PackArgs):
+from widgets import BaseWidgetClass
+class ScrollableFrame(CTkScrollableFrame, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super().__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "SCROLLABLEFRAME"
         self.properties = properties
         self.pack_options = {}

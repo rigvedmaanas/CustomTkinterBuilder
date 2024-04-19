@@ -1,9 +1,10 @@
 from customtkinter import CTkFrame, CTkImage
 from PIL import Image
-
-class Main(CTkFrame):
+from widgets import BaseWidgetClass
+class Main(CTkFrame, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super().__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "MAIN"
         self.properties = properties
         self.image = None

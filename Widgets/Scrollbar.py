@@ -1,9 +1,10 @@
 from customtkinter import CTkScrollbar
 from PackArgs import PackArgs
-
-class Scrollbar(CTkScrollbar, PackArgs):
+from widgets import BaseWidgetClass
+class Scrollbar(CTkScrollbar, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(Scrollbar, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "SCROLLBAR"
         self.properties = properties
         self.pack_options = {}

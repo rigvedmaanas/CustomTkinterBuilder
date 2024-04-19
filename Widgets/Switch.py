@@ -1,9 +1,10 @@
 from customtkinter import CTkSwitch
 from PackArgs import PackArgs
-
-class Switch(CTkSwitch, PackArgs):
+from widgets import BaseWidgetClass
+class Switch(CTkSwitch, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(Switch, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "SWITCH"
         self.properties = properties
         self.pack_options = {}

@@ -1,9 +1,10 @@
 from customtkinter import CTkProgressBar
 from PackArgs import PackArgs
-
-class ProgressBar(CTkProgressBar, PackArgs):
+from widgets import BaseWidgetClass
+class ProgressBar(CTkProgressBar, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(ProgressBar, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "PROGRESSBAR"
         self.properties = properties
         self.pack_options = {}

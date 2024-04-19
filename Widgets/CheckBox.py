@@ -1,9 +1,10 @@
 from customtkinter import CTkCheckBox
 from PackArgs import PackArgs
-
-class CheckBox(CTkCheckBox, PackArgs):
+from widgets import BaseWidgetClass
+class CheckBox(CTkCheckBox, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(CheckBox, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "CHECKBOX"
         self.properties = properties
         self.pack_options = {}

@@ -1,10 +1,11 @@
 from customtkinter import CTkLabel, CTkImage
 from PIL import Image
 from PackArgs import PackArgs
-
-class Label(CTkLabel, PackArgs):
+from widgets import BaseWidgetClass
+class Label(CTkLabel, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(Label, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "LABEL"
         self.properties = properties
         self.image = None

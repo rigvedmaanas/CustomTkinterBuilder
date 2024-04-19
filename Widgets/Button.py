@@ -1,10 +1,13 @@
 from customtkinter import CTkButton, CTkImage
 from PIL import Image
 from PackArgs import PackArgs
+from widgets import BaseWidgetClass
 
-class Button(CTkButton, PackArgs):
+
+class Button(CTkButton, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
-        super(Button, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "BUTTON"
         self.properties = properties
         self.image = None
@@ -19,6 +22,7 @@ class Button(CTkButton, PackArgs):
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
+        print(self._inner_id)
 
     def __repr__(self):
 

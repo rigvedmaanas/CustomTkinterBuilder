@@ -1,9 +1,10 @@
 from customtkinter import CTkTextbox
 from PackArgs import PackArgs
-
-class TextBox(CTkTextbox, PackArgs):
+from widgets import BaseWidgetClass
+class TextBox(CTkTextbox, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(TextBox, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "TEXTBOX"
         self.properties = properties
         self.pack_options = {}

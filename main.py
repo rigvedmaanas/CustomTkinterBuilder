@@ -1,15 +1,11 @@
 import json
 import shutil
 import tkinter.messagebox
-from copy import deepcopy
-
+from tkinter.colorchooser import askcolor
 import userpaths
-from icecream import ic
-
 from properties import PropertiesManager
 from tkinter.filedialog import asksaveasfilename, askdirectory
 from customtkinter import *
-from widgets import *
 from dragndrop import DragManager
 from Widgets.Button import Button
 from Widgets.Label import Label
@@ -29,7 +25,8 @@ from Widgets.ComboBox import ComboBox
 from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
-from customtkinter.windows.widgets.theme import ThemeManager
+from PIL import Image
+
 class ThemeUtl:
     def __init__(self, theme_dir, theme_name):
         path = os.path.join(theme_dir, f"{theme_name}.json")
@@ -86,10 +83,12 @@ class MainWindow:
     def __init__(self, root, theme_name):
         self.type = "ROOT"
         self.widgets = {}
+        self.id_mapped_widgets = {}
         self.hierarchy = None
         self.r = root
         self.widgets[root] = {}
         self.drag_manager = None
+        self.properties = None
         self._parents = []
         self.temp_widgets = {}
         self.file = ""
@@ -110,13 +109,13 @@ class MainWindow:
                 if widget.get_class() == "CTkFrame":
                     if widget.master._fg_color == x["fg_color"]:
                         widget.configure(fg_color=x["top_fg_color"])
+                        print("top")
                     else:
                         widget.configure(fg_color=x["fg_color"])
+                        print("bottom")
             else:
                 d = {key: x[key]}
-
-
-            widget.configure(**d)
+                widget.configure(**d)
         if widget.__class__ not in [Frame, ProgressBar, Scrollbar, Slider, Main]:
             for y in list(self.theme["CTkFont"].keys()):
                 if sys.platform == "darwin":
@@ -323,6 +322,7 @@ app.mainloop()
             d = d["MAIN-1"]
 
             self.r.props = d["parameters"]
+            self.r._inner_id = d["ID"]
             for key in list(d["parameters"].keys()):
                 if key == "width":
                     self.r.configure(width=d["parameters"]["width"])
@@ -331,11 +331,14 @@ app.mainloop()
             d.pop("TYPE")
             d.pop("parameters")
             d.pop("pack_options")
-
+            d.pop("ID")
             self.theme_manager = ThemeUtl(theme_dir=f"Themes", theme_name=d["theme"])
             self.theme = self.theme_manager.get_theme_by_name()
-
+            self.properties.color_manager.colors = d["palette"]
+            self.properties.color_manager.on_change_list = d["palette_on_change"]
             d.pop("theme")
+            d.pop("palette")
+            d.pop("palette_on_change")
             self.loop_open(d, self.r)
 
     def loop_open(self, d, parent, copy=False):
@@ -481,6 +484,8 @@ app.mainloop()
 
             # new_widget.bind("<Button-1>", new_widget.on_drag_start)
             new_widget.on_drag_start(None)
+            new_widget._inner_id = d[x]["ID"]
+            self.id_mapped_widgets[new_widget._inner_id] = new_widget
             self.hierarchy.delete_children()
             self.hierarchy.update_list(self.widgets, 5)
             # new_widget.place(x=x, y=y)
@@ -489,6 +494,7 @@ app.mainloop()
             d[x].pop("TYPE")
             d[x].pop("pack_options")
             d[x].pop("parameters")
+            d[x].pop("ID")
 
             if d[x] != {}:
                 self.loop_open(d[x], new_widget, copy=copy)
@@ -504,6 +510,8 @@ app.mainloop()
             self.s = self.s[self.r.get_name()]
             #print(self.s)
             self.s[self.r.get_name()]["theme"] = self.theme_manager.name
+            self.s[self.r.get_name()]["palette_on_change"] = self.properties.color_manager.on_change_list
+            self.s[self.r.get_name()]["palette"] = self.properties.color_manager.colors
             self.file = [dir_, name]
             json_object = json.dumps(self.s, indent=4)
             with open(os.path.join(os.path.join(dir_, name), f"{name}.json"), "w") as outfile:
@@ -529,6 +537,8 @@ app.mainloop()
             self.loop_save(self.widgets, self.r.get_name(), self.s)
             self.s = self.s[self.r.get_name()]
             self.s[self.r.get_name()]["theme"] = self.theme_manager.name
+            self.s[self.r.get_name()]["palette_on_change"] = self.properties.color_manager.on_change_list
+            self.s[self.r.get_name()]["palette"] = self.properties.color_manager.colors
             json_object = json.dumps(self.s, indent=4)
             with open(os.path.join(os.path.join(self.file[0], self.file[1]), f"{self.file[1]}.json"), "w") as outfile:
                 outfile.write(json_object)
@@ -548,7 +558,7 @@ app.mainloop()
                 shutil.copy2(x.props["image"].cget("dark_image").filename, f"{self.file[0]}/{self.file[1]}/Assets")
                 props["image"] = {"image": path, "size": [x.size[0], x.size[1]]}
 
-            code[parent][x.get_name()] = {"TYPE": x.type, "parameters": props, "pack_options": x.pack_options}
+            code[parent][x.get_name()] = {"TYPE": x.type, "parameters": props, "pack_options": x.pack_options, "ID": x._inner_id}
 
             if d[x] != {}:
                 self.loop_save(d[x], x.get_name(), code[parent])
@@ -733,7 +743,7 @@ app.mainloop()
         self.total_num += 1
         self.get_parents(new_widget)
         self.add_to_dict(self.widgets, self._parents, new_widget)
-
+        self.id_mapped_widgets[new_widget._inner_id] = new_widget
         self._parents = []
         new_widget.pack(padx=(0, 0), pady=(0, 0))
         #new_widget.configure(bg_color=widget.master.cget("fg_color"))
@@ -761,6 +771,10 @@ app.mainloop()
         # If the current dict is not empty (There something already there)
         if current_dict[key_list[-1]] != {}:
             current_dict[key_list[-1]].pop(value)
+    def show_palette(self, properties):
+        print(self.id_mapped_widgets, properties.color_manager.on_change_list)
+        palette = PaletteEditor(color_manager=properties)
+
 
 
 
@@ -925,7 +939,112 @@ class Hierarchy(CTkScrollableFrame):
         for widget in self.winfo_children():
             widget.destroy()
 
+class PaletteEditor(CTkToplevel):
+    def __init__(self, *args, color_manager, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.geometry("500x500")
+        self.color = "#FFFFFF"
 
+        self.current_selection = [None, None]
+        self.clickables = []
+        self.color_manager = color_manager.color_manager
+        self.scrl = CTkScrollableFrame(self)
+        self.scrl.pack(fill="both", expand=True, padx=10, pady=(10, 0))
+
+        self.frame2 = CTkFrame(self)
+        self.frame2.pack(fill="x", padx=10, pady=(10, 5))
+
+        self.name_entry = CTkEntry(self.frame2, placeholder_text="Enter Name")
+        self.name_entry.pack(side="left", fill="x", expand=True, padx=(10, 0), pady=5)
+
+        self.add_btn = CTkButton(self.frame2, text="Add", width=50, command=self.add)
+        self.add_btn.pack(side="left", padx=10)
+
+        self.fr = CTkFrame(self)
+        self.fr.pack(padx=10, pady=(5, 10), fill="x")
+
+        self.c = CTkButton(self.fr, width=100, height=100, text="", fg_color=self.color, hover=False, command=self.get_color)
+        self.c.pack(side="left")
+
+
+
+        self.hex = CTkLabel(self.fr, text=f"HEX: {self.color}", anchor="w")
+        self.hex.pack(fill="x", padx=10, pady=5, expand=True)
+
+
+        self.rgb = CTkLabel(self.fr, text=f"RGB: {self.hex_to_rgb(self.color)}", anchor="w")
+        self.rgb.pack(fill="x", padx=10, pady=(0, 5), expand=True)
+
+        self.change_btn = CTkButton(self.fr, text=f"Change", command=self.use)
+        self.change_btn.pack(fill="x", padx=10, pady=(0, 10), expand=True)
+
+        for x in list(self.color_manager.colors.keys()):
+            self.add_color_option(x, self.color_manager.get_color(x))
+
+    def add(self):
+        self.color_manager.add_color(name=self.name_entry.get(), color=self.c.cget("fg_color"))
+        self.add_color_option(self.name_entry.get(), self.color_manager.get_color(self.name_entry.get()))
+        self.name_entry.delete(0, "end")
+
+    def hex_to_rgb(self, value):
+        value = value.lstrip('#')
+        lv = len(value)
+        return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+
+    def select(self, name, val):
+        self.current_selection = [name, val]
+        self.c.configure(fg_color=self.color_manager.get_color(name))
+        self.hex.configure(text=f"HEX: {self.color_manager.get_color(name)}")
+        self.rgb.configure(text=f"RGB: {self.hex_to_rgb(self.color_manager.get_color(name))}")
+
+    def add_color_option(self, name, val):
+        c = CTkFrame(self.scrl, height=100)
+        c.pack(fill="x", pady=10)
+
+        clr = CTkFrame(c, width=75, height=75, fg_color=val)
+        clr.pack(side="left", padx=10)
+
+        fr = CTkFrame(c)
+        fr.pack(side="left", fill="both", expand=True)
+
+        lbl = CTkLabel(fr, text=name, anchor="w", font=CTkFont(size=17))
+        lbl.pack(fill="x", expand=True, padx=10, pady=10)
+
+        lbl2 = CTkLabel(fr, text=val, anchor="w")
+        lbl2.pack(fill="x", expand=True, padx=10, pady=(0, 10))
+
+        btn = CTkButton(c, text="X",fg_color="#D0255E", hover_color="#AE1E4F", width=50, height=50)
+        btn.pack(side="left", padx=10)
+
+
+        for x in [c, clr, fr, lbl, lbl2]:
+            x.bind("<Button-1>", lambda e, name=name, val=val: (self.select(name, val), self.change_selection([fr, c])))
+        btn.configure(command=lambda: (self.color_manager.delete_color(name), c.destroy()))
+        self.select(name, val)
+        self.change_selection([fr, c])
+        self.clickables.append([fr, c])
+    def get_color(self):
+        c = askcolor(initialcolor=self.c.cget("fg_color"))
+        if c != (None, None):
+            self.c.configure(fg_color=c[1])
+
+    def use(self):
+        if self.command != None:
+            #self.command(self.c.cget("fg_color"), self.current_selection)
+            self.color_manager.edit(name=self.current_selection[0], val=self.c.cget("fg_color"))
+            self.destroy()
+
+
+
+    def change_selection(self, clr):
+        for x in self.clickables:
+            for y in x:
+                y.configure(fg_color="transparent")
+        for x in clr:
+            x.configure(fg_color="#1F6AA5")
+
+    def rgb2hex(self, c):
+        return '#%02x%02x%02x' % c
 class App(CTk):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -951,6 +1070,9 @@ class App(CTk):
 
         self.export_code_btn = CTkButton(self.tool_bar, text="Export Code")
         self.export_code_btn.pack(side="left", padx=5, pady=5)
+
+        self.palette_btn = CTkButton(self.tool_bar, text="Edit Palette")
+        self.palette_btn.pack(side="left", padx=5, pady=5)
 
         self.widget_panel = CTkScrollableFrame(self, width=350)
         self.widget_panel.pack(side=LEFT, padx=10, pady=10, fill="y")
@@ -1106,11 +1228,14 @@ class App(CTk):
         for btn in self.hierarchy.btns:
             btn.configure(state="disabled")
         self.properties_panel = PropertiesManager(self.container, main=self.main)
+        self.main.properties = self.properties_panel
         self.properties_panel.pack(fill="both", expand=True)
         self.main_window.properties = self.properties_panel
         self.main_window.bind("<Button-1>", lambda e, nw=self.main_window: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
         self.run_code_btn.configure(command=self.main.run_code)
         self.export_code_btn.configure(command=self.main.export_code)
+        self.palette_btn.configure(command=lambda: self.main.show_palette(self.properties_panel))
+
         self.save_btn.configure(command=self.main.save_file)
         self.saveas_btn.configure(command=self.main.saveas_file)
 

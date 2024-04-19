@@ -1,9 +1,10 @@
 from customtkinter import CTkSegmentedButton
 from PackArgs import PackArgs
-
-class SegmentedButton(CTkSegmentedButton, PackArgs):
+from widgets import BaseWidgetClass
+class SegmentedButton(CTkSegmentedButton, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(SegmentedButton, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "SEGMENTEDBUTTON"
         self.properties = properties
         self.pack_options = {}

@@ -1,10 +1,11 @@
 from customtkinter import CTkFrame
 from PackArgs import PackArgs
+from widgets import BaseWidgetClass
 
-
-class Frame(CTkFrame, PackArgs):
+class Frame(CTkFrame, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(Frame, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "FRAME"
         self.properties = properties
         self.pack_options = {}

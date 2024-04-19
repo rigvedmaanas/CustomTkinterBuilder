@@ -1,9 +1,10 @@
 from customtkinter import CTkComboBox
 from PackArgs import PackArgs
-
-class ComboBox(CTkComboBox, PackArgs):
+from widgets import BaseWidgetClass
+class ComboBox(CTkComboBox, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(ComboBox, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "COMBOBOX"
         self.properties = properties
         self.pack_options = {}

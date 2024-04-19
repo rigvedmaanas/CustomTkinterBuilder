@@ -1,9 +1,10 @@
 from customtkinter import CTkOptionMenu
 from PackArgs import PackArgs
-
-class OptionMenu(CTkOptionMenu, PackArgs):
+from widgets import BaseWidgetClass
+class OptionMenu(CTkOptionMenu, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(OptionMenu, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "OPTIONMENU"
         self.properties = properties
         self.pack_options = {}

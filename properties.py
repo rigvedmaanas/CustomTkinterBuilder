@@ -371,6 +371,136 @@ class TextExtension(CTkFrame):
         if (_value is not None):
             self._text_widget.insert(END, _value)
 
+class ColorManager:
+    def __init__(self, main):
+        self.colors = {}
+        self.on_change_list = {}
+        self.main = main
+
+    def add_color(self, name, color):
+        if name not in list(self.colors.keys()):
+            self.colors[name] = color
+            self.on_change_list[name] = []
+
+    def on_change(self, name, command):
+        vals = self.on_change_list[name]
+        vals.append(command)
+        self.on_change_list[name] = vals
+
+    def edit(self, name, val):
+        print(name)
+        if len(self.on_change_list[name]) > 0:
+            for x in self.on_change_list[name]:
+                try:
+                    widget = self.main.id_mapped_widgets[x[0]]
+                    if x[2] == "dark":
+                        d = {x[1]: [widget.cget(x[1])[0], val]}
+                    else:
+                        d = {x[1]: [val, widget.cget(x[1])[1]]}
+                    widget.save(lambda v: widget.configure(**d), x[1], d[x[1]], d[x[1]])
+                    print(widget, d)
+                except Exception as e:
+                    print(e)
+        self.colors[name] = val
+
+    def get_color(self, name):
+        return self.colors[name]
+
+    def delete_color(self, name):
+        self.colors.pop(name)
+        self.on_change_list.pop(name)
+
+
+
+class ColorPicker(CTkToplevel):
+    def __init__(self, *args, color=(255, 255, 255), color_manager, command=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.geometry("500x500")
+        self.color = color
+        self.command = command
+        self.current_selection = [None, None]
+        self.clickables = []
+        self.color_manager = color_manager
+        self.scrl = CTkScrollableFrame(self)
+        self.scrl.pack(fill="both", expand=True, padx=10, pady=(10, 0))
+        self.fr = CTkFrame(self)
+        self.fr.pack(padx=10, pady=10, fill="x")
+
+        self.c = CTkButton(self.fr, width=100, height=100, text="", fg_color=self.color, hover=False, command=self.get_color)
+        self.c.pack(side="left")
+
+        self.hex = CTkLabel(self.fr, text=f"HEX: {self.color}", anchor="w")
+        self.hex.pack(fill="x", padx=10, pady=10, expand=True)
+
+
+        self.rgb = CTkLabel(self.fr, text=f"RGB: {self.hex_to_rgb(self.color)}", anchor="w")
+        self.rgb.pack(fill="x", padx=10, pady=(0, 10), expand=True)
+
+        self.use_btn = CTkButton(self.fr, text=f"Use", command=self.use)
+        self.use_btn.pack(fill="x", padx=10, pady=(0, 10), expand=True)
+
+        for x in list(self.color_manager.colors.keys()):
+            self.add_color_option(x, self.color_manager.get_color(x))
+
+    def hex_to_rgb(self, value):
+        try:
+            value = value.lstrip('#')
+            lv = len(value)
+            return tuple(int(value[i:i + lv // 3], 16) for i in range(0, lv, lv // 3))
+        except:
+            return ""
+    def select(self, name, val):
+        self.current_selection = [name, val]
+        self.c.configure(fg_color=self.color_manager.get_color(name))
+        self.hex.configure(text=f"HEX: {self.color_manager.get_color(name)}")
+        self.rgb.configure(text=f"RGB: {self.hex_to_rgb(self.color_manager.get_color(name))}")
+
+    def add_color_option(self, name, val):
+        c = CTkFrame(self.scrl, height=100)
+        c.pack(fill="x", pady=10)
+
+        clr = CTkFrame(c, width=75, height=75, fg_color=val)
+        clr.pack(side="left", padx=10)
+
+        fr = CTkFrame(c)
+        fr.pack(side="left", fill="both", expand=True)
+
+        lbl = CTkLabel(fr, text=name, anchor="w", font=CTkFont(size=17))
+        lbl.pack(fill="x", expand=True, padx=10, pady=10)
+
+        lbl2 = CTkLabel(fr, text=val, anchor="w")
+        lbl2.pack(fill="x", expand=True, padx=10, pady=(0, 10))
+
+        for x in [c, clr, fr, lbl, lbl2]:
+            x.bind("<Button-1>", lambda e, name=name, val=val: (self.select(name, val), self.change_selection([fr, c])))
+        self.clickables.append([fr, c])
+    def get_color(self):
+        c = askcolor(initialcolor=self.c.cget("fg_color"))
+        if c != (None, None):
+            self.c.configure(fg_color=c[1])
+            for x in self.clickables:
+                for y in x:
+                    y.configure(fg_color="transparent")
+
+            self.current_selection = [None, None]
+
+    def use(self):
+        if self.command != None:
+            self.command(self.c.cget("fg_color"), self.current_selection)
+            self.destroy()
+
+
+    def change_selection(self, clr):
+        for x in self.clickables:
+            for y in x:
+                y.configure(fg_color="transparent")
+        for x in clr:
+            x.configure(fg_color="#1F6AA5")
+
+    def rgb2hex(self, c):
+        return '#%02x%02x%02x' % c
+
+
 class PropertiesManager(CTkTabview):
     def __init__(self, *args, main, **kwargs):
         super().__init__(*args, **kwargs)
@@ -381,6 +511,7 @@ class PropertiesManager(CTkTabview):
         self.add("Styles")
         self.add("Arrangement")
         self.add("Layout")
+        self.color_manager = ColorManager(main=self.main)
 
 
         self.scr_geometry_content = CTkScrollableFrame(self.tab("Geometry & Content"), fg_color="transparent")
@@ -509,11 +640,11 @@ class PropertiesManager(CTkTabview):
 
             clr_1 = CTkButton(temp, width=150//2-2, hover=False, text="", border_width=2)
             clr_1.pack(padx=(0, 2), side="left", fill="x")
-            clr_1.configure(command=lambda: self._color_chooser_btn1(clr_1, clr_2, vals["callback"]))
+            clr_1.configure(command=lambda: self._color_chooser_btn1(clr_1, clr_2, vals["callback"], key=vals["key"]))
 
             clr_2 = CTkButton(temp, width=150//2-1, hover=False, text="", border_width=2)
             clr_2.pack(padx=(2, 10), side="left", fill="x")
-            clr_2.configure(command=lambda: self._color_chooser_btn2(clr_1, clr_2, vals["callback"]))
+            clr_2.configure(command=lambda: self._color_chooser_btn2(clr_1, clr_2, vals["callback"], key=vals["key"]))
 
 
             if vals["transparent"]:
@@ -530,6 +661,7 @@ class PropertiesManager(CTkTabview):
                     clr_1.configure(fg_color=vals["color"])
                     clr_2.configure(fg_color=vals["color"])
                 else:
+
                     clr_1.configure(fg_color=vals["color"][0])
                     clr_2.configure(fg_color=vals["color"][1])
                 if type(head) == CTkCheckBox:
@@ -761,27 +893,37 @@ class PropertiesManager(CTkTabview):
         #file = askopenfilename(filetypes=[(".png", "png"), (".jpg", "jpg"), (".jpeg", "jpeg"), (".JPEG", "JPEG"), (".PNG", "PNG")])
         file = ImageChooser(callback=lambda file: self.choose(callback, btn, lbl, frame, num_spinbox, frame2, num_spinbox2, file))
 
+    def btn1_color_command(self, color, c, btn, btn2, callback, key):
+        btn.configure(fg_color=color)
+
+        callback((color, btn2.cget("fg_color")))
+
+        if c != [None, None]:
+            #self.color_manager.on_change(c[0], lambda val, btn2=btn2: callback((val, btn2.cget("fg_color"))))
+            print([self.main.hierarchy.widget._inner_id, key, "light"])
+            self.color_manager.on_change(c[0], [self.main.hierarchy.widget._inner_id, key, "light"])
 
 
+    def _color_chooser_btn1(self, btn, btn2, callback, key):
+        #clr = askcolor(initialcolor=btn.cget("fg_color"))[1]
+        clr = ColorPicker(color=btn.cget("fg_color"),  color_manager=self.color_manager,command=lambda e, p: self.btn1_color_command(e, p, btn, btn2, callback, key))
 
-    def _color_chooser_btn1(self, btn, btn2, callback):
-        clr = askcolor(initialcolor=btn.cget("fg_color"))[1]
+    def btn2_color_command(self, color, c, btn, btn2, callback, key):
 
-        if clr is not None:
-            btn.configure(fg_color=clr)
+        btn2.configure(fg_color=color)
 
-            callback((clr, btn2.cget("fg_color")))
+        callback((btn.cget("fg_color"), color))
+
+        if c != [None, None]:
+            print([self.main.hierarchy.widget._inner_id, key, "dark"])
+            self.color_manager.on_change(c[0], [self.main.hierarchy.widget._inner_id, key, "dark"])
+
+    def _color_chooser_btn2(self, btn, btn2, callback, key):
+        #clr = askcolor(initialcolor=btn2.cget("fg_color"))[1]
+        clr = ColorPicker(color=btn2.cget("fg_color"), color_manager=self.color_manager,
+                          command=lambda e, p: self.btn2_color_command(e, p, btn, btn2, callback, key))
 
 
-
-    def _color_chooser_btn2(self, btn, btn2, callback):
-        clr = askcolor(initialcolor=btn2.cget("fg_color"))[1]
-
-        if clr is not None:
-            print((btn.cget("fg_color"), clr))
-            btn2.configure(fg_color=clr)
-
-            callback((btn.cget("fg_color"), clr))
 
 
     def _manage(self, e, slider, num_entry, callback):

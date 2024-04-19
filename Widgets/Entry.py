@@ -1,10 +1,11 @@
 from customtkinter import CTkEntry, CTkFont, CTkImage
 from PIL import Image
 from PackArgs import PackArgs
-
-class Entry(CTkEntry, PackArgs):
+from widgets import BaseWidgetClass
+class Entry(CTkEntry, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(Entry, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "ENTRY"
         self.properties = properties
         self.pack_options = {}

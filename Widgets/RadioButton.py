@@ -1,9 +1,10 @@
 from customtkinter import CTkRadioButton
 from PackArgs import PackArgs
-
-class RadioButton(CTkRadioButton, PackArgs):
+from widgets import BaseWidgetClass
+class RadioButton(CTkRadioButton, PackArgs, BaseWidgetClass):
     def __init__(self, *args, properties, **kwargs):
         super(RadioButton, self).__init__(*args, **kwargs)
+        BaseWidgetClass.__init__(self)
         self.type = "RADIOBUTTON"
         self.properties = properties
         self.pack_options = {}
