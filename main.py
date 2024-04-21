@@ -1,8 +1,11 @@
 import json
 import shutil
 import tkinter.messagebox
+import uuid
 from tkinter.colorchooser import askcolor
 import userpaths
+from icecream import ic
+
 from properties import PropertiesManager
 from tkinter.filedialog import asksaveasfilename, askdirectory
 from customtkinter import *
@@ -97,6 +100,49 @@ class MainWindow:
         self.title = "Window"
         self.theme_manager = ThemeUtl(theme_dir=f"Themes", theme_name=theme_name)
         self.theme = self.theme_manager.get_theme_by_name()
+        self.widget_colors = {
+            "CTk": ["fg_color"],
+            "CTkToplevel": ["fg_color"],
+            "CTkFrame": ["fg_color", "border_color"],
+            "CTkButton": ["fg_color", "hover_color", "border_color", "text_color", "text_color_disabled"],
+            "CTkLabel": ["fg_color", "text_color"],
+            "CTkEntry": ["fg_color", "border_color", "text_color", "placeholder_text_color"],
+            "CTkCheckBox": ["fg_color", "border_color", "hover_color", "checkmark_color", "text_color", "text_color_disabled"],
+            "CTkSwitch": ["fg_color", "progress_color", "button_color", "button_hover_color", "text_color", "text_color_disabled"],
+            "CTkRadioButton": ["fg_color", "border_color", "hover_color", "text_color", "text_color_disabled"],
+            "CTkProgressBar": ["fg_color", "progress_color", "border_color"],
+            "CTkSlider": ["fg_color", "progress_color", "button_color", "button_hover_color"],
+            "CTkOptionMenu": ["fg_color", "button_color", "button_hover_color", "text_color", "text_color_disabled"],
+            "CTkComboBox": ["fg_color", "border_color", "button_color", "button_hover_color", "text_color", "text_color_disabled"],
+            "CTkScrollbar": ["fg_color", "button_color", "button_hover_color"],
+            "CTkSegmentedButton": ["fg_color", "selected_color", "selected_hover_color", "unselected_color", "unselected_hover_color", "text_color", "text_color_disabled"],
+            "CTkTextbox": ["fg_color", "border_color", "text_color", "scrollbar_button_color", "scrollbar_button_hover_color"],
+            "CTkScrollableFrame": ["label_fg_color"],
+            "DropdownMenu": ["fg_color", "hover_color", "text_color"]
+        }
+
+    def change_appearance_mode(self, mode):
+        wgts = list(self.id_mapped_widgets.values())
+
+        if mode == 0:
+            mode = "light"
+        else:
+            mode = "dark"
+
+        self.r._set_appearance_mode(mode)
+        self.loop_change_appearance(mode, self.widgets[self.r])
+        #for widget in wgts:
+        #    widget._set_appearance_mode(mode)
+
+    def loop_change_appearance(self, mode, d):
+        for x in list(d.keys()):
+
+            if d[x] != {}:
+                #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
+                x._set_appearance_mode(mode)
+                self.loop_change_appearance(mode, d[x])
+            else:
+                x._set_appearance_mode(mode)
 
     def apply_theme_to_widget(self, widget):
         x = self.theme[widget.get_class()]
@@ -146,6 +192,7 @@ root = CTkToplevel()
 root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
 root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("blue"), root.destroy()))
+root.configure(fg_color={self.r.cget("fg_color")})
 set_default_color_theme("{self.theme_manager.name}")
 """)
         self.loop_generate(d=self.widgets[self.r], parent="root", code=code, run=True)
@@ -171,7 +218,7 @@ set_default_color_theme("{self.theme_manager.name}")
 root = CTk()
 root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
-
+root.configure(fg_color={self.r.cget("fg_color")})
 """)
         self.loop_generate(d=self.widgets[self.r], parent="root", code=code)
         code.add_line("root.mainloop()")
@@ -191,8 +238,9 @@ class Root(CTk):
         oop_code.add_line(f"""
 set_default_color_theme("{self.theme_manager.name}")
 app = Root()
-app.geometry({self.r.cget("width")}x{self.r.cget("height")})
+app.geometry("{self.r.cget("width")}x{self.r.cget("height")}")
 app.title("{self.escape_special_chars(self.title)}")
+app.configure(fg_color={self.r.cget("fg_color")})
 app.mainloop()
             """)
 
@@ -328,10 +376,14 @@ app.mainloop()
                     self.r.configure(width=d["parameters"]["width"])
                 elif key == "height":
                     self.r.configure(height=d["parameters"]["height"])
+                elif key == "fg_color":
+                    self.r.configure(fg_color=d["parameters"]["fg_color"])
+
             d.pop("TYPE")
             d.pop("parameters")
             d.pop("pack_options")
             d.pop("ID")
+
             self.theme_manager = ThemeUtl(theme_dir=f"Themes", theme_name=d["theme"])
             self.theme = self.theme_manager.get_theme_by_name()
             self.properties.color_manager.colors = d["palette"]
@@ -468,6 +520,7 @@ app.mainloop()
                 new_widget.name = x
             else:
                 new_widget.name = new_widget.type + str(new_widget.num + 1) + "_copy"
+
             self.total_num += 1
 
             self.get_parents(new_widget)
@@ -484,8 +537,19 @@ app.mainloop()
 
             # new_widget.bind("<Button-1>", new_widget.on_drag_start)
             new_widget.on_drag_start(None)
-            new_widget._inner_id = d[x]["ID"]
-            self.id_mapped_widgets[new_widget._inner_id] = new_widget
+            if not copy:
+                new_widget._inner_id = d[x]["ID"]
+                self.id_mapped_widgets[new_widget._inner_id] = new_widget
+            else:
+                new_widget._inner_id = str(uuid.uuid4())
+                self.id_mapped_widgets[new_widget._inner_id] = new_widget
+                arr = self.properties.color_manager.get_all_changes(d[x]["ID"])
+                for i in arr:
+                    ar = self.properties.color_manager.on_change_list[i[0]]
+                    ar.append([new_widget._inner_id, i[1][1], i[1][2]])
+                    self.properties.color_manager.on_change_list[i[0]] = ar
+
+            ic(new_widget._inner_id, new_widget.cget("fg_color"), d, x)
             self.hierarchy.delete_children()
             self.hierarchy.update_list(self.widgets, 5)
             # new_widget.place(x=x, y=y)
@@ -745,8 +809,9 @@ app.mainloop()
         self.add_to_dict(self.widgets, self._parents, new_widget)
         self.id_mapped_widgets[new_widget._inner_id] = new_widget
         self._parents = []
+        new_widget.configure(bg_color="transparent")
         new_widget.pack(padx=(0, 0), pady=(0, 0))
-        #new_widget.configure(bg_color=widget.master.cget("fg_color"))
+
         if new_widget.__class__ == SegmentedButton:
             new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
         else:
@@ -1074,6 +1139,11 @@ class App(CTk):
         self.palette_btn = CTkButton(self.tool_bar, text="Edit Palette")
         self.palette_btn.pack(side="left", padx=5, pady=5)
 
+        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode")
+        self.appearance_mode_switch.pack(side="left", padx=5, pady=5)
+        self.appearance_mode_switch.toggle()
+        self.appearance_mode_switch.configure(command=lambda: self.main.change_appearance_mode(self.appearance_mode_switch.get()))
+
         self.widget_panel = CTkScrollableFrame(self, width=350)
         self.widget_panel.pack(side=LEFT, padx=10, pady=10, fill="y")
 
@@ -1184,9 +1254,7 @@ class App(CTk):
         self.temp = CTkFrame(self.main_window_panel)
         self.temp.pack(fill="both", expand=True)
 
-
-        # Need to create a seperate Class for main. This is just for now
-        self.main_window = Main(self.temp, properties=None, width=500, height=500, fg_color=["gray92", "gray14"])
+        self.main_window = Main(self.temp, properties=None, width=500, height=500, bg_color="transparent")
         self.main_window.pack_propagate(False)
         self.main_window.place(anchor="center", relx=0.5, rely=0.5)
         self.main_window.type = "MAIN"
@@ -1194,9 +1262,10 @@ class App(CTk):
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
         self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_horizontalslider_btn, self.add_verticalslider_btn,self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn, self.add_horizontalscrollbar_btn, self.add_verticalscrollbar_btn, self.add_combobox_btn], self.main_window, self)
+
         self.main = MainWindow(self.main_window, self.canvas_theme)
         self.main.drag_manager = self.drag_manager
-
+        self.main_window.configure(fg_color=self.main.theme["CTk"]["fg_color"], bg_color=self.main_window.master.cget("fg_color")[1])
         self.container = CTkFrame(self, width=350)
         self.container.pack(side=LEFT, padx=10, pady=10, fill="y")
         self.container.pack_propagate(False)

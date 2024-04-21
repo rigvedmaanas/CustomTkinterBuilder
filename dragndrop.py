@@ -56,10 +56,12 @@ class DragManager:
             print(self.called_widget)
             e(x=abs_coord_x, y=abs_coord_y, widget=self.called_widget)
     def released(self, e):
+        try:
+            self.tip.destroy()
+            self.root.after(10, lambda: self.check_add(e)) # I had to add this due to some awkward issue. The enter event was not firing
 
-        self.tip.destroy()
-
-        self.root.after(10, lambda: self.check_add(e)) # I had to add this due to some awkward issue. The enter event was not firing
+        except Exception as e:
+            print(e)
         #print(self.root, self.main_window)
         #for widget in self.main_window.winfo_children():
         #    print(widget)

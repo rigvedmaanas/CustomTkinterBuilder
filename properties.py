@@ -1,6 +1,9 @@
 import pathlib
 from tkinter.colorchooser import askcolor
 from tkinter.filedialog import askopenfilename
+
+import icecream
+from icecream import ic
 from tkinterdnd2 import TkinterDnD, DND_ALL
 import math
 from customtkinter import *
@@ -377,6 +380,23 @@ class ColorManager:
         self.on_change_list = {}
         self.main = main
 
+    def check_on_list(self, id, key, mode):
+        for x in self.on_change_list.keys():
+            vals = self.on_change_list[x]
+            for val in vals:
+                if id in val and key in val and mode in val:
+                    return [x, self.on_change_list[x].index(val)]
+
+    def get_all_changes(self, id):
+        l = []
+        for x in self.on_change_list.keys():
+            vals = self.on_change_list[x]
+            for val in vals:
+                if id in val:
+                     l.append([x, val])
+        return l
+
+
     def add_color(self, name, color):
         if name not in list(self.colors.keys()):
             self.colors[name] = color
@@ -388,7 +408,7 @@ class ColorManager:
         self.on_change_list[name] = vals
 
     def edit(self, name, val):
-        print(name)
+        ic(name)
         if len(self.on_change_list[name]) > 0:
             for x in self.on_change_list[name]:
                 try:
@@ -398,9 +418,9 @@ class ColorManager:
                     else:
                         d = {x[1]: [val, widget.cget(x[1])[1]]}
                     widget.save(lambda v: widget.configure(**d), x[1], d[x[1]], d[x[1]])
-                    print(widget, d)
+                    ic(widget._inner_id, d, [widget.cget("fg_color"), val])
                 except Exception as e:
-                    print(e)
+                    ic("Error", e)
         self.colors[name] = val
 
     def get_color(self, name):
@@ -829,10 +849,20 @@ class PropertiesManager(CTkTabview):
 
 
     def update_color_and_call_callback(self, head, clr_1, clr_2, vals):
-
+        key = vals["key"]
         if head.get() == 1:
             clr_1.configure(state="normal")
             clr_2.configure(state="normal")
+            for mode in ["light", "dark"]:
+                ic(self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, mode))
+
+                val = self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, mode)
+                if val is not None:
+                    arr = self.color_manager.on_change_list[val[0]]
+                    arr.pop(val[1])
+                    self.color_manager.on_change_list[val[0]] = arr
+                ic(self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, mode))
+                ic(self.color_manager.on_change_list, self.main.hierarchy.widget._inner_id, key)
             if (type(clr_1.cget("fg_color")) == list):
                 vals["callback"]((clr_1.cget("fg_color")[0], clr_1.cget("fg_color")[0]))
                 color = clr_1.cget("fg_color")[0]
@@ -845,6 +875,16 @@ class PropertiesManager(CTkTabview):
             clr_1.configure(fg_color=color)
             clr_2.configure(fg_color=color)
         else:
+            for mode in ["light", "dark"]:
+                ic(self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, mode))
+
+                val = self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, mode)
+                if val is not None:
+                    arr = self.color_manager.on_change_list[val[0]]
+                    arr.pop(val[1])
+                    self.color_manager.on_change_list[val[0]] = arr
+                ic(self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, mode))
+                ic(self.color_manager.on_change_list, self.main.hierarchy.widget._inner_id, key)
             clr_1.configure(state="disabled")
             clr_2.configure(state="disabled")
             vals["callback"]("transparent")
@@ -898,10 +938,20 @@ class PropertiesManager(CTkTabview):
 
         callback((color, btn2.cget("fg_color")))
 
+        val = self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, "light")
+        if val is not None:
+            arr = self.color_manager.on_change_list[val[0]]
+            arr.pop(val[1])
+            self.color_manager.on_change_list[val[0]] = arr
+        ic(self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, "light"))
+
         if c != [None, None]:
             #self.color_manager.on_change(c[0], lambda val, btn2=btn2: callback((val, btn2.cget("fg_color"))))
             print([self.main.hierarchy.widget._inner_id, key, "light"])
+
             self.color_manager.on_change(c[0], [self.main.hierarchy.widget._inner_id, key, "light"])
+
+        ic(self.color_manager.on_change_list)
 
 
     def _color_chooser_btn1(self, btn, btn2, callback, key):
@@ -913,10 +963,18 @@ class PropertiesManager(CTkTabview):
         btn2.configure(fg_color=color)
 
         callback((btn.cget("fg_color"), color))
+        val = self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, "dark")
+        if val is not None:
+            arr = self.color_manager.on_change_list[val[0]]
+            arr.pop(val[1])
+            self.color_manager.on_change_list[val[0]] = arr
+        ic(self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, "dark"))
 
         if c != [None, None]:
             print([self.main.hierarchy.widget._inner_id, key, "dark"])
             self.color_manager.on_change(c[0], [self.main.hierarchy.widget._inner_id, key, "dark"])
+        ic(self.color_manager.on_change_list)
+
 
     def _color_chooser_btn2(self, btn, btn2, callback, key):
         #clr = askcolor(initialcolor=btn2.cget("fg_color"))[1]
