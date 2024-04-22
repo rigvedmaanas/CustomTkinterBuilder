@@ -5,7 +5,7 @@ import uuid
 from tkinter.colorchooser import askcolor
 import userpaths
 from icecream import ic
-
+from Widgets import ThemedText
 from properties import PropertiesManager
 from tkinter.filedialog import asksaveasfilename, askdirectory
 from customtkinter import *
@@ -923,11 +923,12 @@ app.mainloop()
 
 
 
-
+dragndrop_list = []
 
 class WidgetButton(CTkButton):
     def __init__(self, on_drag, **kwargs):
         self.on_drag = on_drag
+        dragndrop_list.append(self)
         super().__init__(**kwargs)
 
 
@@ -1239,6 +1240,43 @@ class App(CTk):
         self.add_label_btn = WidgetButton(master=self.widget_panel, text="Label", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Label, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_label_btn.pack(padx=10, pady=(10, 0), fill="x")
 
+        self.add_heading_1_btn = WidgetButton(master=self.widget_panel, text="Heading 1", height=50,
+                                          on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_1, properties={
+                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_heading_1_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_heading_2_btn = WidgetButton(master=self.widget_panel, text="Heading 2", height=50,
+                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_2,
+                                                                                              properties={
+                                                                                                  "properties": self.properties_panel},
+                                                                                              x=x, y=y, widget=widget))
+        self.add_heading_2_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_heading_3_btn = WidgetButton(master=self.widget_panel, text="Sub Heading", height=50,
+                                              on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.SubHeading,
+                                                                                                properties={
+                                                                                                    "properties": self.properties_panel},
+                                                                                                x=x, y=y,
+                                                                                                widget=widget))
+        self.add_heading_3_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_paragraph_1_btn = WidgetButton(master=self.widget_panel, text="Paragraph 1", height=50,
+                                              on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Paragraph_1,
+                                                                                                properties={
+                                                                                                    "properties": self.properties_panel},
+                                                                                                x=x, y=y,
+                                                                                                widget=widget))
+        self.add_paragraph_1_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_wrapped_paragraph_btn = WidgetButton(master=self.widget_panel, text="Wrapped Paragraph", height=50,
+                                                on_drag=lambda x, y, widget: self.main.add_widget(
+                                                    ThemedText.WrappedParagraph,
+                                                    properties={
+                                                        "properties": self.properties_panel},
+                                                    x=x, y=y,
+                                                    widget=widget))
+        self.add_wrapped_paragraph_btn.pack(padx=10, pady=(10, 0), fill="x")
+
         self.add_entry_btn = WidgetButton(master=self.widget_panel, text="Entry", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Entry, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_entry_btn.pack(padx=10, pady=(10, 0), fill="x")
@@ -1359,7 +1397,7 @@ class App(CTk):
         self.main_window.num = -1
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
-        self.drag_manager = DragManager([self.add_frame_btn, self.add_button_btn, self.add_entry_btn, self.add_label_btn, self.add_switch_btn, self.add_textbox_btn, self.add_progressbar_btn, self.add_segmentedbutton_btn, self.add_horizontalslider_btn, self.add_verticalslider_btn,self.add_optionmenu_btn, self.add_checkbox_btn, self.add_radiobutton_btn, self.add_horizontalscrollbar_btn, self.add_verticalscrollbar_btn, self.add_combobox_btn], self.main_window, self)
+        self.drag_manager = DragManager(dragndrop_list, self.main_window, self)
 
         self.main = MainWindow(self.main_window, self.canvas_theme)
         self.main.drag_manager = self.drag_manager

@@ -35,6 +35,7 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
         return "CTkLabel"
 
     def save(self, func, key, val, arg):
+
         if key == "font_family":
             self.family = val
             print("save", self.family)
@@ -77,6 +78,8 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
         self.properties.add_option(self.properties.ARRANGEMENT, "Pady", "SPINBOX", "PADY", {"to": 500, "from": 0, "val": int(self.cget("pady")), "callback": lambda val: self.save(lambda val: self.configure(pady=val), "pady", int(val), int(val))})
 
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Corner Radius", "SPINBOX", "Corner Radius", {"to": 100, "from": 0, "val": self.cget("corner_radius"), "callback": lambda val: self.save(lambda val: self.configure(corner_radius=val), "corner_radius", int(val), int(val))})
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Wrap Length", "SPINBOX", "wraplength", {"to": 100, "from": 0, "val": self.cget("wraplength"), "callback": lambda val: self.save(lambda val: self.configure(wraplength=val), "wraplength", int(val), int(val))})
+
         print("Properties", self.family)
         self.properties.add_option(self.properties.STYLES, "Font Family", "FONT_FAMILY", "font_family", {"key": "font_family", "default": self.family, "callback": lambda val: self.save(lambda val: self.cget("font").configure(family=val), "font_family", val, val)})
         self.properties.add_option(self.properties.STYLES, "Font Size", "SPINBOX", "font_size", {"to": 500, "from": -500, "val": self.cget("font").cget("size"), "callback": lambda val: self.save(lambda val: self.cget("font").configure(size=int(val)), "font_size", int(val), int(val))})
