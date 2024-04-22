@@ -17,6 +17,7 @@ class ComboBox(CTkComboBox, PackArgs, BaseWidgetClass):
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
+        self.bind_mouse(properties)
 
     def set_nonvisible_disable(self):
         self.color_disabled = self.cget("text_color_disabled")

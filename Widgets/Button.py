@@ -23,6 +23,8 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
         print(self._inner_id)
+        self.bind_mouse(properties)
+
 
     def __repr__(self):
 

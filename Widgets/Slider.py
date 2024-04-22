@@ -18,6 +18,7 @@ class Slider(CTkSlider, PackArgs, BaseWidgetClass):
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {"from_": 0, "to":100, "number_of_steps":100}
+        self.bind_mouse(properties)
 
     def __repr__(self):
 

@@ -99,6 +99,9 @@ class MainWindow:
         self.files_to_copy = []
         self.title = "Window"
         self.theme_manager = ThemeUtl(theme_dir=f"Themes", theme_name=theme_name)
+        self.horiz_max_offset = 100
+        self.vert_max_offset = 100
+
         self.theme = self.theme_manager.get_theme_by_name()
         self.widget_colors = {
             "CTk": ["fg_color"],
@@ -840,6 +843,85 @@ app.mainloop()
         print(self.id_mapped_widgets, properties.color_manager.on_change_list)
         palette = PaletteEditor(color_manager=properties)
 
+    def get_scrollbar_position(self, content_height, viewport_height, scrollbar_height):
+        """
+        Calculates the position of the scrollbar thumb.
+
+        Args:
+            content_height: The height of the content area.
+            viewport_height: The height of the viewport (visible area).
+            scrollbar_height: The height of the scrollbar.
+
+        Returns:
+            The position of the scrollbar thumb as a float between 0 and 1.
+        """
+
+        # Calculate the scrollable area (the difference between content height and viewport height)
+        scrollable_area = content_height - viewport_height
+
+        # If there is no scrollable area, the scrollbar is at the top (position 0)
+        if scrollable_area <= 0:
+            return 0
+
+        # Calculate the ratio of the viewport height to the content height
+        viewport_ratio = viewport_height / content_height
+
+        # Calculate the ratio of the scrollbar height to the scrollable area
+        scrollbar_ratio = scrollbar_height / scrollable_area
+
+        # The scrollbar position is proportional to the offset of the content within the viewport
+        # This offset can be found by multiplying the scrollable area by the ratio between the viewport height and content height
+        offset = scrollable_area * (1 - viewport_ratio)
+
+        # The scrollbar thumb position is then the offset normalized to the scrollable area, scaled by the ratio of the scrollbar height to the scrollable area
+        position = offset / scrollable_area * scrollbar_ratio
+
+        # Clamp the position between 0 and 1 to avoid going out of bounds
+        return max(0.0, min(1.0, position))
+
+    def map_range(self, value, start1, stop1, start2, stop2):
+        """
+        Map a value from one range to another range.
+
+        Parameters:
+            value (float): The value to be mapped.
+            start1 (float): Lower bound of the input range.
+            stop1 (float): Upper bound of the input range.
+            start2 (float): Lower bound of the output range.
+            stop2 (float): Upper bound of the output range.
+
+        Returns:
+            float: The mapped value.
+        """
+        return start2 + (stop2 - start2) * ((value - start1) / (stop1 - start1))
+
+    def on_vert_scrl(self, e):
+
+        y = self.map_range(e, -100, 100, -self.vert_max_offset, self.vert_max_offset)
+        self.r.place(y=y)
+
+    def on_vert_mouse(self, e):
+        y = self.vert_scrl.get()
+        y += e.delta
+        y = max(-100, min(y, 100))
+        self.vert_scrl.set(y)
+        y = self.map_range(y, -100, 100, -self.vert_max_offset, self.vert_max_offset)
+        self.r.place(y=y)
+
+    def on_horiz_scrl(self, e):
+
+        x = self.map_range(e, -100, 100, -self.horiz_max_offset, self.horiz_max_offset)
+        self.r.place(x=x)
+
+    def on_horiz_mouse(self, e):
+        x = self.horiz_scrl.get()
+        x += e.delta
+        x = max(-100, min(x, 100))
+        self.horiz_scrl.set(x)
+        x = self.map_range(x, -100, 100, -self.horiz_max_offset, self.horiz_max_offset)
+        self.r.place(x=x)
+
+
 
 
 
@@ -1248,11 +1330,27 @@ class App(CTk):
                                                                                                         widget=widget))
         self.add_combobox_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.main_window_panel = CTkFrame(self)
-        self.main_window_panel.pack(side=LEFT, pady=10, fill="both", expand=True)
 
-        self.temp = CTkFrame(self.main_window_panel)
-        self.temp.pack(fill="both", expand=True)
+
+        self.temp_panel = CTkFrame(self, fg_color="transparent")
+        self.temp_panel.pack(side="left", pady=10, fill="both", expand=True)
+
+        self.main_window_panel = CTkFrame(self.temp_panel)
+        self.main_window_panel.pack(fill="both", expand=True, padx=5, pady=5)
+
+        self.horiz_scrlbar = CTkSlider(master=self.temp_panel, from_=100, to=-100, number_of_steps=200, orientation="horizontal",
+                                       button_length=33, width=13, border_width=12)
+        self.horiz_scrlbar.configure(progress_color=self.horiz_scrlbar.master.cget("bg_color"),
+                                     fg_color=self.horiz_scrlbar.master.cget("bg_color"))
+        self.horiz_scrlbar.pack(fill="x", padx=10)
+
+        self.vert_scrlbar = CTkSlider(master=self, from_=-100, to=100, number_of_steps=200, orientation="vertical", button_length=33, width=13, border_width=12)
+        self.vert_scrlbar.configure(progress_color=self.vert_scrlbar.cget("bg_color"), fg_color=self.vert_scrlbar.cget("bg_color"))
+        self.vert_scrlbar.pack(side="left", fill="y", padx=(10, 0), pady=10)
+
+
+        self.temp = CTkFrame(self.main_window_panel, fg_color=self.main_window_panel.cget("fg_color"))
+        self.temp.pack(fill="both", expand=True, pady=10, padx=10)
 
         self.main_window = Main(self.temp, properties=None, width=500, height=500, bg_color="transparent")
         self.main_window.pack_propagate(False)
@@ -1269,6 +1367,38 @@ class App(CTk):
         self.container = CTkFrame(self, width=350)
         self.container.pack(side=LEFT, padx=10, pady=10, fill="y")
         self.container.pack_propagate(False)
+
+        self.update()
+        visible_area = self.main_window_panel.winfo_height()
+        content_height = self.main_window.cget("height")
+        hidden_area = (content_height - visible_area)
+        offset = hidden_area//2
+        offset += 50
+        print(offset, hidden_area, content_height, visible_area)
+
+        #self.vert_scrlbar.set(scrollbar_position, scrollbar_height+scrollbar_position)
+        self.main.vert_scrl = self.vert_scrlbar
+        self.vert_scrlbar.configure(command=self.main.on_vert_scrl)
+        self.main_window.bind("<MouseWheel>", self.main.on_vert_mouse)
+        self.temp.bind("<MouseWheel>", self.main.on_vert_mouse)
+
+        self.main.vert_max_offset = abs(offset)
+
+        visible_area = self.main_window_panel.winfo_width()
+        content_height = self.main_window.cget("width")
+        hidden_area = (content_height - visible_area)
+        offset = hidden_area // 2
+        offset += 50
+        print(offset, hidden_area, content_height, visible_area)
+
+        # self.vert_scrlbar.set(scrollbar_position, scrollbar_height+scrollbar_position)
+        self.main.horiz_scrl = self.horiz_scrlbar
+        self.horiz_scrlbar.configure(command=self.main.on_horiz_scrl)
+        self.main_window.bind("<Shift-MouseWheel>", self.main.on_horiz_mouse)
+        self.temp.bind("<Shift-MouseWheel>", self.main.on_horiz_mouse)
+        self.main.horiz_max_offset = abs(offset)
+
+
 
         self.hierarchy = Hierarchy(self.container, height=350)
         self.hierarchy.pack(fill="both")
@@ -1313,6 +1443,8 @@ class App(CTk):
         self.hierarchy.update_list(self.main.widgets, 5)
 
         self.main.apply_theme_to_widget(self.main_window)
+
+
 
 # Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)
 set_default_color_theme("blue")

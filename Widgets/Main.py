@@ -33,6 +33,33 @@ class Main(CTkFrame, BaseWidgetClass):
     def save(self, func, key, val, arg):
         self.props[key] = val
         func(arg)
+        if key in ["width", "height"]:
+            main = self.properties.main
+            main_window_panel = main.r.master.master
+            main_window = main.r
+            visible_area = main_window_panel.winfo_height()
+            content_height = main_window.cget("height")
+            hidden_area = (content_height - visible_area)
+            offset = hidden_area // 2
+            offset += 50
+            print(offset, hidden_area, content_height, visible_area)
+
+            main.vert_max_offset = abs(offset)
+
+            visible_area = main_window_panel.winfo_width()
+            content_height = main_window.cget("width")
+            hidden_area = (content_height - visible_area)
+            offset = hidden_area // 2
+            offset += 50
+            print(offset, hidden_area, content_height, visible_area)
+
+            # self.vert_scrlbar.set(scrollbar_position, scrollbar_height+scrollbar_position)
+
+            main.horiz_max_offset = abs(offset)
+
+            main.horiz_scrl.set(0)
+            main.vert_scrl.set(0)
+            main_window.place(x=0, y=0)
 
     def configure(self, require_redraw=False, **kwargs):
         print(kwargs)
