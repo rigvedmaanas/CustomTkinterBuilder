@@ -6,6 +6,7 @@ from tkinter.colorchooser import askcolor
 import userpaths
 from icecream import ic
 from Widgets import ThemedText
+from Widgets import ThemedButton
 from properties import PropertiesManager
 from tkinter.filedialog import asksaveasfilename, askdirectory
 from customtkinter import *
@@ -15,6 +16,7 @@ from Widgets.Label import Label
 from Widgets.Frame import Frame
 from Widgets.Entry import Entry
 from Widgets.Switch import Switch
+from Widgets.ThemedButton import CTkAdvancedButton
 from Widgets.TextBox import TextBox
 from Widgets.ProgressBar import ProgressBar
 from Widgets.SegmentedButton import SegmentedButton
@@ -29,7 +31,10 @@ from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image
-
+#ic.disable()
+def blockPrint():
+    sys.stdout = open(os.devnull, 'w')
+#blockPrint()
 class ThemeUtl:
     def __init__(self, theme_dir, theme_name):
         path = os.path.join(theme_dir, f"{theme_name}.json")
@@ -148,7 +153,11 @@ class MainWindow:
                 x._set_appearance_mode(mode)
 
     def apply_theme_to_widget(self, widget):
-        x = self.theme[widget.get_class()]
+        if widget.get_class() == "CTkAdvancedButton":
+            x = self.theme["CTkButton"]
+
+        else:
+            x = self.theme[widget.get_class()]
 
 
 
@@ -303,12 +312,18 @@ app.mainloop()
             else:
                 p = ""
                 font = "font=CTkFont("
+                f2 = "hover_font=CTkFont("
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
                         if not run:
                             p += f'image=CTkImage(Image.open("Assets/{os.path.basename(x.props["image"].cget("dark_image").filename)}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                         else:
                             p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                    elif key == "hover_image":
+                        if not run:
+                            p += f'hover_image=CTkImage(Image.open("Assets/{os.path.basename(x.props["hover_image"].cget("dark_image").filename)}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
+                        else:
+                            p += f'hover_image=CTkImage(Image.open("{x.props["hover_image"].cget("dark_image").filename}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                "font_overstrike"]:
                         if type(x.props[key]) == str:
@@ -316,6 +331,14 @@ app.mainloop()
                             font += f'{key[5::]}="{x.props[key]}", '
                         else:
                             font += f'{key[5::]}={x.props[key]}, '
+                    elif key in ["hover_font_family", "hover_font_size", "hover_font_weight", "hover_font_slant", "hover_font_underline",
+                               "hover_font_overstrike"]:
+                        ic(key, x.props[key])
+                        if type(x.props[key]) == str:
+
+                            f2 += f'{key[11::]}="{x.props[key]}", '
+                        else:
+                            f2 += f'{key[11::]}={x.props[key]}, '
                     else:
                         if type(x.props[key]) == str:
                             k = self.escape_special_chars(x.props[key])
@@ -329,12 +352,19 @@ app.mainloop()
                             p += f"{key}={x.props[key]}, "
 
                 font = font[0:-2] # Delete ', ' at last part
+                f2 = f2[0:-2]
+                f2 += ")"
                 font += ")"
-                #print(font)
+                ic(f2)
                 if font != "font=CTkFon)": # Which means there is no change in font
                     p += font
-                else:
-                    p = p[0:-2]
+                    p += ", "
+                if f2 != "hover_font=CTkFon)": # Which means there is no change in font
+                    p += f2
+                    p += ", "
+
+
+                p = p[0:-2]
                 code.add_line(f"{x.get_name()} = {x.get_class()}(master={parent}, {p})")
                 if x.type == "FRAME":
                     code.add_line(f"{x.get_name()}.pack_propagate(False)")
@@ -430,11 +460,15 @@ app.mainloop()
                 w = Scrollbar
             elif y == "COMBOBOX":
                 w = ComboBox
+            elif y == "ADVANCEDBUTTON":
+                w = ThemedButton.AdvancedButton
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
 
             f = CTkFont()
+            f2 = CTkFont()
             i = None
+            i2 = None
             d_copy = dict(d[x]["parameters"])
             for p in dict(d[x]["parameters"]):
                 if p == "image":
@@ -443,6 +477,12 @@ app.mainloop()
                     img = os.path.join("temp", file_name)
                     i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
                     d[x]["parameters"]["image"] = i
+                elif p == "hover_image":
+                    path = d[x]["parameters"]["hover_image"]["image"]
+                    file_name = os.path.basename(path)
+                    img = os.path.join("temp", file_name)
+                    i2 = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
+                    d[x]["parameters"]["hover_image"] = i2
 
                 elif p == "font_family":
                     #print(d[x], p)
@@ -487,6 +527,51 @@ app.mainloop()
                         d[x]["parameters"]["font"] = f
                     else:
                         d[x]["parameters"]["label_font"] = f
+
+
+                elif p == "hover_font_family":
+                    #print(d[x], p)
+                    f.configure(family=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("hover_font_family")
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["hover_font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
+                elif p == "hover_font_size":
+                    f.configure(size=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("hover_font_size")
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["hover_font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
+                elif p == "hover_font_weight":
+                    f.configure(weight=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("hover_font_weight")
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["hover_font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
+                elif p == "hover_font_slant":
+                    f.configure(slant=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("hover_font_slant")
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["hover_font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
+                elif p == "hover_font_underline":
+                    f.configure(underline=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("hover_font_underline")
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["hover_font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
+                elif p == "hover_font_overstrike":
+                    f.configure(overstrike=d[x]["parameters"][p])
+                    d[x]["parameters"].pop("hover_font_overstrike")
+                    if w != ScrollableFrame:
+                        d[x]["parameters"]["hover_font"] = f
+                    else:
+                        d[x]["parameters"]["label_font"] = f
             #print(w, parent.get_name(), d[x]["parameters"])
             if d[x]["parameters"] != {}:
                 if "orientation" in list(d[x]["parameters"].keys()):
@@ -506,6 +591,13 @@ app.mainloop()
                     img = d[x]["parameters"]["image"]
                     d_copy["image"] = img
                     new_widget.size = (d[x]["parameters"]["image"].cget("size")[0], d[x]["parameters"]["image"].cget("size")[1])
+                    if new_widget.__class__ == ThemedButton.AdvancedButton:
+                        new_widget.hover_image = d_copy["hover_image"]["image"]
+                        img = d[x]["parameters"]["hover_image"]
+                        d_copy["hover_image"] = img
+                        new_widget.hover_size = (
+                        d[x]["parameters"]["hover_image"].cget("size")[0], d[x]["parameters"]["hover_image"].cget("size")[1])
+
                     #print(d_copy)
 
                 except KeyError as e:
@@ -642,20 +734,31 @@ app.mainloop()
                     code.add_line(f"self.{x.get_name()}.pack_propagate(False)")
             else:
 
-
                 p = ""
                 font = "font=CTkFont("
+                f2 = "hover_font=CTkFont("
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
 
                         p += f'image=CTkImage(Image.open("Assets/{os.path.basename(x.props["image"].cget("dark_image").filename)}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                    elif key == "hover_image":
+                        p += f'hover_image=CTkImage(Image.open("Assets/{os.path.basename(x.props["hover_image"].cget("dark_image").filename)}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
-                               "font_overstrike"]:
+                                 "font_overstrike"]:
                         if type(x.props[key]) == str:
 
                             font += f'{key[5::]}="{x.props[key]}", '
                         else:
                             font += f'{key[5::]}={x.props[key]}, '
+                    elif key in ["hover_font_family", "hover_font_size", "hover_font_weight", "hover_font_slant",
+                                 "hover_font_underline",
+                                 "hover_font_overstrike"]:
+                        ic(key, x.props[key])
+                        if type(x.props[key]) == str:
+
+                            f2 += f'{key[11::]}="{x.props[key]}", '
+                        else:
+                            f2 += f'{key[11::]}={x.props[key]}, '
                     else:
                         if type(x.props[key]) == str:
                             k = self.escape_special_chars(x.props[key])
@@ -668,13 +771,19 @@ app.mainloop()
                         else:
                             p += f"{key}={x.props[key]}, "
 
-                font = font[0:-2] # Delete ', ' at last part
+                font = font[0:-2]  # Delete ', ' at last part
+                f2 = f2[0:-2]
+                f2 += ")"
                 font += ")"
-                #print(font)
-                if font != "font=CTkFon)": # Which means there is no change in font
+                ic(f2)
+                if font != "font=CTkFon)":  # Which means there is no change in font
                     p += font
-                else:
-                    p = p[0:-2]
+                    p += ", "
+                if f2 != "hover_font=CTkFon)":  # Which means there is no change in font
+                    p += f2
+                    p += ", "
+
+                p = p[0:-2]
                 code.add_line(f"self.{x.get_name()} = {x.get_class()}(master={parent}, {p})")
                 if x.type == "FRAME":
                     code.add_line(f"self.{x.get_name()}.pack_propagate(False)")
@@ -1236,6 +1345,14 @@ class App(CTk):
 
         self.add_button_btn = WidgetButton(master=self.widget_panel, text="Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Button, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_button_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_advancedbutton_btn = WidgetButton(master=self.widget_panel, text="Advanced Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.AdvancedButton, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_advancedbutton_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_button_1_btn = WidgetButton(master=self.widget_panel, text="Button 1", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_1, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_1_btn.pack(padx=10, pady=(10, 0), fill="x")
 
         self.add_label_btn = WidgetButton(master=self.widget_panel, text="Label", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Label, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_label_btn.pack(padx=10, pady=(10, 0), fill="x")

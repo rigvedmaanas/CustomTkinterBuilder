@@ -558,8 +558,8 @@ class PropertiesManager(CTkTabview):
 
 
 
-    def add_seperator(self, head):
-        frame = CTkFrame(self, height=75, fg_color="transparent")
+    def add_seperator(self, s, head):
+        frame = CTkFrame(s, height=75, fg_color="transparent")
         frame.pack(padx=10, pady=(10, 0), fill="x")
 
         txt = CTkLabel(frame, text=head)
