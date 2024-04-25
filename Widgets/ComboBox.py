@@ -42,7 +42,7 @@ class ComboBox(CTkComboBox, PackArgs, BaseWidgetClass):
         func(arg)
 
     def configure(self, require_redraw=False, **kwargs):
-        print(kwargs)
+        #print(kwargs)
         #
         if "values" in list(kwargs.keys()):
             require_redraw = True

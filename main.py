@@ -16,10 +16,10 @@ from Widgets.Label import Label
 from Widgets.Frame import Frame
 from Widgets.Entry import Entry
 from Widgets.Switch import Switch
-from Widgets.ThemedButton import CTkAdvancedButton
 from Widgets.TextBox import TextBox
 from Widgets.ProgressBar import ProgressBar
 from Widgets.SegmentedButton import SegmentedButton
+from Widgets.ScrollableFrame import ScrollableFrame
 from Widgets.Slider import Slider
 from Widgets.OptionMenu import OptionMenu
 from Widgets.CheckBox import CheckBox
@@ -153,6 +153,11 @@ class MainWindow:
                 x._set_appearance_mode(mode)
 
     def apply_theme_to_widget(self, widget):
+        if self.appearance.get() == 0:
+            mode = "light"
+        else:
+            mode = "dark"
+        widget._set_appearance_mode(mode)
         if widget.get_class() == "CTkAdvancedButton":
             x = self.theme["CTkButton"]
 
@@ -167,14 +172,15 @@ class MainWindow:
                 if widget.get_class() == "CTkFrame":
                     if widget.master._fg_color == x["fg_color"]:
                         widget.configure(fg_color=x["top_fg_color"])
-                        print("top")
+                        #print("top")
                     else:
                         widget.configure(fg_color=x["fg_color"])
-                        print("bottom")
+                        #print("bottom")
             else:
                 d = {key: x[key]}
                 widget.configure(**d)
-        if widget.__class__ not in [Frame, ProgressBar, Scrollbar, Slider, Main]:
+
+        if widget.__class__ not in [Frame, ProgressBar, Scrollbar, Slider, Main, ScrollableFrame]:
             for y in list(self.theme["CTkFont"].keys()):
                 if sys.platform == "darwin":
                     d = {"font": CTkFont(family=self.theme["CTkFont"]["macOS"]["family"], size=self.theme["CTkFont"]["macOS"]["size"],
@@ -204,9 +210,12 @@ root = CTkToplevel()
 root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
 root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("blue"), root.destroy()))
-root.configure(fg_color={self.r.cget("fg_color")})
+root.configure(fg_color="{self.r.cget("fg_color")[self.appearance.get()]}")
 set_default_color_theme("{self.theme_manager.name}")
+
 """)
+
+
         self.loop_generate(d=self.widgets[self.r], parent="root", code=code, run=True)
         #print(code.get_code())
         # I know this is not that safe. Do create an issue if there are any safer ways to do this
@@ -370,6 +379,9 @@ app.mainloop()
                     code.add_line(f"{x.get_name()}.pack_propagate(False)")
             if x.pack_options == {}:
                 code.add_line(f"{x.get_name()}.pack()")
+                if run:
+                    code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+
             else:
                 p = ""
                 for key in list(x.pack_options.keys()):
@@ -385,10 +397,47 @@ app.mainloop()
 
                 p = p[0:-2]  # Delete ', ' at last part
                 code.add_line(f"{x.get_name()}.pack({p})")
+                if run:
+                    code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
             if d[x] != {}:
                 #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
 
                 self.loop_generate(d=d[x], parent=x.get_name(), code=code, run=run)
+
+    def open_file_without_asking(self):
+        file = os.path.join(self.file[0], self.file[1])
+        print(self.file, file)
+        shutil.rmtree('temp')
+        shutil.copytree(os.path.join(file, "Assets"), "temp")
+
+        with open(os.path.join(file, f"{os.path.basename(file)}.json"), 'r') as openfile:
+            d = json.load(openfile)
+        d = d["MAIN-1"]
+
+        self.r.props = d["parameters"]
+        self.r._inner_id = d["ID"]
+        for key in list(d["parameters"].keys()):
+            if key == "width":
+                self.r.configure(width=d["parameters"]["width"])
+            elif key == "height":
+                self.r.configure(height=d["parameters"]["height"])
+            elif key == "fg_color":
+                self.r.configure(fg_color=d["parameters"]["fg_color"])
+            elif key == "title":
+                self.title = d["parameters"]["title"]
+        d.pop("TYPE")
+        d.pop("parameters")
+        d.pop("pack_options")
+        d.pop("ID")
+
+        self.theme_manager = ThemeUtl(theme_dir=f"Themes", theme_name=d["theme"])
+        self.theme = self.theme_manager.get_theme_by_name()
+        self.properties.color_manager.colors = d["palette"]
+        self.properties.color_manager.on_change_list = d["palette_on_change"]
+        d.pop("theme")
+        d.pop("palette")
+        d.pop("palette_on_change")
+        self.loop_open(d, self.r)
 
     def open_file(self):
         file = askdirectory()
@@ -411,7 +460,8 @@ app.mainloop()
                     self.r.configure(height=d["parameters"]["height"])
                 elif key == "fg_color":
                     self.r.configure(fg_color=d["parameters"]["fg_color"])
-
+                elif key == "title":
+                    self.title = d["parameters"]["title"]
             d.pop("TYPE")
             d.pop("parameters")
             d.pop("pack_options")
@@ -438,6 +488,8 @@ app.mainloop()
                 w = Label
             elif y == "SWITCH":
                 w = Switch
+            elif y == "SCROLLABLEFRAME":
+                w = ScrollableFrame
             elif y == "ENTRY":
                 w = Entry
             elif y == "MAIN":
@@ -460,15 +512,14 @@ app.mainloop()
                 w = Scrollbar
             elif y == "COMBOBOX":
                 w = ComboBox
-            elif y == "ADVANCEDBUTTON":
-                w = ThemedButton.AdvancedButton
+
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
 
             f = CTkFont()
-            f2 = CTkFont()
+
             i = None
-            i2 = None
+
             d_copy = dict(d[x]["parameters"])
             for p in dict(d[x]["parameters"]):
                 if p == "image":
@@ -477,15 +528,9 @@ app.mainloop()
                     img = os.path.join("temp", file_name)
                     i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
                     d[x]["parameters"]["image"] = i
-                elif p == "hover_image":
-                    path = d[x]["parameters"]["hover_image"]["image"]
-                    file_name = os.path.basename(path)
-                    img = os.path.join("temp", file_name)
-                    i2 = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
-                    d[x]["parameters"]["hover_image"] = i2
 
                 elif p == "font_family":
-                    #print(d[x], p)
+                    ##print(d[x], p)
                     f.configure(family=d[x]["parameters"][p])
                     d[x]["parameters"].pop("font_family")
                     if w != ScrollableFrame:
@@ -529,50 +574,7 @@ app.mainloop()
                         d[x]["parameters"]["label_font"] = f
 
 
-                elif p == "hover_font_family":
-                    #print(d[x], p)
-                    f.configure(family=d[x]["parameters"][p])
-                    d[x]["parameters"].pop("hover_font_family")
-                    if w != ScrollableFrame:
-                        d[x]["parameters"]["hover_font"] = f
-                    else:
-                        d[x]["parameters"]["label_font"] = f
-                elif p == "hover_font_size":
-                    f.configure(size=d[x]["parameters"][p])
-                    d[x]["parameters"].pop("hover_font_size")
-                    if w != ScrollableFrame:
-                        d[x]["parameters"]["hover_font"] = f
-                    else:
-                        d[x]["parameters"]["label_font"] = f
-                elif p == "hover_font_weight":
-                    f.configure(weight=d[x]["parameters"][p])
-                    d[x]["parameters"].pop("hover_font_weight")
-                    if w != ScrollableFrame:
-                        d[x]["parameters"]["hover_font"] = f
-                    else:
-                        d[x]["parameters"]["label_font"] = f
-                elif p == "hover_font_slant":
-                    f.configure(slant=d[x]["parameters"][p])
-                    d[x]["parameters"].pop("hover_font_slant")
-                    if w != ScrollableFrame:
-                        d[x]["parameters"]["hover_font"] = f
-                    else:
-                        d[x]["parameters"]["label_font"] = f
-                elif p == "hover_font_underline":
-                    f.configure(underline=d[x]["parameters"][p])
-                    d[x]["parameters"].pop("hover_font_underline")
-                    if w != ScrollableFrame:
-                        d[x]["parameters"]["hover_font"] = f
-                    else:
-                        d[x]["parameters"]["label_font"] = f
-                elif p == "hover_font_overstrike":
-                    f.configure(overstrike=d[x]["parameters"][p])
-                    d[x]["parameters"].pop("hover_font_overstrike")
-                    if w != ScrollableFrame:
-                        d[x]["parameters"]["hover_font"] = f
-                    else:
-                        d[x]["parameters"]["label_font"] = f
-            #print(w, parent.get_name(), d[x]["parameters"])
+            ##print(w, parent.get_name(), d[x]["parameters"])
             if d[x]["parameters"] != {}:
                 if "orientation" in list(d[x]["parameters"].keys()):
                     new_widget = w(master=parent, orientation=d[x]["parameters"]["orientation"], properties=self.r.properties)
@@ -586,19 +588,12 @@ app.mainloop()
                     new_widget.configure(**d[x]["parameters"])
 
                 try:
-                    #print(d_copy)
+                    ##print(d_copy)
                     new_widget.image = d_copy["image"]["image"]
                     img = d[x]["parameters"]["image"]
                     d_copy["image"] = img
                     new_widget.size = (d[x]["parameters"]["image"].cget("size")[0], d[x]["parameters"]["image"].cget("size")[1])
-                    if new_widget.__class__ == ThemedButton.AdvancedButton:
-                        new_widget.hover_image = d_copy["hover_image"]["image"]
-                        img = d[x]["parameters"]["hover_image"]
-                        d_copy["hover_image"] = img
-                        new_widget.hover_size = (
-                        d[x]["parameters"]["hover_image"].cget("size")[0], d[x]["parameters"]["hover_image"].cget("size")[1])
-
-                    #print(d_copy)
+                    ##print(d_copy)
 
                 except KeyError as e:
                     pass
@@ -667,7 +662,7 @@ app.mainloop()
             self.s = {self.r.get_name(): {}}
             self.loop_save(self.widgets, self.r.get_name(), self.s)
             self.s = self.s[self.r.get_name()]
-            #print(self.s)
+            ##print(self.s)
             self.s[self.r.get_name()]["theme"] = self.theme_manager.name
             self.s[self.r.get_name()]["palette_on_change"] = self.properties.color_manager.on_change_list
             self.s[self.r.get_name()]["palette"] = self.properties.color_manager.colors
@@ -706,11 +701,11 @@ app.mainloop()
         f = SaveFileDialog(callback=self.save)
 
     def loop_save(self, d, parent, code):
-        #print(d)
+        ##print(d)
         for x in list(d.keys()):
             props = dict(x.props)
             if "image" in list(props.keys()):
-                #print(x.get_name(), x.props)
+                ##print(x.get_name(), x.props)
                 img = os.path.basename(x.props["image"].cget("dark_image").filename)
                 path = os.path.join("Assets", img)
                 #ic(x.props["image"].cget("dark_image").filename, self.file)
@@ -722,7 +717,7 @@ app.mainloop()
             if d[x] != {}:
                 self.loop_save(d[x], x.get_name(), code[parent])
 
-        #print(code)
+        ##print(code)
 
     def loop_generate_oop(self, d, parent, code):
 
@@ -815,12 +810,14 @@ app.mainloop()
             self._parents.reverse()
             pass
         else:
-            if type(widget) != ScrollableFrame:
+
+            if not widget.master.__repr__().startswith("<"):
                 self._parents.append(widget.master)
                 self.get_parents(widget.master)
+
             else:
-                self._parents.append(widget.master.master.master)
-                self.get_parents(widget.master.master.master)
+                self.get_parents(widget.master)
+
 
 
 
@@ -908,8 +905,15 @@ app.mainloop()
         return new_d
 
     def add_widget(self, w, properties, widget, x=0, y=0):
+        ic(widget)
+        if widget.master.master.__class__ == ScrollableFrame:
+            new_widget = w(master=widget.master.master.get_me(), **properties)
 
-        new_widget = w(master=widget.master, **properties)
+        elif widget.master.master.master.__class__ == ScrollableFrame:
+            new_widget = w(master=widget.master.master.master.get_me(), **properties)
+        else:
+            new_widget = w(master=widget.master, **properties)
+
         new_widget.num = self.total_num
         new_widget.name = new_widget.type + str(new_widget.num)
         self.apply_theme_to_widget(new_widget)
@@ -918,7 +922,10 @@ app.mainloop()
 
         self.total_num += 1
         self.get_parents(new_widget)
+        ic(self._parents)
+
         self.add_to_dict(self.widgets, self._parents, new_widget)
+
         self.id_mapped_widgets[new_widget._inner_id] = new_widget
         self._parents = []
         new_widget.configure(bg_color="transparent")
@@ -926,6 +933,9 @@ app.mainloop()
 
         if new_widget.__class__ == SegmentedButton:
             new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+        if new_widget.__class__ == ScrollableFrame:
+            new_widget.scrollwindow.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+            new_widget.canv.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
         else:
             new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
@@ -936,8 +946,16 @@ app.mainloop()
         self.hierarchy.delete_children()
         self.hierarchy.update_list(self.widgets, 5)
         #new_widget.place(x=x, y=y)
+        ic(new_widget,widget, widget.master, new_widget.master, widget.winfo_children())
+
         if new_widget.__class__ != SegmentedButton:
-            self.drag_manager.update_children(children=widget.master.winfo_children())
+            if widget.master.master.__class__ == ScrollableFrame:
+                self.drag_manager.update_children(children=widget.master.master.winfo_children())
+            elif widget.master.master.master.__class__ == ScrollableFrame:
+                self.drag_manager.update_children(children=widget.master.master.master.winfo_children())
+            else:
+                self.drag_manager.update_children(children=widget.master.winfo_children())
+
 
     def delete_from_dict(self, my_dict, key_list, value):
         current_dict = my_dict
@@ -949,7 +967,7 @@ app.mainloop()
         if current_dict[key_list[-1]] != {}:
             current_dict[key_list[-1]].pop(value)
     def show_palette(self, properties):
-        print(self.id_mapped_widgets, properties.color_manager.on_change_list)
+        #print(self.id_mapped_widgets, properties.color_manager.on_change_list)
         palette = PaletteEditor(color_manager=properties)
 
     def get_scrollbar_position(self, content_height, viewport_height, scrollbar_height):
@@ -1031,14 +1049,17 @@ app.mainloop()
         self.r.place(x=x)
 
 
-
-dragndrop_list = []
-
 class WidgetButton(CTkButton):
     def __init__(self, on_drag, **kwargs):
         self.on_drag = on_drag
-        dragndrop_list.append(self)
+
         super().__init__(**kwargs)
+        self.configure(fg_color=("#0d0c1d", "#0d0c1d"), border_width=1, border_color=["#CF245E", "#CF245E"], height=40)
+
+    def pack(self, **kwargs):
+        self.master.master.master.master.master.dragndrop_list.append(self)
+        super().pack(**kwargs)
+
 
 
 class Hierarchy(CTkScrollableFrame):
@@ -1118,7 +1139,7 @@ class Hierarchy(CTkScrollableFrame):
             self.widget = None
             for btn in self.btns:
                 btn.configure(state="disabled")
-            #print(self.main.widgets)
+            ##print(self.main.widgets)
     def move_down(self):
         if self.current_selection != None:
             self.main.get_parents(self.widget)
@@ -1144,7 +1165,7 @@ class Hierarchy(CTkScrollableFrame):
             self.widget = None
             for btn in self.btns:
                 btn.configure(state="disabled")
-            #print(self.main.widgets)
+            ##print(self.main.widgets)
 
     def update_list(self, d, pad):
         self.current_selection = None
@@ -1302,74 +1323,111 @@ class PaletteEditor(CTkToplevel):
 
     def rgb2hex(self, c):
         return '#%02x%02x%02x' % c
-class App(CTk):
+class App(CTkToplevel):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.geometry("1900x1000+10+0")
         self.title("Custom Tkinter Builder")
         self.app_theme = "blue"
         self.canvas_theme = "green"
-
+        shutil.rmtree("temp")
+        os.mkdir("temp")
         self.tool_bar = CTkFrame(self, height=40)
         self.tool_bar.pack(side="top", fill="x", padx=10, pady=(10, 0))
 
-        self.save_btn = CTkButton(self.tool_bar, text="Save")
+        self.home_btn = CTkButton(self.tool_bar, text="", height=28, width=28, image=CTkImage(light_image=Image.open(os.path.join("Assets", "baseline_home_white_18dp_1x.png")), dark_image=Image.open(os.path.join("Assets", "baseline_home_white_18dp_1x.png")), size=(18, 18)))
+        self.home_btn.pack(side="left", padx=5, pady=5)
+        #self.home_btn.configure(image=self.home_btn.image)
+
+        self.save_btn = CTkButton(self.tool_bar, text="Save", fg_color="transparent", width=50)
         self.save_btn.pack(side="left", padx=5, pady=5)
 
-        self.saveas_btn = CTkButton(self.tool_bar, text="Save As")
+        self.saveas_btn = CTkButton(self.tool_bar, text="Save As", fg_color="transparent", width=50)
         self.saveas_btn.pack(side="left", padx=5, pady=5)
 
-        self.open_btn = CTkButton(self.tool_bar, text="Open")
-        self.open_btn.pack(side="left", padx=5, pady=5)
+        self.open_btn = CTkButton(self.tool_bar, text="Open", fg_color="transparent", width=50)
+        #self.open_btn.pack(side="left", padx=5, pady=5)
 
-        self.run_code_btn = CTkButton(self.tool_bar, text="Run Code")
+        self.run_code_btn = CTkButton(self.tool_bar, text="Run Code", fg_color="transparent", width=50)
         self.run_code_btn.pack(side="left", padx=5, pady=5)
 
-        self.export_code_btn = CTkButton(self.tool_bar, text="Export Code")
+        self.export_code_btn = CTkButton(self.tool_bar, text="Export Code", fg_color="transparent", width=50)
         self.export_code_btn.pack(side="left", padx=5, pady=5)
 
-        self.palette_btn = CTkButton(self.tool_bar, text="Edit Palette")
+        self.palette_btn = CTkButton(self.tool_bar, text="Edit Palette", fg_color="transparent", width=50)
         self.palette_btn.pack(side="left", padx=5, pady=5)
 
-        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode")
+        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode", border_color=("#CF245E", "#CF245E"))
         self.appearance_mode_switch.pack(side="left", padx=5, pady=5)
         self.appearance_mode_switch.toggle()
         self.appearance_mode_switch.configure(command=lambda: self.main.change_appearance_mode(self.appearance_mode_switch.get()))
+        self.widget_panel = CTkTabview(self, width=350)
+        self.widget_panel.pack(side=LEFT, padx=10, pady=(0, 10), fill="y")
+        self.widget_panel.dragndrop_list = []
+        self.widget_panel.add("Core Widgets")
+        self.widget_panel.add("Themed Widgets")
 
-        self.widget_panel = CTkScrollableFrame(self, width=350)
-        self.widget_panel.pack(side=LEFT, padx=10, pady=10, fill="y")
+        self.widget_panel_core_tab = self.widget_panel.tab("Core Widgets")
+        self.widget_panel_themed_tab = self.widget_panel.tab("Themed Widgets")
 
-        self.add_frame_btn = WidgetButton(master=self.widget_panel, text="Frame", height=50,
+        self.widget_panel_core = CTkScrollableFrame(self.widget_panel_core_tab, fg_color="transparent")
+        self.widget_panel_core.pack(padx=(0, 5), pady=5, fill="both", expand=True)
+
+        self.widget_panel_themed = CTkScrollableFrame(self.widget_panel_themed_tab, fg_color="transparent")
+        self.widget_panel_themed.pack(padx=(0, 5), pady=5, fill="both", expand=True)
+
+        self.add_frame_btn = WidgetButton(master=self.widget_panel_core, text="Frame", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Frame, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_frame_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_button_btn = WidgetButton(master=self.widget_panel, text="Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Button, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_btn = WidgetButton(master=self.widget_panel_core, text="Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Button, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_button_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_advancedbutton_btn = WidgetButton(master=self.widget_panel, text="Advanced Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.AdvancedButton, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_advancedbutton_btn.pack(padx=10, pady=(10, 0), fill="x")
+        self.add_scrl_frame_btn = WidgetButton(master=self.widget_panel_core, text="Scrollable Frame", height=50, on_drag=lambda x, y, widget: self.main.add_widget(ScrollableFrame, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_scrl_frame_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_button_1_btn = WidgetButton(master=self.widget_panel, text="Button 1", height=50,
+
+        self.add_button_1_btn = WidgetButton(master=self.widget_panel_themed, text="Button 1", height=50,
                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_1, properties={
                                                "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_button_1_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_label_btn = WidgetButton(master=self.widget_panel, text="Label", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Label, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_2_btn = WidgetButton(master=self.widget_panel_themed, text="Button 2", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_2, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_2_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_button_3_btn = WidgetButton(master=self.widget_panel_themed, text="Button 3", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_3, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_3_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_icon_white_btn = WidgetButton(master=self.widget_panel_themed, text="Icon White", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_white, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_icon_white_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_icon_black_btn = WidgetButton(master=self.widget_panel_themed, text="Icon Black", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_black, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_icon_black_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_label_btn = WidgetButton(master=self.widget_panel_core, text="Label", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Label, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_label_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_heading_1_btn = WidgetButton(master=self.widget_panel, text="Heading 1", height=50,
+        self.add_heading_1_btn = WidgetButton(master=self.widget_panel_themed, text="Heading 1", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_1, properties={
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_heading_1_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_heading_2_btn = WidgetButton(master=self.widget_panel, text="Heading 2", height=50,
+        self.add_heading_2_btn = WidgetButton(master=self.widget_panel_themed, text="Heading 2", height=50,
                                             on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_2,
                                                                                               properties={
                                                                                                   "properties": self.properties_panel},
                                                                                               x=x, y=y, widget=widget))
         self.add_heading_2_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_heading_3_btn = WidgetButton(master=self.widget_panel, text="Sub Heading", height=50,
+        self.add_heading_3_btn = WidgetButton(master=self.widget_panel_themed, text="Sub Heading", height=50,
                                               on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.SubHeading,
                                                                                                 properties={
                                                                                                     "properties": self.properties_panel},
@@ -1377,7 +1435,7 @@ class App(CTk):
                                                                                                 widget=widget))
         self.add_heading_3_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_paragraph_1_btn = WidgetButton(master=self.widget_panel, text="Paragraph 1", height=50,
+        self.add_paragraph_1_btn = WidgetButton(master=self.widget_panel_themed, text="Paragraph 1", height=50,
                                               on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Paragraph_1,
                                                                                                 properties={
                                                                                                     "properties": self.properties_panel},
@@ -1385,7 +1443,7 @@ class App(CTk):
                                                                                                 widget=widget))
         self.add_paragraph_1_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_wrapped_paragraph_btn = WidgetButton(master=self.widget_panel, text="Wrapped Paragraph", height=50,
+        self.add_wrapped_paragraph_btn = WidgetButton(master=self.widget_panel_themed, text="Wrapped Paragraph", height=50,
                                                 on_drag=lambda x, y, widget: self.main.add_widget(
                                                     ThemedText.WrappedParagraph,
                                                     properties={
@@ -1394,26 +1452,26 @@ class App(CTk):
                                                     widget=widget))
         self.add_wrapped_paragraph_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_entry_btn = WidgetButton(master=self.widget_panel, text="Entry", height=50,
+        self.add_entry_btn = WidgetButton(master=self.widget_panel_core, text="Entry", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Entry, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_entry_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_switch_btn = WidgetButton(master=self.widget_panel, text="Switch", height=50,
+        self.add_switch_btn = WidgetButton(master=self.widget_panel_core, text="Switch", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Switch, properties={
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_switch_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_textbox_btn = WidgetButton(master=self.widget_panel, text="TextBox", height=50,
+        self.add_textbox_btn = WidgetButton(master=self.widget_panel_core, text="TextBox", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(TextBox, properties={
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_textbox_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_progressbar_btn = WidgetButton(master=self.widget_panel, text="Progress Bar", height=50,
+        self.add_progressbar_btn = WidgetButton(master=self.widget_panel_core, text="Progress Bar", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(ProgressBar, properties={
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_progressbar_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_segmentedbutton_btn = WidgetButton(master=self.widget_panel, text="Segmented Button", height=50,
+        self.add_segmentedbutton_btn = WidgetButton(master=self.widget_panel_core, text="Segmented Button", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(SegmentedButton,
                                                                                                  properties={
                                                                                                      "properties": self.properties_panel},
@@ -1421,7 +1479,7 @@ class App(CTk):
                                                                                                  widget=widget))
         self.add_segmentedbutton_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_horizontalslider_btn = WidgetButton(master=self.widget_panel, text="Horizontal Slider", height=50,
+        self.add_horizontalslider_btn = WidgetButton(master=self.widget_panel_core, text="Horizontal Slider", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(Slider,
                                                                                                  properties={
                                                                                                      "properties": self.properties_panel, "orientation": "horizontal"},
@@ -1429,7 +1487,7 @@ class App(CTk):
                                                                                                  widget=widget))
         self.add_horizontalslider_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_verticalslider_btn = WidgetButton(master=self.widget_panel, text="Vertical Slider", height=50,
+        self.add_verticalslider_btn = WidgetButton(master=self.widget_panel_core, text="Vertical Slider", height=50,
                                            on_drag=lambda x, y, widget: self.main.add_widget(Slider,
                                                                                              properties={
                                                                                                  "properties": self.properties_panel, "orientation": "vertical"},
@@ -1437,7 +1495,7 @@ class App(CTk):
                                                                                              widget=widget))
         self.add_verticalslider_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_optionmenu_btn = WidgetButton(master=self.widget_panel, text="Option Menu", height=50,
+        self.add_optionmenu_btn = WidgetButton(master=self.widget_panel_core, text="Option Menu", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(OptionMenu,
                                                                                                  properties={
                                                                                                      "properties": self.properties_panel},
@@ -1445,7 +1503,7 @@ class App(CTk):
                                                                                                  widget=widget))
         self.add_optionmenu_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_checkbox_btn = WidgetButton(master=self.widget_panel, text="Check Box", height=50,
+        self.add_checkbox_btn = WidgetButton(master=self.widget_panel_core, text="Check Box", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(CheckBox,
                                                                                                  properties={
                                                                                                      "properties": self.properties_panel},
@@ -1453,7 +1511,7 @@ class App(CTk):
                                                                                                  widget=widget))
         self.add_checkbox_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_radiobutton_btn = WidgetButton(master=self.widget_panel, text="Radio Button", height=50,
+        self.add_radiobutton_btn = WidgetButton(master=self.widget_panel_core, text="Radio Button", height=50,
                                              on_drag=lambda x, y, widget: self.main.add_widget(RadioButton,
                                                                                                properties={
                                                                                                    "properties": self.properties_panel},
@@ -1461,7 +1519,7 @@ class App(CTk):
                                                                                                widget=widget))
         self.add_radiobutton_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_horizontalscrollbar_btn = WidgetButton(master=self.widget_panel, text="Horizontal Scrollbar", height=50,
+        self.add_horizontalscrollbar_btn = WidgetButton(master=self.widget_panel_core, text="Horizontal Scrollbar", height=50,
                                                 on_drag=lambda x, y, widget: self.main.add_widget(Scrollbar,
                                                                                                   properties={
                                                                                                       "properties": self.properties_panel, "orientation": "horizontal"},
@@ -1469,7 +1527,7 @@ class App(CTk):
                                                                                                   widget=widget))
         self.add_horizontalscrollbar_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_verticalscrollbar_btn = WidgetButton(master=self.widget_panel, text="Vertical Scrollbar", height=50,
+        self.add_verticalscrollbar_btn = WidgetButton(master=self.widget_panel_core, text="Vertical Scrollbar", height=50,
                                               on_drag=lambda x, y, widget: self.main.add_widget(Scrollbar,
                                                                                                 properties={
                                                                                                     "properties": self.properties_panel, "orientation": "vertical"},
@@ -1477,7 +1535,7 @@ class App(CTk):
                                                                                                 widget=widget))
         self.add_verticalscrollbar_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_combobox_btn = WidgetButton(master=self.widget_panel, text="Combo Box", height=50,
+        self.add_combobox_btn = WidgetButton(master=self.widget_panel_core, text="Combo Box", height=50,
                                                       on_drag=lambda x, y, widget: self.main.add_widget(ComboBox,
                                                                                                         properties={
                                                                                                             "properties": self.properties_panel},
@@ -1490,7 +1548,7 @@ class App(CTk):
         self.temp_panel = CTkFrame(self, fg_color="transparent")
         self.temp_panel.pack(side="left", pady=10, fill="both", expand=True)
 
-        self.main_window_panel = CTkFrame(self.temp_panel)
+        self.main_window_panel = CTkFrame(self.temp_panel, fg_color=("#0d0c1d", "#0d0c1d"))
         self.main_window_panel.pack(fill="both", expand=True, padx=5, pady=5)
 
         self.horiz_scrlbar = CTkSlider(master=self.temp_panel, from_=100, to=-100, number_of_steps=200, orientation="horizontal",
@@ -1514,7 +1572,7 @@ class App(CTk):
         self.main_window.num = -1
         self.main_window.name = self.main_window.type + str(self.main_window.num)
 
-        self.drag_manager = DragManager(dragndrop_list, self.main_window, self)
+        self.drag_manager = DragManager(self.widget_panel.dragndrop_list, self.main_window, self)
 
         self.main = MainWindow(self.main_window, self.canvas_theme)
         self.main.drag_manager = self.drag_manager
@@ -1529,13 +1587,14 @@ class App(CTk):
         hidden_area = (content_height - visible_area)
         offset = hidden_area//2
         offset += 50
-        print(offset, hidden_area, content_height, visible_area)
+        #print(offset, hidden_area, content_height, visible_area)
 
         #self.vert_scrlbar.set(scrollbar_position, scrollbar_height+scrollbar_position)
         self.main.vert_scrl = self.vert_scrlbar
         self.vert_scrlbar.configure(command=self.main.on_vert_scrl)
         self.main_window.bind("<MouseWheel>", self.main.on_vert_mouse)
         self.temp.bind("<MouseWheel>", self.main.on_vert_mouse)
+        self.main.appearance = self.appearance_mode_switch
 
         self.main.vert_max_offset = abs(offset)
 
@@ -1544,7 +1603,7 @@ class App(CTk):
         hidden_area = (content_height - visible_area)
         offset = hidden_area // 2
         offset += 50
-        print(offset, hidden_area, content_height, visible_area)
+        #print(offset, hidden_area, content_height, visible_area)
 
         # self.vert_scrlbar.set(scrollbar_position, scrollbar_height+scrollbar_position)
         self.main.horiz_scrl = self.horiz_scrlbar
@@ -1596,15 +1655,12 @@ class App(CTk):
         self.open_btn.configure(command=self.main.open_file)
         self.hierarchy.delete_children()
         self.hierarchy.update_list(self.main.widgets, 5)
-
+        self.home_btn.configure(command=lambda : (self.master.deiconify(), self.destroy()))
         self.main.apply_theme_to_widget(self.main_window)
 
+if __name__ == "__main__":
+    # Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)
 
-
-# Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)
-set_default_color_theme("blue")
-#set_appearance_mode("dark")
-shutil.rmtree("temp")
-os.mkdir("temp")
-app = App()
-app.mainloop()
+    set_default_color_theme("blue")
+    app = App()
+    app.mainloop()

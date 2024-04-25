@@ -33,7 +33,7 @@ class Switch(CTkSwitch, PackArgs, BaseWidgetClass):
         func(arg)
 
     def configure(self, require_redraw=False, **kwargs):
-        print(kwargs)
+        #print(kwargs)
         super().configure(require_redraw, **kwargs)
 
     def change_name(self, name):

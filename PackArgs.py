@@ -8,7 +8,7 @@ class PackArgs:
 
     def redraw(self, **kwargs):
         self.pack_options = kwargs
-        print(self.pack_options)
+        #print(self.pack_options)
         self.pack_options.pop("in")
 
         self.properties.main.redraw(self.properties.main.widgets[self.properties.main.r])

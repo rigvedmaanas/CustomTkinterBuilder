@@ -35,7 +35,7 @@ class Entry(CTkEntry, PackArgs, BaseWidgetClass):
         func(arg)
 
     def configure(self, require_redraw=False, **kwargs):
-        print(kwargs)
+        #print(kwargs)
 
         super().configure(require_redraw, **kwargs)
 
@@ -121,7 +121,7 @@ class Entry(CTkEntry, PackArgs, BaseWidgetClass):
 
             #self.properties.main.r.update()
 
-            print("redrawn")
+            #print("redrawn")
     def set_compound(self, image):
         self.set_image(image, self.size)
 

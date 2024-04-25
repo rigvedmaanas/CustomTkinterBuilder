@@ -125,11 +125,11 @@ class ImageChooser(Toplevel):
         if file != "":
             self.image = file
             self.callback(self.image)
-            print(self.image)
+            #print(self.image)
             self.destroy()
     def open_file(self, event):
         if event.data.endswith(".png") or event.data.endswith(".PNG") or event.data.endswith(".jpg") or event.data.endswith(".JPG") or event.data.endswith(".JPEG") or event.data.endswith(".jpeg"):
-            print(event.data)
+            #print(event.data)
             self.image = event.data
             self.callback(self.image)
             self.destroy()
@@ -201,7 +201,7 @@ class ImageChooser(Toplevel):
         name = name.lower().replace(" ", "_")
 
         url = f"https://raw.githubusercontent.com/rigvedmaanas/material-design-icons/main/icons/{name}/{type_}/{size}/{density}/{n}_{name}_black_{size}.png"
-        print(url)
+        #print(url)
 
         response = requests.get(url, stream=True)
         response.raw.decode_content = True
@@ -226,7 +226,8 @@ class ImageChooser(Toplevel):
             self.use_btn.configure(state="normal")
 
         else:
-            print("Invalid Name of Icon")
+            pass
+            #print("Invalid Name of Icon")
 
 
 
@@ -248,7 +249,7 @@ class Spinbox(CTkFrame):
         self.long_press = False
         self.timeperiod = 0
         self.positive = positive
-        self.configure(fg_color=("gray78", "gray28"))  # set frame color
+        #self.configure(fg_color=("gray78", "gray28"))  # set frame color
 
         self.grid_columnconfigure((0, 2), weight=0)  # buttons don't expand
         self.grid_columnconfigure(1, weight=1)  # entry expands
@@ -296,7 +297,7 @@ class Spinbox(CTkFrame):
             self.entry.delete(0, "end")
             self.entry.insert(0, value)
         except ValueError as e:
-            print(e)
+            #print(e)
             return
         if self.command is not None:
             self.command(self.get())
@@ -520,6 +521,17 @@ class ColorPicker(CTkToplevel):
     def rgb2hex(self, c):
         return '#%02x%02x%02x' % c
 
+class CustomCTkComboBox(CTkComboBox):
+    def _create_grid(self):
+        self._canvas.grid(row=0, column=0, rowspan=1, columnspan=1, sticky="nsew")
+
+        left_section_width = self._current_width - self._current_height
+        self._entry.grid(row=0, column=0, rowspan=1, columnspan=1, sticky="ew",
+                         padx=(max(self._apply_widget_scaling(8), self._apply_widget_scaling(3)),
+                               max(self._apply_widget_scaling(self._current_width - left_section_width + 3),
+                                   self._apply_widget_scaling(3))),
+                         pady=self._apply_widget_scaling(self._border_width))
+
 
 class PropertiesManager(CTkTabview):
     def __init__(self, *args, main, **kwargs):
@@ -605,7 +617,7 @@ class PropertiesManager(CTkTabview):
 
             sv = StringVar()
             sv.trace_add("write", lambda e1, e2, e3: vals["callback"](sv.get()))
-            entry = CTkEntry(frame, width=150, textvariable=sv)
+            entry = CTkEntry(frame, width=150, textvariable=sv, border_width=1)
             entry.pack(side="right", padx=10, pady=10)
             head = CTkLabel(frame, text=header)
             head.pack(side="right", padx=(10, 0), pady=10)
@@ -617,7 +629,7 @@ class PropertiesManager(CTkTabview):
             frame = CTkFrame(self.ctab, height=75)
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
-            temp = CTkFrame(frame, height=60, fg_color="transparent")
+            temp = CTkFrame(frame, height=60, fg_color=frame.cget("fg_color"))
             temp.pack(side="right", fill="x", pady=10)
 
             num_spinbox_1 = Spinbox(temp, width=150, positive=True, command=lambda val: (
@@ -642,9 +654,7 @@ class PropertiesManager(CTkTabview):
             frame = CTkFrame(self.ctab, height=75)
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
-
-
-            combo = CTkOptionMenu(frame, width=150, values=vals["vals"], command=vals["callback"])
+            combo = CustomCTkComboBox(frame, width=150, values=vals["vals"], command=vals["callback"], state="readonly")
             combo.set(vals["default"])
             combo.pack(side="right", padx=10, pady=10)
             head = CTkLabel(frame, text=header)
@@ -676,7 +686,7 @@ class PropertiesManager(CTkTabview):
                 head.pack(side="right", padx=(10, 10), pady=10)
 
             if vals["color"] != "transparent":
-                print(vals["color"])
+                #print(vals["color"])
                 if type(vals["color"]) == str:
                     clr_1.configure(fg_color=vals["color"])
                     clr_2.configure(fg_color=vals["color"])
@@ -701,7 +711,7 @@ class PropertiesManager(CTkTabview):
             frame.pack(padx=10, pady=(10, 0), fill="x")
             fonts = list(font.families())
             fonts.sort()
-            combo = CTkOptionMenu(frame, width=150, values=fonts, dynamic_resizing=False)
+            combo = CustomCTkComboBox(frame, width=150, values=fonts, state="readonly")
             combo.set(vals["default"])
             combo.pack(side="right", padx=10, pady=10)
             combo.configure(command=vals["callback"])
@@ -811,7 +821,7 @@ class PropertiesManager(CTkTabview):
         l = []
         for widgets in scrl.winfo_children():
             for widget in widgets.winfo_children():
-                print(widget)
+                #print(widget)
                 if type(widget) == CTkLabel:
                     l.append(widget.cget("text"))
         return l
@@ -871,7 +881,7 @@ class PropertiesManager(CTkTabview):
                 vals["callback"]((clr_1.cget("fg_color"), clr_1.cget("fg_color")))
                 color = clr_1.cget("fg_color")
 
-            print(color)
+            #print(color)
             clr_1.configure(fg_color=color)
             clr_2.configure(fg_color=color)
         else:
@@ -926,7 +936,7 @@ class PropertiesManager(CTkTabview):
 
             img = CTkImage(img, size=img.size)
             lbl.configure(image=img)
-            #print("       ", (int(num_spinbox.get()), int(num_spinbox2.get())))
+            ##print("       ", (int(num_spinbox.get()), int(num_spinbox2.get())))
             callback(file, (int(num_spinbox.get()), int(num_spinbox2.get())))
 
     def _choose_image(self, callback, btn, lbl, frame, num_spinbox, frame2, num_spinbox2):
@@ -947,7 +957,7 @@ class PropertiesManager(CTkTabview):
 
         if c != [None, None]:
             #self.color_manager.on_change(c[0], lambda val, btn2=btn2: callback((val, btn2.cget("fg_color"))))
-            print([self.main.hierarchy.widget._inner_id, key, "light"])
+            #print([self.main.hierarchy.widget._inner_id, key, "light"])
 
             self.color_manager.on_change(c[0], [self.main.hierarchy.widget._inner_id, key, "light"])
 
@@ -971,7 +981,7 @@ class PropertiesManager(CTkTabview):
         ic(self.color_manager.check_on_list(self.main.hierarchy.widget._inner_id, key, "dark"))
 
         if c != [None, None]:
-            print([self.main.hierarchy.widget._inner_id, key, "dark"])
+            #print([self.main.hierarchy.widget._inner_id, key, "dark"])
             self.color_manager.on_change(c[0], [self.main.hierarchy.widget._inner_id, key, "dark"])
         ic(self.color_manager.on_change_list)
 

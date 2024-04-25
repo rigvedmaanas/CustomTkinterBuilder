@@ -42,7 +42,7 @@ class Main(CTkFrame, BaseWidgetClass):
             hidden_area = (content_height - visible_area)
             offset = hidden_area // 2
             offset += 50
-            print(offset, hidden_area, content_height, visible_area)
+            #print(offset, hidden_area, content_height, visible_area)
 
             main.vert_max_offset = abs(offset)
 
@@ -51,7 +51,7 @@ class Main(CTkFrame, BaseWidgetClass):
             hidden_area = (content_height - visible_area)
             offset = hidden_area // 2
             offset += 50
-            print(offset, hidden_area, content_height, visible_area)
+            #print(offset, hidden_area, content_height, visible_area)
 
             # self.vert_scrlbar.set(scrollbar_position, scrollbar_height+scrollbar_position)
 
@@ -62,7 +62,7 @@ class Main(CTkFrame, BaseWidgetClass):
             main_window.place(x=0, y=0)
 
     def configure(self, require_redraw=False, **kwargs):
-        print(kwargs)
+        #print(kwargs)
         super().configure(require_redraw, **kwargs)
 
 
@@ -99,7 +99,7 @@ class Main(CTkFrame, BaseWidgetClass):
             self.img = img
             self.size = size
             self.props["image"] = img
-            print("🎆", self.size)
+            #print("🎆", self.size)
         else:
             self.image = None
             # Bug - 1
@@ -125,7 +125,7 @@ class Main(CTkFrame, BaseWidgetClass):
 
             #self.properties.main.r.update()
 
-            print("redrawn")
+            #print("redrawn")
     def set_compound(self, image):
         self.set_image(image, self.size)
 

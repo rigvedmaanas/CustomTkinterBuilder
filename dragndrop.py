@@ -1,5 +1,8 @@
 from customtkinter import CTkLabel
+from icecream import ic
+
 from Widgets.SegmentedButton import SegmentedButton
+from Widgets.ScrollableFrame import ScrollableFrame
 
 
 class DragManager:
@@ -23,11 +26,27 @@ class DragManager:
             w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
 
     def update_children(self, children):
+        ic(children)
         for w in children:
-            if w.__class__ != SegmentedButton:
 
+            if w.__class__ == SegmentedButton:
+                pass
+
+            elif w.__class__ == ScrollableFrame:
+                ic("Found", w)
+                w.scrollwindow.bind("<Enter>", lambda e, w=w: self.set_on_top(True, w.scrollwindow))
+                w.scrollwindow.bind("<Leave>", lambda e, w=w: self.set_on_top(False, w.scrollwindow))
+                w.canv.bind("<Enter>", lambda e, w=w: self.set_on_top(True, w.scrollwindow))
+                w.canv.bind("<Leave>", lambda e, w=w: self.set_on_top(False, w.scrollwindow))
+                #w.scrollwindow.bind("<Enter>", print)
+                #w.scrollwindow.bind("<Leave>", print)
+
+
+            else:
                 w.bind("<Enter>", lambda e: self.set_on_top(True, e.widget))
                 w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
+
+
 
 
     def set_on_top(self, state, widget):
@@ -52,8 +71,8 @@ class DragManager:
 
             abs_coord_x = self.main_window.winfo_pointerx() - self.main_window.winfo_rootx() + 10
             abs_coord_y = self.main_window.winfo_pointery() - self.main_window.winfo_rooty() + 10
-            #print(abs_coord_x, abs_coord_y, self.called_widget.master)
-            print(self.called_widget)
+            ##print(abs_coord_x, abs_coord_y, self.called_widget.master)
+            #print(self.called_widget)
             e(x=abs_coord_x, y=abs_coord_y, widget=self.called_widget)
     def released(self, e):
         try:
@@ -61,7 +80,8 @@ class DragManager:
             self.root.after(10, lambda: self.check_add(e)) # I had to add this due to some awkward issue. The enter event was not firing
 
         except Exception as e:
-            print(e)
-        #print(self.root, self.main_window)
+            pass
+            #print(e)
+        ##print(self.root, self.main_window)
         #for widget in self.main_window.winfo_children():
-        #    print(widget)
+        #    #print(widget)

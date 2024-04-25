@@ -1,141 +1,137 @@
+import uuid
+import json
+from tkinter.filedialog import askdirectory
 
 from customtkinter import *
 from PIL import Image
-
+from main import SaveFileDialog, App
 class Root(CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.FRAME4 = CTkFrame(master=self, height=234, width=273, fg_color="transparent")
-        self.FRAME4.pack_propagate(False)
-        self.FRAME4.pack(padx=(0, 0), anchor="center", expand=0, fill="y", ipadx=0, ipady=0, pady=10, side="left")
-        self.LABEL6 = CTkLabel(master=self.FRAME4, text="Custom Tkinter\nBuilder", image=CTkImage(Image.open("Assets/outline_logo_dev_white_36dp_2x.png"), size=(72, 72)), compound="left", justify="left", text_color=("gray10", "#f1f0ea"), font=CTkFont(family="SF Display", size=21))
-        self.LABEL6.pack(padx=(1, 1), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, pady=(15, 0), side="top")
-        self.project_btn = CTkButton(master=self.FRAME4, text="      Projects", corner_radius=0, anchor="w", height=45, fg_color=("#cf245e", "#cf245e"), hover_color=("#ae1d4f", "#ae1e4f"), text_color=("gray98", "#f1f0ea"), font=CTkFont(family="SF Display", size=20))
-        self.project_btn.pack(pady=(29, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.customize_btn = CTkButton(master=self.FRAME4, text="      Customize", corner_radius=0, anchor="w", height=45, fg_color="transparent", hover_color=("#ae1d4f", "#ae1e4f"), text_color=("#0d0c1d", "#f1f0ea"), font=CTkFont(family="SF Display", size=20))
-        self.customize_btn.pack(pady=(0, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.FRAME6_copy = CTkFrame(master=self, height=234, width=273, fg_color=("#dfddcf", "#151a33"))
-        self.FRAME6_copy.pack_propagate(False)
-        self.FRAME6_copy.pack(expand="true", anchor="center", fill="both", ipadx=0, ipady=0, padx=(0, 10), pady=10, side="left")
-        self.FRAME9 = CTkFrame(master=self.FRAME6_copy, fg_color="transparent", height=61)
-        self.FRAME9.pack_propagate(False)
-        self.FRAME9.pack(pady=(5, 5), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=5, side="top")
-        self.FRAME10 = CTkFrame(master=self.FRAME9, height=42, fg_color=("#dfddcf", "#151a33"))
-        self.FRAME10.pack_propagate(False)
-        self.FRAME10.pack(padx=(15, 1), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=1, side="left")
-        self.LABEL11 = CTkLabel(master=self.FRAME10, text="search", text_color=("gray10", "#f0f0e9"), font=CTkFont(family="Material Icons Outlined", size=25))
-        self.LABEL11.pack(side="left", anchor="center", expand=0, fill="none", ipadx=0, ipady=0, padx=0, pady=0)
-        self.search_entry = CTkEntry(master=self.FRAME10, placeholder_text="Search Projects", border_width=0, fg_color=("#dfddcf", "#151a33"), placeholder_text_color=("#14122d", "#dfddcf"), text_color=("#0d0c1d", "#f0f0e9"), font=CTkFont(family="SF Display", size=14))
-        self.search_entry.pack(padx=(0, 4), anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=0, side="left")
-        self.BUTTON15_copy = CTkButton(master=self.FRAME9, text="Open", corner_radius=2, fg_color=("#cf245e", "#cf245e"), hover_color=("#ae1d4f", "#ae1d4f"), width=95, font=CTkFont(family="SF Display", size=14))
-        self.BUTTON15_copy.pack(padx=(20, 16), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="right")
-        self.BUTTON13 = CTkButton(master=self.FRAME9, text="New Project", corner_radius=2, fg_color=("#cf245e", "#cf245e"), hover_color=("#ae1d4f", "#ae1d4f"), font=CTkFont(family="SF Display", size=14))
-        self.BUTTON13.pack(padx=(0, 0), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="right")
-        self.FRAME15 = CTkFrame(master=self.FRAME6_copy, fg_color="transparent")
-        self.FRAME15.pack_propagate(False)
-        self.FRAME15.pack(pady=(0, 20), anchor="center", expand=1, fill="both", ipadx=0, ipady=0, padx=20, side="top")
-        self.project_frame = CTkFrame(master=self.FRAME15, height=64, fg_color="transparent")
-        self.project_frame.pack_propagate(False)
-        self.project_frame.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.LABEL17 = CTkLabel(master=self.project_frame, text="CT", width=35, height=35, fg_color=("#cf245e", "#cf245e"), corner_radius=3, text_color=("#dfddcf", "#f0f0e9"), font=CTkFont(family="SF Display"))
-        self.LABEL17.pack(padx=(15, 0), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.FRAME18 = CTkFrame(master=self.project_frame, height=41, fg_color="transparent")
-        self.FRAME18.pack_propagate(False)
-        self.FRAME18.pack(padx=(25, 1), anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="left")
-        self.LABEL19 = CTkLabel(master=self.FRAME18, text="CustomTkinterBuilder", anchor="w", text_color=("gray10", "#f0f0e9"), height=8, font=CTkFont(family="SF Display", size=14))
-        self.LABEL19.pack(pady=(1, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.LABEL21_copy = CTkLabel(master=self.FRAME18, text="~/CustomTkinterBuilder", anchor="w", text_color=("gray10", "#9d9d99"), height=15, font=CTkFont(family="SF Display", size=14))
-        self.LABEL21_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.FRAME62_copy = CTkFrame(master=self.FRAME15, height=64, fg_color="transparent")
-        self.FRAME62_copy.pack_propagate(False)
-        self.FRAME62_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.LABEL63_copy = CTkLabel(master=self.FRAME62_copy, text="CT", width=35, height=35, fg_color=("#cf245e", "#cf245e"), corner_radius=3, text_color=("#dfddcf", "#f0f0e9"), font=CTkFont(family="SF Display"))
-        self.LABEL63_copy.pack(padx=(15, 0), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.FRAME64_copy = CTkFrame(master=self.FRAME62_copy, height=41, fg_color="transparent")
-        self.FRAME64_copy.pack_propagate(False)
-        self.FRAME64_copy.pack(padx=(25, 1), anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="left")
-        self.LABEL65_copy = CTkLabel(master=self.FRAME64_copy, text="CustomTkinterBuilder", anchor="w", text_color=("gray10", "#f0f0e9"), height=8, font=CTkFont(family="SF Display", size=14))
-        self.LABEL65_copy.pack(pady=(1, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.LABEL66_copy = CTkLabel(master=self.FRAME64_copy, text="~/CustomTkinterBuilder", anchor="w", text_color=("gray10", "#9d9d99"), height=15, font=CTkFont(family="SF Display", size=14))
-        self.LABEL66_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.FRAME67_copy = CTkFrame(master=self.FRAME15, height=64, fg_color="transparent")
-        self.FRAME67_copy.pack_propagate(False)
-        self.FRAME67_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.LABEL68_copy = CTkLabel(master=self.FRAME67_copy, text="CT", width=35, height=35, fg_color=("#cf245e", "#cf245e"), corner_radius=3, text_color=("#dfddcf", "#f0f0e9"), font=CTkFont(family="SF Display"))
-        self.LABEL68_copy.pack(padx=(15, 0), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.FRAME69_copy = CTkFrame(master=self.FRAME67_copy, height=41, fg_color="transparent")
-        self.FRAME69_copy.pack_propagate(False)
-        self.FRAME69_copy.pack(padx=(25, 1), anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="left")
-        self.LABEL70_copy = CTkLabel(master=self.FRAME69_copy, text="CustomTkinterBuilder", anchor="w", text_color=("gray10", "#f0f0e9"), height=8, font=CTkFont(family="SF Display", size=14))
-        self.LABEL70_copy.pack(pady=(1, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.LABEL71_copy = CTkLabel(master=self.FRAME69_copy, text="~/CustomTkinterBuilder", anchor="w", text_color=("gray10", "#9d9d99"), height=15, font=CTkFont(family="SF Display", size=14))
-        self.LABEL71_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.FRAME72_copy = CTkFrame(master=self.FRAME15, height=64, fg_color="transparent")
-        self.FRAME72_copy.pack_propagate(False)
-        self.FRAME72_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.LABEL73_copy = CTkLabel(master=self.FRAME72_copy, text="CT", width=35, height=35, fg_color=("#cf245e", "#cf245e"), corner_radius=3, text_color=("#dfddcf", "#f0f0e9"), font=CTkFont(family="SF Display"))
-        self.LABEL73_copy.pack(padx=(15, 0), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.FRAME74_copy = CTkFrame(master=self.FRAME72_copy, height=41, fg_color="transparent")
-        self.FRAME74_copy.pack_propagate(False)
-        self.FRAME74_copy.pack(padx=(25, 1), anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="left")
-        self.LABEL75_copy = CTkLabel(master=self.FRAME74_copy, text="CustomTkinterBuilder", anchor="w", text_color=("gray10", "#f0f0e9"), height=8, font=CTkFont(family="SF Display", size=14))
-        self.LABEL75_copy.pack(pady=(1, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.LABEL76_copy = CTkLabel(master=self.FRAME74_copy, text="~/CustomTkinterBuilder", anchor="w", text_color=("gray10", "#9d9d99"), height=15, font=CTkFont(family="SF Display", size=14))
-        self.LABEL76_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.FRAME77_copy = CTkFrame(master=self.FRAME15, height=64, fg_color="transparent")
-        self.FRAME77_copy.pack_propagate(False)
-        self.FRAME77_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.LABEL78_copy = CTkLabel(master=self.FRAME77_copy, text="CT", width=35, height=35, fg_color=("#cf245e", "#cf245e"), corner_radius=3, text_color=("#dfddcf", "#f0f0e9"), font=CTkFont(family="SF Display"))
-        self.LABEL78_copy.pack(padx=(15, 0), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.FRAME79_copy = CTkFrame(master=self.FRAME77_copy, height=41, fg_color="transparent")
-        self.FRAME79_copy.pack_propagate(False)
-        self.FRAME79_copy.pack(padx=(25, 1), anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="left")
-        self.LABEL80_copy = CTkLabel(master=self.FRAME79_copy, text="CustomTkinterBuilder", anchor="w", text_color=("gray10", "#f0f0e9"), height=8, font=CTkFont(family="SF Display", size=14))
-        self.LABEL80_copy.pack(pady=(1, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.LABEL81_copy = CTkLabel(master=self.FRAME79_copy, text="~/CustomTkinterBuilder", anchor="w", text_color=("gray10", "#9d9d99"), height=15, font=CTkFont(family="SF Display", size=14))
-        self.LABEL81_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.FRAME82_copy = CTkFrame(master=self.FRAME15, height=64, fg_color="transparent")
-        self.FRAME82_copy.pack_propagate(False)
-        self.FRAME82_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.LABEL83_copy = CTkLabel(master=self.FRAME82_copy, text="CT", width=35, height=35, fg_color=("#cf245e", "#cf245e"), corner_radius=3, text_color=("#dfddcf", "#f0f0e9"), font=CTkFont(family="SF Display"))
-        self.LABEL83_copy.pack(padx=(15, 0), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.FRAME84_copy = CTkFrame(master=self.FRAME82_copy, height=41, fg_color="transparent")
-        self.FRAME84_copy.pack_propagate(False)
-        self.FRAME84_copy.pack(padx=(25, 1), anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="left")
-        self.LABEL85_copy = CTkLabel(master=self.FRAME84_copy, text="CustomTkinterBuilder", anchor="w", text_color=("gray10", "#f0f0e9"), height=8, font=CTkFont(family="SF Display", size=14))
-        self.LABEL85_copy.pack(pady=(1, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.LABEL86_copy = CTkLabel(master=self.FRAME84_copy, text="~/CustomTkinterBuilder", anchor="w", text_color=("gray10", "#9d9d99"), height=15, font=CTkFont(family="SF Display", size=14))
-        self.LABEL86_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.FRAME87_copy = CTkFrame(master=self.FRAME15, height=64, fg_color="transparent")
-        self.FRAME87_copy.pack_propagate(False)
-        self.FRAME87_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.LABEL88_copy = CTkLabel(master=self.FRAME87_copy, text="CT", width=35, height=35, fg_color=("#cf245e", "#cf245e"), corner_radius=3, text_color=("#dfddcf", "#f0f0e9"), font=CTkFont(family="SF Display"))
-        self.LABEL88_copy.pack(padx=(15, 0), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.FRAME89_copy = CTkFrame(master=self.FRAME87_copy, height=41, fg_color="transparent")
-        self.FRAME89_copy.pack_propagate(False)
-        self.FRAME89_copy.pack(padx=(25, 1), anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="left")
-        self.LABEL90_copy = CTkLabel(master=self.FRAME89_copy, text="CustomTkinterBuilder", anchor="w", text_color=("gray10", "#f0f0e9"), height=8, font=CTkFont(family="SF Display", size=14))
-        self.LABEL90_copy.pack(pady=(1, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.LABEL91_copy = CTkLabel(master=self.FRAME89_copy, text="~/CustomTkinterBuilder", anchor="w", text_color=("gray10", "#9d9d99"), height=15, font=CTkFont(family="SF Display", size=14))
-        self.LABEL91_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.FRAME92_copy = CTkFrame(master=self.FRAME15, height=64, fg_color="transparent")
-        self.FRAME92_copy.pack_propagate(False)
-        self.FRAME92_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.LABEL93_copy = CTkLabel(master=self.FRAME92_copy, text="CT", width=35, height=35, fg_color=("#cf245e", "#cf245e"), corner_radius=3, text_color=("#dfddcf", "#f0f0e9"), font=CTkFont(family="SF Display"))
-        self.LABEL93_copy.pack(padx=(15, 0), anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.FRAME94_copy = CTkFrame(master=self.FRAME92_copy, height=41, fg_color="transparent")
-        self.FRAME94_copy.pack_propagate(False)
-        self.FRAME94_copy.pack(padx=(25, 1), anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="left")
-        self.LABEL95_copy = CTkLabel(master=self.FRAME94_copy, text="CustomTkinterBuilder", anchor="w", text_color=("gray10", "#f0f0e9"), height=8, font=CTkFont(family="SF Display", size=14))
-        self.LABEL95_copy.pack(pady=(1, 0), anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=0, side="top")
-        self.LABEL96_copy = CTkLabel(master=self.FRAME94_copy, text="~/CustomTkinterBuilder", anchor="w", text_color=("gray10", "#9d9d99"), height=15, font=CTkFont(family="SF Display", size=14))
-        self.LABEL96_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        
+        self.FRAME0 = CTkFrame(master=self, width=300, fg_color=['#f1f0ea', '#0d0c1d'])
+        self.FRAME0.pack_propagate(False)
+        self.FRAME0.pack(fill="y", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="left")
+        self.LABEL3 = CTkLabel(master=self.FRAME0, text="Custom Tkinter\nBuilder", compound="left", justify="left", image=CTkImage(Image.open("Assets/baseline_logo_dev_white_48dp_2x.png"), size=(96, 96)), text_color=['#0d0c1d', '#f1f0ea'], font=CTkFont(family="SF Display", size=25))
+        self.LABEL3.pack(pady=['20', 30], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, padx=0, side="top")
+        self.BUTTON4 = CTkButton(master=self.FRAME0, text="     Projects", height=40, anchor="w", corner_radius=0, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['#f1f0ea', '#f1f0ea'], font=CTkFont(family="SF Display", size=20))
+        self.BUTTON4.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
+        self.BUTTON6_copy = CTkButton(master=self.FRAME0, text="     Customize", height=40, anchor="w", corner_radius=0, fg_color="transparent", hover_color=['#ae1d4f', '#ae1d4f'], text_color=['#0d0c1d', '#f1f0ea'], font=CTkFont(family="SF Display", size=20))
+        #self.BUTTON6_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
+        self.FRAME3_copy = CTkFrame(master=self, width=300, fg_color=['#e0ddcf', '#161b33'])
+        self.FRAME3_copy.pack_propagate(False)
+        self.FRAME3_copy.pack(pady=['10', 10], anchor="center", expand=1, fill="both", ipadx=0, ipady=0, padx=[0, 10], side="left")
+
+        self.FRAME6 = CTkFrame(master=self.FRAME3_copy, height=55, fg_color=['#e0ddcf', '#161b33'])
+        self.FRAME6.pack_propagate(False)
+        self.FRAME6.pack(pady=['10', 10], anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=10, side="top")
+        self.FRAME7 = CTkFrame(master=self.FRAME6, fg_color=['#e0ddcf', '#161b33'])
+        self.FRAME7.pack_propagate(False)
+        self.FRAME7.pack(pady=['5', 5], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, padx=5, side="left")
+        self.LABEL8 = CTkLabel(master=self.FRAME7, text="", image=CTkImage(Image.open("Assets/baseline_search_white_24dp_1x.png"), size=(24, 24)), font=CTkFont(family="SF Display"))
+        self.LABEL8.pack(padx=[10, '0'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
+        self.ENTRY9 = CTkEntry(master=self.FRAME7, placeholder_text="Search Projects", fg_color=['#e0ddcf', '#161b33'], border_width=0, text_color=['#0d0c1d', '#f1f0ea'], placeholder_text_color=['#161b33', '#e0ddcf'], font=CTkFont(family="SF Display", size=14))
+        self.ENTRY9.pack(padx=['10', 10], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=0, side="left")
+        self.BUTTON10 = CTkButton(master=self.FRAME6, text="New Project", corner_radius=3, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['gray98', '#f1f0ea'], font=CTkFont(family="SF Display", size=14), command=lambda: SaveFileDialog(callback=self.create_project))
+        self.BUTTON10.pack(padx=[5, '5'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
+        self.BUTTON13_copy = CTkButton(master=self.FRAME6, text="Open", corner_radius=3, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['gray98', '#f1f0ea'], width=90, font=CTkFont(family="SF Display", size=14), command=self.open_project_from_disk)
+        self.BUTTON13_copy.pack(padx=['5', 10], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
+
+        self.FRAME20_copy = CTkScrollableFrame(master=self.FRAME3_copy, width=300, fg_color=['#e0ddcf', '#161b33'])
+
+        self.FRAME20_copy.pack(pady=[10, 10], anchor="center", expand=1, fill="both", ipadx=0, ipady=0, padx=[10, 10])
+
+    def open_project_in_editor(self, dir_, name):
+        print(dir_, name)
+
+        self.withdraw()
+        set_default_color_theme(os.path.join("Themes", "ctktheme.json"))
+        app = App()
+        app.main.file = [dir_, name]
+        app.main.open_file_without_asking()
+        app.mainloop()
+
+    def open_project_from_disk(self):
+        file = askdirectory()
+        if file != "":
+            file = [os.path.dirname(file), os.path.basename(file)]
+            with open("config.json", 'r') as openfile:
+                configure = json.load(openfile)
+            project_files = configure["project_files"]
+            project_files.append({"Name": file[1], "Directory": file[0]})
+            configure["project_files"] = project_files
+            json_object = json.dumps(configure, indent=4)
+            with open("config.json", 'w') as f:
+                f.write(json_object)
+
+            short_name = file[1][0:2].upper()
+            self.show_project(short_name, file[1], file[0])
+
+    def show_project(self, short_name, name, dir_):
+        FRAME13 = CTkFrame(master=self.FRAME20_copy, height=65, fg_color=['#f1f0ea', '#0d0c1d'])
+        FRAME13.pack_propagate(False)
+        FRAME13.pack(padx=['15', 20], anchor="center", expand=0, fill="x", ipadx=0, ipady=0, pady=[10, 0],
+                          side="top")
+        LABEL14 = CTkLabel(master=FRAME13, text=short_name, width=50, height=50,
+                                fg_color=['#cf245e', '#cf245e'], corner_radius=3, text_color=['#f1f0ea', '#f1f0ea'],
+                                font=CTkFont(family="SF Display", size=14))
+        LABEL14.pack(padx=[8, '0'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
+        FRAME15 = CTkFrame(master=FRAME13, height=45, fg_color=['#f1f0ea', '#0d0c1d'])
+        FRAME15.pack_propagate(False)
+        FRAME15.pack(padx=['10', 10], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="top")
+        LABEL16 = CTkLabel(master=FRAME15, text=name, text_color=['gray10', '#f1f0ea'], anchor="w", height=22,
+                                font=CTkFont(family="SF Display", size=14))
+        LABEL16.pack(expand="true", anchor="center", fill="x", ipadx=0, ipady=0, padx=0, pady=0, side="top")
+        LABEL18_copy = CTkLabel(master=FRAME15, text=dir_, text_color=['#adaba7', '#adaba7'], anchor="w",
+                                     font=CTkFont(family="SF Display", size=14))
+        LABEL18_copy.pack(expand="true", anchor="center", fill="x", ipadx=0, ipady=0, padx=0, pady=0, side="top")
+        #self.FRAME13.bind('<Double-Button-1>', lambda e, dir_=dir_, name=name: self.open_project_in_editor(dir_=dir_, name=name))
+        for x in [FRAME13, FRAME15, LABEL14, LABEL16, LABEL18_copy]:
+            x.bind('<Double-Button-1>', lambda e, dir_=dir_, name=name: self.open_project_in_editor(dir_=dir_, name=name))
+    def create_project(self, name="Project 1", dir_="~/Project 1"):
+        try:
+            json_ = {
+                "MAIN-1": {
+                    "TYPE": "MAIN",
+                    "parameters": {},
+                    "pack_options": {},
+                    "ID": str(uuid.uuid4()),
+                    "theme": "green",
+                    "palette_on_change": {},
+                    "palette": {}
+                }
+            }
+            os.mkdir(os.path.join(dir_, name))
+            os.mkdir(os.path.join(dir_, name, "Assets"))
+            json_object = json.dumps(json_, indent=4)
+            with open(os.path.join(dir_, name, name+".json"), "w") as f:
+                f.write(json_object)
+            with open("config.json", 'r') as openfile:
+                configure = json.load(openfile)
+            project_files = configure["project_files"]
+            project_files.append({"Name": name, "Directory": dir_})
+            configure["project_files"] = project_files
+            json_object = json.dumps(configure, indent=4)
+            with open("config.json", 'w') as f:
+                f.write(json_object)
+
+            short_name = name[0:2].upper()
+            self.show_project(short_name, name, dir_)
+
+
+        except Exception as e:
+            print(e)
+
 set_default_color_theme("green")
-app = Root()
-app.geometry("1000x600")
-app.title("Welcome to Custom Tkinter Builder")
-app.configure(fg_color=["#F1F0EA", "#0D0C1D"])
-app.mainloop()
+root = Root()
+root.geometry("1000x600")
+root.title("Welcome To Custom Tkinter Builder")
+root.configure(fg_color=['#f1f0ea', '#0d0c1d'])
+#for x in range(100):
+with open("config.json", 'r') as openfile:
+    configure = json.load(openfile)
+project_file = configure["project_files"]
+for project in project_file:
+    root.show_project(project["Name"][0:2], project["Name"], project["Directory"])
+root.mainloop()
             

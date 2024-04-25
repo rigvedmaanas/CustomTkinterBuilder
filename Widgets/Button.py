@@ -22,7 +22,7 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
-        print(self._inner_id)
+        #print(self._inner_id)
         self.bind_mouse(properties)
 
 
@@ -41,7 +41,7 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
         func(arg)
 
     def configure(self, require_redraw=False, **kwargs):
-        print(kwargs)
+        #print(kwargs)
         super().configure(require_redraw, **kwargs)
 
 
@@ -107,7 +107,7 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
             self.img = img
             self.size = size
             self.props["image"] = img
-            print("🎆", self.size)
+            #print("🎆", self.size)
         else:
             self.image = None
             # Bug - 1
@@ -133,7 +133,7 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
 
             #self.properties.main.r.update()
 
-            print("redrawn")
+            #print("redrawn")
     def set_compound(self, image):
         self.set_image(image, self.size)
 

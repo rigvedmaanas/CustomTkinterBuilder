@@ -35,7 +35,7 @@ class Slider(CTkSlider, PackArgs, BaseWidgetClass):
         func(arg)
 
     def configure(self, require_redraw=False, **kwargs):
-        print(kwargs)
+        #print(kwargs)
         super().configure(require_redraw, **kwargs)
 
 
