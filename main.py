@@ -158,11 +158,13 @@ class MainWindow:
         else:
             mode = "dark"
         widget._set_appearance_mode(mode)
-        if widget.get_class() == "CTkAdvancedButton":
-            x = self.theme["CTkButton"]
+        if widget.get_class() == "CTkScrollableFrame":
+            x = self.theme["CTkFrame"]
+
 
         else:
             x = self.theme[widget.get_class()]
+
 
 
 
@@ -175,6 +177,8 @@ class MainWindow:
                         #print("top")
                     else:
                         widget.configure(fg_color=x["fg_color"])
+                        #print("bottom")
+
                         #print("bottom")
             else:
                 d = {key: x[key]}
@@ -197,6 +201,11 @@ class MainWindow:
             widget.set_nonvisible_disable()
 
 
+        if widget.get_class() == "CTkScrollableFrame":
+            ic(self.theme["CTkScrollbar"]["fg_color"])
+            widget.configure(scrollbar_fg_color=self.theme["CTkScrollbar"]["fg_color"])
+
+
     def change(self, **kwargs):
         for key in list(kwargs.keys()):
             if key == "title":
@@ -209,7 +218,7 @@ class MainWindow:
 root = CTkToplevel()
 root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
-root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("blue"), root.destroy()))
+root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("{os.path.join('Themes', 'ctktheme.json')}"), root.destroy()))
 root.configure(fg_color="{self.r.cget("fg_color")[self.appearance.get()]}")
 set_default_color_theme("{self.theme_manager.name}")
 
@@ -379,8 +388,14 @@ app.mainloop()
                     code.add_line(f"{x.get_name()}.pack_propagate(False)")
             if x.pack_options == {}:
                 code.add_line(f"{x.get_name()}.pack()")
+
                 if run:
                     code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                    if x.get_class() == "CTkScrollableFrame":
+                        code.add_line(f"{x.get_name()}._parent_frame._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                        code.add_line(f"{x.get_name()}._scrollbar._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                        #code.add_line(f"{x.get_name()}._parent_frame.configure(fg_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}], border_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}])")
+
 
             else:
                 p = ""
@@ -399,6 +414,10 @@ app.mainloop()
                 code.add_line(f"{x.get_name()}.pack({p})")
                 if run:
                     code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                    if x.get_class() == "CTkScrollableFrame":
+                        code.add_line(f"{x.get_name()}._parent_frame._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                        code.add_line(f"{x.get_name()}._scrollbar._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+
             if d[x] != {}:
                 #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
 
@@ -577,13 +596,20 @@ app.mainloop()
             ##print(w, parent.get_name(), d[x]["parameters"])
             if d[x]["parameters"] != {}:
                 if "orientation" in list(d[x]["parameters"].keys()):
-                    new_widget = w(master=parent, orientation=d[x]["parameters"]["orientation"], properties=self.r.properties)
+                    if parent.get_class() == "CTkScrollableFrame":
+                        new_widget = w(master=parent.scrollwindow, orientation=d[x]["parameters"]["orientation"],
+                                       properties=self.r.properties)
+                    else:
+                        new_widget = w(master=parent, orientation=d[x]["parameters"]["orientation"], properties=self.r.properties)
                     g = dict(d)
                     g[x]["parameters"].pop("orientation")
                     self.apply_theme_to_widget(new_widget)
                     new_widget.configure(**g[x]["parameters"])
                 else:
-                    new_widget = w(master=parent, properties=self.r.properties)
+                    if parent.get_class() == "CTkScrollableFrame":
+                        new_widget = w(master=parent.scrollwindow, properties=self.r.properties)
+                    else:
+                        new_widget = w(master=parent, properties=self.r.properties)
                     self.apply_theme_to_widget(new_widget)
                     new_widget.configure(**d[x]["parameters"])
 
@@ -601,7 +627,10 @@ app.mainloop()
                 new_widget.props = d_copy
 
             else:
-                new_widget = w(master=parent, properties=self.r.properties)
+                if parent.get_class() == "CTkScrollableFrame":
+                    new_widget = w(master=parent.scrollwindow, properties=self.r.properties)
+                else:
+                    new_widget = w(master=parent, properties=self.r.properties)
                 self.apply_theme_to_widget(new_widget)
 
             new_widget.num = self.total_num
@@ -612,8 +641,10 @@ app.mainloop()
                 new_widget.name = new_widget.type + str(new_widget.num + 1) + "_copy"
 
             self.total_num += 1
+            self._parents = []
 
             self.get_parents(new_widget)
+            ic(self.widgets, self._parents, new_widget)
             self.add_to_dict(self.widgets, self._parents, new_widget)
 
             self._parents = []
@@ -651,6 +682,7 @@ app.mainloop()
             d[x].pop("ID")
 
             if d[x] != {}:
+                ic(d[x], new_widget, copy)
                 self.loop_open(d[x], new_widget, copy=copy)
 
     def save(self, dir_, name):
@@ -799,6 +831,8 @@ app.mainloop()
 
                 p = p[0:-2]  # Delete ', ' at last part
                 code.add_line(f"self.{x.get_name()}.pack({p})")
+
+
             if d[x] != {}:
                 #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
 
@@ -1208,7 +1242,16 @@ class Hierarchy(CTkScrollableFrame):
         self.main.loop_save(d, self.widget.get_name(), self.s)
         self.s = self.s[self.widget.get_name()]
         #ic(self.main.widgets)
-        self.main.loop_open(self.s, self.widget.master, copy=True)
+        self.main._parents = []
+        self.main.get_parents(self.widget)
+
+
+        ic(self.main.get_first_degree_parent(self.main.widgets, self.main._parents), self.main.widgets, self.widget, self.widget.master, self.s, self.main._parents)
+        self.main.loop_open(self.s, self.main._parents[-1], copy=True)
+
+
+        self.main._parents = []
+
         #self.s[self.r.get_name()]["theme"] = self.theme_manager.name
         #ic(self.main.widgets)
 
