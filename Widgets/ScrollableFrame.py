@@ -1,9 +1,7 @@
-from customtkinter import CTkScrollableFrame, CTkLabel, CTkFrame, CTkScrollbar, CTkFont, CTkCanvas
+from customtkinter import CTkFrame, CTkScrollbar, CTkFont
 from icecream import ic
 
 from PackArgs import PackArgs
-from tkinter import Canvas, Frame
-from tkinter.ttk import Scrollbar
 
 from widgets import BaseWidgetClass
 
@@ -14,7 +12,6 @@ except ImportError:
     from typing_extensions import Literal
 import tkinter
 from customtkinter.windows.widgets.core_widget_classes import CTkBaseClass
-
 
 
 class ScrollFrame(CTkFrame):
@@ -43,14 +40,38 @@ class ScrollFrame(CTkFrame):
         self._desired_height = height
         outerFrame = self
         canv = tkinter.Canvas(outerFrame, highlightthickness=0)
-        vsb = CTkScrollbar(outerFrame, orientation="vertical", fg_color=scrollbar_fg_color, button_color=scrollbar_button_color, button_hover_color=scrollbar_button_hover_color, command=canv.yview)
-        vsb.pack(side="right", fill="y", pady=self.cget("corner_radius") + self.cget("border_width"))
-        canv.pack(fill="both", expand=1, anchor="nw", padx=(self.cget("corner_radius") + self.cget("border_width"), 0), pady=self.cget("corner_radius") + self.cget("border_width"))
+        self.orientation = orientation
+        if self.orientation == "vertical":
+            vsb = CTkScrollbar(outerFrame, orientation="vertical", fg_color=scrollbar_fg_color,
+                               button_color=scrollbar_button_color, button_hover_color=scrollbar_button_hover_color,
+                               command=canv.yview)
+
+            vsb.pack(side="right", fill="y", pady=self.cget("corner_radius") + self.cget("border_width"))
+            canv.pack(fill="both", expand=1, anchor="nw",
+                      padx=(self.cget("corner_radius") + self.cget("border_width"), 0),
+                      pady=self.cget("corner_radius") + self.cget("border_width"))
+
+        else:
+            vsb = CTkScrollbar(outerFrame, orientation="horizontal", fg_color=scrollbar_fg_color,
+                               button_color=scrollbar_button_color, button_hover_color=scrollbar_button_hover_color,
+                               command=canv.xview)
+
+            canv.pack(fill="both", expand=1, anchor="nw",
+                      padx=(self.cget("corner_radius") + self.cget("border_width"), 0),
+                      pady=self.cget("corner_radius") + self.cget("border_width"))
+
+
+            vsb.pack(fill="x", pady=self.cget("corner_radius") + self.cget("border_width"))
+
 
         frame = tkinter.Frame(canv, highlightthickness=0)
         canv.configure(width=width, height=height)
         wrapFrameId = canv.create_window((0,0), window=frame, anchor="nw")
-        canv.config(yscrollcommand=vsb.set)
+        if self.orientation == "vertical":
+            canv.config(yscrollcommand=vsb.set)
+        else:
+            canv.config(xscrollcommand=vsb.set)
+
         canv.bind("<Configure>", lambda event: self.onFrameConfigure())
         canv.bind("<Enter>", lambda event: canv.bind_all("<MouseWheel>", self.on_mouse_wheel)) # on mouse enter
         canv.bind("<Leave>", lambda event: canv.unbind_all("<MouseWheel>")) # on mouse leave
@@ -80,14 +101,26 @@ class ScrollFrame(CTkFrame):
         canv = self.canv
         '''Reset the scroll region to encompass the inner frame'''
         canv.configure(scrollregion=canv.bbox("all"))
-        canv.itemconfigure(self.wrapFrameId, width=canv.winfo_width())
+        if self.orientation == "vertical":
+            canv.itemconfigure(self.wrapFrameId, width=canv.winfo_width())
+        else:
+            canv.itemconfigure(self.wrapFrameId, height=canv.winfo_height())
+
     def on_mouse_wheel(self, event, scale=3):
         canv = self.canv
         #only care event.delta is - or +, scroll down or up
         if event.delta<0:
-            canv.yview_scroll(scale, "units")
+            if self.orientation == "vertical":
+                canv.yview_scroll(scale, "units")
+            else:
+                canv.xview_scroll(scale, "units")
+
         else:
-            canv.yview_scroll(-scale, "units")
+            if self.orientation == "vertical":
+                canv.yview_scroll(-scale, "units")
+            else:
+                canv.xview_scroll(-scale, "units")
+
 
     def _bound_to_mousewheel(self, event):
         self.canv.bind_all("<MouseWheel>", self._on_mousewheel)
@@ -96,7 +129,10 @@ class ScrollFrame(CTkFrame):
         self.canv.unbind_all("<MouseWheel>")
 
     def _on_mousewheel(self, event):
-        self.canv.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        if self.orientation == "vertical":
+            self.canv.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        else:
+            self.canv.xview_scroll(int(-1 * (event.delta / 120)), "units")
 
     def get_me(self):
         return self.scrollwindow
@@ -159,20 +195,26 @@ class ScrollFrame(CTkFrame):
             #self.scrollwindow.destroy()
             self.vsb.pack_forget()
             new_corner_radius = kwargs.pop("corner_radius")
-            self.vsb.pack(side="right", fill="y", pady=new_corner_radius + self.cget("border_width"), )
-            self.canv.pack(fill="both", expand=1, anchor="nw",
-                      padx=(new_corner_radius + self.cget("border_width"), 0),
-                      pady=new_corner_radius + self.cget("border_width"))
+            if self.orientation == "vertical":
+                self.vsb.pack(side="right", fill="y", pady=self.cget("corner_radius") + self.cget("border_width"))
+                self.canv.pack(fill="both", expand=1, anchor="nw",
+                          padx=(self.cget("corner_radius") + self.cget("border_width"), 0),
+                          pady=self.cget("corner_radius") + self.cget("border_width"))
+
+            else:
+                self.canv.pack(fill="both", expand=1, anchor="nw",
+                          padx=(self.cget("corner_radius") + self.cget("border_width"), 0),
+                          pady=self.cget("corner_radius") + self.cget("border_width"))
+
+                self.vsb.pack(fill="x", pady=self.cget("corner_radius") + self.cget("border_width"))
+
             super().configure(corner_radius=new_corner_radius)
 
         ic(kwargs)
         super().configure(**kwargs)
 
     def cget(self, attribute_name):
-        if attribute_name in ["label_text"]:
-            pass
-        else:
-            return CTkFrame.cget(self, attribute_name)
+        return CTkFrame.cget(self, attribute_name)
     def winfo_children(self):
         return self.scrollwindow.winfo_children()
 
@@ -184,6 +226,7 @@ class ScrollableFrame(ScrollFrame, PackArgs, BaseWidgetClass):
         BaseWidgetClass.__init__(self)
         self.type = "SCROLLABLEFRAME"
         self.properties = properties
+        print(self.properties)
         self.pack_options = {}
         #self.pack_propagate(False)
         #self.configure(bg_color=self.master.cget("fg_color"))

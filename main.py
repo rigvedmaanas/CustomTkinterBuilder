@@ -19,7 +19,6 @@ from Widgets.Switch import Switch
 from Widgets.TextBox import TextBox
 from Widgets.ProgressBar import ProgressBar
 from Widgets.SegmentedButton import SegmentedButton
-from Widgets.ScrollableFrame import ScrollableFrame
 from Widgets.Slider import Slider
 from Widgets.OptionMenu import OptionMenu
 from Widgets.CheckBox import CheckBox
@@ -951,7 +950,7 @@ app.mainloop()
         new_widget.num = self.total_num
         new_widget.name = new_widget.type + str(new_widget.num)
         self.apply_theme_to_widget(new_widget)
-        if new_widget.__class__ == Slider or new_widget.__class__ == Scrollbar:
+        if new_widget.__class__ == Slider or new_widget.__class__ == Scrollbar or new_widget.__class__ == ScrollableFrame:
             new_widget.props["orientation"] = properties["orientation"]
 
         self.total_num += 1
@@ -1426,8 +1425,17 @@ class App(CTkToplevel):
         self.add_button_btn = WidgetButton(master=self.widget_panel_core, text="Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Button, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_button_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_scrl_frame_btn = WidgetButton(master=self.widget_panel_core, text="Scrollable Frame", height=50, on_drag=lambda x, y, widget: self.main.add_widget(ScrollableFrame, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_scrl_frame_btn.pack(padx=10, pady=(10, 0), fill="x")
+        self.add_vert_scrl_frame_btn = WidgetButton(master=self.widget_panel_core, text="Vertical Scrollable Frame", height=50, on_drag=lambda x, y, widget: self.main.add_widget(ScrollableFrame, properties={"properties":self.properties_panel, "orientation": "vertical"}, x=x, y=y, widget=widget))
+        self.add_vert_scrl_frame_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_horiz_scrl_frame_btn = WidgetButton(master=self.widget_panel_core, text="Horizontal Scrollable Frame", height=50,
+                                               on_drag=lambda x, y, widget: self.main.add_widget(ScrollableFrame,
+                                                                                                 properties={
+                                                                                                     "properties": self.properties_panel,
+                                                                                                     "orientation": "horizontal"},
+                                                                                                 x=x, y=y,
+                                                                                                 widget=widget))
+        self.add_horiz_scrl_frame_btn.pack(padx=10, pady=(10, 0), fill="x")
 
 
         self.add_button_1_btn = WidgetButton(master=self.widget_panel_themed, text="Button 1", height=50,
