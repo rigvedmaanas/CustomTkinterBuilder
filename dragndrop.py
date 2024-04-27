@@ -26,7 +26,7 @@ class DragManager:
             w.bind("<Leave>", lambda e: self.set_on_top(False, e.widget))
 
     def update_children(self, children):
-        ic(children)
+
         for w in children:
 
             if w.__class__ == SegmentedButton:

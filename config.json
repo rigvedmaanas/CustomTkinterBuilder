@@ -1,14 +1,6 @@
 {
     "project_files": [
         {
-            "Name": "sdfgsdgf",
-            "Directory": "/Users/rigvedmaanas/Documents"
-        },
-        {
-            "Name": "HelloWorld",
-            "Directory": "/Users/rigvedmaanas/Downloads"
-        },
-        {
             "Name": "CustomTkinterOpenPageV2",
             "Directory": "/Users/rigvedmaanas/Downloads"
         },
@@ -30,6 +22,22 @@
         },
         {
             "Name": "AchanAmmaTest",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "HelloWorld",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "sdfgsdgf",
+            "Directory": "/Users/rigvedmaanas/Documents"
+        },
+        {
+            "Name": "hello",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "Demo",
             "Directory": "/Users/rigvedmaanas/Downloads"
         }
     ]

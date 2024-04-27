@@ -1,10 +1,12 @@
 import uuid
 import json
+from tkinter import messagebox
 from tkinter.filedialog import askdirectory
 
 from customtkinter import *
 from PIL import Image
 from main import SaveFileDialog, App
+from thefuzz import process
 class Root(CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -30,8 +32,11 @@ class Root(CTk):
         self.FRAME7.pack(pady=['5', 5], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, padx=5, side="left")
         self.LABEL8 = CTkLabel(master=self.FRAME7, text="", image=CTkImage(Image.open("Assets/baseline_search_white_24dp_1x.png"), size=(24, 24)), font=CTkFont(family="SF Display"))
         self.LABEL8.pack(padx=[10, '0'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.ENTRY9 = CTkEntry(master=self.FRAME7, placeholder_text="Search Projects", fg_color=['#e0ddcf', '#161b33'], border_width=0, text_color=['#0d0c1d', '#f1f0ea'], placeholder_text_color=['#161b33', '#e0ddcf'], font=CTkFont(family="SF Display", size=14))
+        self.var = StringVar()
+        self.var.set("Search Projects")
+        self.ENTRY9 = CTkEntry(master=self.FRAME7, placeholder_text="Search Projects", fg_color=['#e0ddcf', '#161b33'], border_width=0, text_color=['#0d0c1d', '#f1f0ea'], placeholder_text_color=['#161b33', '#e0ddcf'], font=CTkFont(family="SF Display", size=14), textvariable=self.var)
         self.ENTRY9.pack(padx=['10', 10], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=0, side="left")
+        self.var.trace_add("write", self.search)
         self.BUTTON10 = CTkButton(master=self.FRAME6, text="New Project", corner_radius=3, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['gray98', '#f1f0ea'], font=CTkFont(family="SF Display", size=14), command=lambda: SaveFileDialog(callback=self.create_project))
         self.BUTTON10.pack(padx=[5, '5'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
         self.BUTTON13_copy = CTkButton(master=self.FRAME6, text="Open", corner_radius=3, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['gray98', '#f1f0ea'], width=90, font=CTkFont(family="SF Display", size=14), command=self.open_project_from_disk)
@@ -47,9 +52,44 @@ class Root(CTk):
         self.withdraw()
         set_default_color_theme(os.path.join("Themes", "ctktheme.json"))
         app = App()
+
+        def on_closing(command=None):
+            msg = messagebox.askyesno("Quit", "Save changes before closing?")
+
+            if msg:
+                app.main.save_file()
+                if command != None:
+                    command()
+                else:
+                    app.destroy()
+            else:
+                if command != None:
+                    command()
+                else:
+                    app.destroy()
+
+        app.protocol("WM_DELETE_WINDOW", on_closing)
+        app.on_closing = on_closing
         app.main.file = [dir_, name]
         app.main.open_file_without_asking()
         app.mainloop()
+    def center(self, toplevel):
+        toplevel.update_idletasks()
+
+        # Tkinter way to find the screen resolution
+        screen_width = toplevel.winfo_screenwidth()
+        screen_height = toplevel.winfo_screenheight()
+
+        # PyQt way to find the screen resolution
+        # app = QtGui.QApplication([])
+        # screen_width = app.desktop().screenGeometry().width()
+        # screen_height = app.desktop().screenGeometry().height()
+
+        size = tuple(int(_) for _ in toplevel.geometry().split('+')[0].split('x'))
+        x = screen_width / 2 - size[0] / 2
+        y = screen_height / 2 - size[1] / 2
+
+        toplevel.geometry("+%d+%d" % (x, y))
 
     def open_project_from_disk(self):
         file = askdirectory()
@@ -87,7 +127,25 @@ class Root(CTk):
         LABEL18_copy.pack(expand="true", anchor="center", fill="x", ipadx=0, ipady=0, padx=0, pady=0, side="top")
         #self.FRAME13.bind('<Double-Button-1>', lambda e, dir_=dir_, name=name: self.open_project_in_editor(dir_=dir_, name=name))
         for x in [FRAME13, FRAME15, LABEL14, LABEL16, LABEL18_copy]:
-            x.bind('<Double-Button-1>', lambda e, dir_=dir_, name=name: self.open_project_in_editor(dir_=dir_, name=name))
+            x.bind('<Double-Button-1>', lambda e, dir_=dir_, name=name: (self.bring_to_top(dir_, name), self.open_project_in_editor(dir_=dir_, name=name)))
+
+    def bring_to_top(self, dir_, name):
+        with open("config.json", 'r') as openfile:
+            configure = json.load(openfile)
+        self.project_files = configure["project_files"]
+        index = self.project_files.index({"Name": name, "Directory": dir_})
+        content = self.project_files.pop(index)
+        self.project_files.append(content)
+        configure["project_files"] = self.project_files
+        json_object = json.dumps(configure, indent=4)
+        with open("config.json", 'w') as f:
+            f.write(json_object)
+        for widget in self.FRAME20_copy.winfo_children():
+            widget.destroy()
+        for project in self.project_files:
+            root.show_project(project["Name"][0:2].upper(), project["Name"], project["Directory"])
+
+
     def create_project(self, name="Project 1", dir_="~/Project 1"):
         try:
             json_ = {
@@ -108,9 +166,9 @@ class Root(CTk):
                 f.write(json_object)
             with open("config.json", 'r') as openfile:
                 configure = json.load(openfile)
-            project_files = configure["project_files"]
-            project_files.append({"Name": name, "Directory": dir_})
-            configure["project_files"] = project_files
+            self.project_files = configure["project_files"]
+            self.project_files.append({"Name": name, "Directory": dir_})
+            configure["project_files"] = self.project_files
             json_object = json.dumps(configure, indent=4)
             with open("config.json", 'w') as f:
                 f.write(json_object)
@@ -121,8 +179,27 @@ class Root(CTk):
 
         except Exception as e:
             print(e)
+    def search(self, a, b, c):
+        text = self.var.get()
+        if text != "":
+            for widget in self.FRAME20_copy.winfo_children():
+                widget.destroy()
+            find = process.extract(text, self.project_files, limit=10)
+            find.reverse()
+            for x in find:
+                project_data = x[0]
+                self.show_project(project_data["Name"][0:2].upper(), project_data["Name"], project_data["Directory"])
+        else:
+            for widget in self.FRAME20_copy.winfo_children():
+                widget.destroy()
+            for project_data in self.project_files:
+                self.show_project(project_data["Name"][0:2].upper(), project_data["Name"], project_data["Directory"])
+
+
+
 
 set_default_color_theme(os.path.join("Themes", "ctktheme.json"))
+set_appearance_mode("dark") # I like the dark theme. Besides the main window doesn't have a light theme.
 root = Root()
 root.geometry("1000x600")
 root.title("Welcome To Custom Tkinter Builder")
@@ -130,8 +207,10 @@ root.configure(fg_color=['#f1f0ea', '#0d0c1d'])
 #for x in range(100):
 with open("config.json", 'r') as openfile:
     configure = json.load(openfile)
-project_file = configure["project_files"]
-for project in project_file:
-    root.show_project(project["Name"][0:2], project["Name"], project["Directory"])
+root.project_files = configure["project_files"]
+
+for project in root.project_files:
+    root.show_project(project["Name"][0:2].upper(), project["Name"], project["Directory"])
+root.center(root)
 root.mainloop()
             

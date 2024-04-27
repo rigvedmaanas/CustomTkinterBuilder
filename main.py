@@ -33,10 +33,13 @@ from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image
-#ic.disable()
+import timeit
+
+
+ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
-#blockPrint()
+blockPrint()
 class ThemeUtl:
     def __init__(self, theme_dir, theme_name):
         path = os.path.join(theme_dir, f"{theme_name}.json")
@@ -162,7 +165,12 @@ class MainWindow:
             mode = "light"
         else:
             mode = "dark"
+
+
         widget._set_appearance_mode(mode)
+
+
+
         if widget.get_class() == "CTkScrollableFrame":
             x = self.theme["CTkFrame"]
 
@@ -172,7 +180,7 @@ class MainWindow:
 
 
 
-
+        d = {}
         for key in list(x.keys()):
             if key == "top_fg_color":
 
@@ -196,30 +204,33 @@ class MainWindow:
 
                         #print("bottom")
             else:
-                d = {key: x[key]}
-                widget.configure(**d)
+                d[key] = x[key]
+
+        #widget.configure(**d)
 
         if widget.__class__ not in [Frame, ProgressBar, Scrollbar, Slider, Main, ScrollableFrame]:
             for y in list(self.theme["CTkFont"].keys()):
                 if sys.platform == "darwin":
-                    d = {"font": CTkFont(family=self.theme["CTkFont"]["macOS"]["family"], size=self.theme["CTkFont"]["macOS"]["size"],
-                                      weight=self.theme["CTkFont"]["macOS"]["weight"])}
+                    d["font"] = CTkFont(family=self.theme["CTkFont"]["macOS"]["family"], size=self.theme["CTkFont"]["macOS"]["size"],
+                                      weight=self.theme["CTkFont"]["macOS"]["weight"])
                 elif sys.platform.startswith("win"):
-                    d = {"font": CTkFont(family=self.theme["CTkFont"]["Windows"]["family"], size=self.theme["CTkFont"]["Windows"]["size"],
-                                      weight=self.theme["CTkFont"]["Windows"]["weight"])}
+                    d["font"] = CTkFont(family=self.theme["CTkFont"]["Windows"]["family"], size=self.theme["CTkFont"]["Windows"]["size"],
+                                      weight=self.theme["CTkFont"]["Windows"]["weight"])
                 else:
-                    d = {"font": CTkFont(family=self.theme["CTkFont"]["Linux"]["family"], size=self.theme["CTkFont"]["Linux"]["size"],
-                                      weight=self.theme["CTkFont"]["Linux"]["weight"])}
-            widget.configure(**d)
+                    d["font"] = CTkFont(family=self.theme["CTkFont"]["Linux"]["family"], size=self.theme["CTkFont"]["Linux"]["size"],
+                                      weight=self.theme["CTkFont"]["Linux"]["weight"])
 
-        if widget.__class__ in [ComboBox, OptionMenu]:
-            widget.set_nonvisible_disable()
+        widget.configure(**d)
+
+
 
 
         if widget.get_class() == "CTkScrollableFrame":
             ic(self.theme["CTkScrollbar"]["fg_color"])
             widget.configure(scrollbar_fg_color=self.theme["CTkScrollbar"]["fg_color"])
 
+        if widget.__class__ in [ComboBox, OptionMenu]:
+            widget.set_nonvisible_disable()
 
     def change(self, **kwargs):
         for key in list(kwargs.keys()):
@@ -376,7 +387,7 @@ app.mainloop()
                         if type(x.props[key]) == str:
                             k = self.escape_special_chars(x.props[key])
                             p += f'{key}="{k}", '
-                        elif type(x.props[key]) == tuple:
+                        elif type(x.props[key]) == tuple or type(x.props[key]) == list:
                             if type(x.props[key][0]) == str and type(x.props[key][1]) == str:
                                 p += f'{key}=("{x.props[key][0]}", "{x.props[key][1]}"), '
                             else:
@@ -388,7 +399,7 @@ app.mainloop()
                 f2 = f2[0:-2]
                 f2 += ")"
                 font += ")"
-                ic(f2)
+
                 if font != "font=CTkFon)": # Which means there is no change in font
                     p += font
                     p += ", "
@@ -414,16 +425,23 @@ app.mainloop()
 
             else:
                 p = ""
-                for key in list(x.pack_options.keys()):
-                    if type(x.pack_options[key]) == str:
-                        p += f'{key}="{x.pack_options[key]}", '
-                    elif type(x.pack_options[key]) == tuple:
-                        if type(x.pack_options[key][0]) == str and type(x.pack_options[key][1]) == str:
+                default_pack_options = {"expand": False, "anchor": "center", "fill": "none", "padx": 0, "pady": 0, "side": "top", "ipadx": 0, "ipady": 0}
+                modified_pack_options = x.pack_options
+                for i in list(modified_pack_options.keys()):
+                    if modified_pack_options[i] == default_pack_options[i]:
+                        modified_pack_options.pop(i)
+
+                for key in list(modified_pack_options.keys()):
+
+                    if type(modified_pack_options[key]) == str:
+                        p += f'{key}="{modified_pack_options[key]}", '
+                    elif type(modified_pack_options[key]) == tuple or type(modified_pack_options[key]) == list:
+                        """if type(x.pack_options[key][0]) == str and type(x.pack_options[key][1]) == str:
                             p += f'{key}=("{x.pack_options[key][0]}", "{x.pack_options[key][1]}"), '
-                        else:
-                            p += f"{key}=({x.pack_options[key][0]}, {x.pack_options[key][1]}), "
+                        else:"""
+                        p += f"{key}=({int(modified_pack_options[key][0])}, {int(modified_pack_options[key][1])}), "
                     else:
-                        p += f"{key}={x.pack_options[key]}, "
+                        p += f"{key}={modified_pack_options[key]}, "
 
                 p = p[0:-2]  # Delete ', ' at last part
                 code.add_line(f"{x.get_name()}.pack({p})")
@@ -471,9 +489,54 @@ app.mainloop()
         d.pop("theme")
         d.pop("palette")
         d.pop("palette_on_change")
-        t1 = threading.Thread(target=self.loop_open, args=(d, self.r))
-        t1.start()
+        t1 = self.launch_thread_with_message(target=self.loop_open, args=(d, self.r))
+
         #self.loop_open(d, self.r)
+
+    def center(self, toplevel):
+        toplevel.update_idletasks()
+
+        # Tkinter way to find the screen resolution
+        screen_width = toplevel.winfo_screenwidth()
+        screen_height = toplevel.winfo_screenheight()
+
+        # PyQt way to find the screen resolution
+        # app = QtGui.QApplication([])
+        # screen_width = app.desktop().screenGeometry().width()
+        # screen_height = app.desktop().screenGeometry().height()
+
+        size = tuple(int(_) for _ in toplevel.geometry().split('+')[0].split('x'))
+        x = screen_width / 2 - size[0] / 2
+        y = screen_height / 2 - size[1] / 2
+
+        toplevel.geometry("+%d+%d" % (x, y))
+
+
+    def launch_thread_with_message(self, target, args=(), kwargs={}):
+        def target_with_msg(*args, **kwargs):
+            target(*args, **kwargs)
+            self.hierarchy.delete_children()
+            self.hierarchy.update_list(self.widgets, 5)
+            loading_window.destroy()
+
+        loading_window = CTkToplevel()
+        loading_window.geometry(f"500x100")
+        loading_window.title("Loading....")
+        loading_window.overrideredirect(1)
+        loading_window.overrideredirect(0)
+
+        self.center(loading_window)
+        frm = CTkFrame(loading_window, fg_color="transparent")
+        lbl = CTkLabel(frm, text="Loading....")
+        lbl.pack(pady=1)
+        progressbar = CTkProgressBar(frm, height=25, orientation="horizontal", mode="indeterminate")
+        progressbar.pack(fill="x", padx=10)
+        progressbar.start()
+        frm.pack(expand=True, fill="x")
+        thread = threading.Thread(target=target_with_msg, args=args, kwargs=kwargs)
+        thread.start()
+        return thread
+
 
     def open_file(self):
         file = askdirectory()
@@ -510,12 +573,13 @@ app.mainloop()
             d.pop("theme")
             d.pop("palette")
             d.pop("palette_on_change")
-            t2 = threading.Thread(target=self.loop_open, args=(d, self.r))
-            t2.start()
+            t2 = self.launch_thread_with_message(target=self.loop_open, args=(d, self.r))
             #self.loop_open(d, self.r)
 
     def loop_open(self, d, parent, copy=False):
         # I could destroy every child in self.r but could not add new widgets after destroying the children.
+
+
         for x in list(d.keys()):
             y = d[x]["TYPE"]
             if y == "FRAME":
@@ -553,7 +617,6 @@ app.mainloop()
 
             else:
                 raise ModuleNotFoundError(f"The Widget is not available. Perhaps the file is edited. The unknown widget was {x}")
-
             f = CTkFont()
 
             i = None
@@ -616,6 +679,7 @@ app.mainloop()
             ##print(w, parent.get_name(), d[x]["parameters"])
             if d[x]["parameters"] != {}:
                 if "orientation" in list(d[x]["parameters"].keys()):
+
                     if parent.get_class() == "CTkScrollableFrame":
                         new_widget = w(master=parent.scrollwindow, orientation=d[x]["parameters"]["orientation"],
                                        properties=self.r.properties)
@@ -623,18 +687,23 @@ app.mainloop()
                         new_widget = w(master=parent, orientation=d[x]["parameters"]["orientation"], properties=self.r.properties)
                     g = dict(d)
                     g[x]["parameters"].pop("orientation")
+
                     self.apply_theme_to_widget(new_widget)
+
                     new_widget.configure(**g[x]["parameters"])
                 else:
                     if parent.get_class() == "CTkScrollableFrame":
                         new_widget = w(master=parent.scrollwindow, properties=self.r.properties)
                     else:
                         new_widget = w(master=parent, properties=self.r.properties)
+
                     self.apply_theme_to_widget(new_widget)
+
                     new_widget.configure(**d[x]["parameters"])
 
                 try:
                     ##print(d_copy)
+
                     new_widget.image = d_copy["image"]["image"]
                     img = d[x]["parameters"]["image"]
                     d_copy["image"] = img
@@ -647,10 +716,12 @@ app.mainloop()
                 new_widget.props = d_copy
 
             else:
+
                 if parent.get_class() == "CTkScrollableFrame":
                     new_widget = w(master=parent.scrollwindow, properties=self.r.properties)
                 else:
                     new_widget = w(master=parent, properties=self.r.properties)
+
                 self.apply_theme_to_widget(new_widget)
 
             new_widget.num = self.total_num
@@ -659,7 +730,6 @@ app.mainloop()
                 new_widget.name = x
             else:
                 new_widget.name = new_widget.type + str(new_widget.num + 1) + "_copy"
-
             self.total_num += 1
             self._parents = []
 
@@ -672,9 +742,12 @@ app.mainloop()
             self.add_to_dict(self.widgets, self._parents, new_widget)
 
             self._parents = []
+
+
             new_widget.pack(**d[x]["pack_options"])
             new_widget.pack_options = d[x]["pack_options"]
             #new_widget.configure(bg_color=parent.cget("fg_color"))
+
             if new_widget.__class__ == SegmentedButton:
                 new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
             elif new_widget.__class__ == ScrollableFrame:
@@ -684,7 +757,8 @@ app.mainloop()
                 new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
             # new_widget.bind("<Button-1>", new_widget.on_drag_start)
-            new_widget.on_drag_start(None)
+            # new_widget.on_drag_start(None)
+
             if not copy:
                 new_widget._inner_id = d[x]["ID"]
                 self.id_mapped_widgets[new_widget._inner_id] = new_widget
@@ -698,11 +772,12 @@ app.mainloop()
                     self.properties.color_manager.on_change_list[i[0]] = ar
 
             #ic(new_widget._inner_id, new_widget.cget("fg_color"), d, x)
-            self.hierarchy.delete_children()
-            self.hierarchy.update_list(self.widgets, 5)
+            #self.hierarchy.delete_children()
+            #self.hierarchy.update_list(self.widgets, 5)
             # new_widget.place(x=x, y=y)
             if new_widget.__class__ != SegmentedButton:
                 self.drag_manager.update_children(children=parent.winfo_children())
+
             d[x].pop("TYPE")
             d[x].pop("pack_options")
             d[x].pop("parameters")
@@ -817,7 +892,7 @@ app.mainloop()
                         if type(x.props[key]) == str:
                             k = self.escape_special_chars(x.props[key])
                             p += f'{key}="{k}", '
-                        elif type(x.props[key]) == tuple:
+                        elif type(x.props[key]) == tuple or type(x.props[key]) == list:
                             if type(x.props[key][0]) == str and type(x.props[key][1]) == str:
                                 p += f'{key}=("{x.props[key][0]}", "{x.props[key][1]}"), '
                             else:
@@ -845,16 +920,22 @@ app.mainloop()
                 code.add_line(f"self.{x.get_name()}.pack()")
             else:
                 p = ""
-                for key in list(x.pack_options.keys()):
-                    if type(x.pack_options[key]) == str:
-                        p += f'{key}="{x.pack_options[key]}", '
-                    elif type(x.pack_options[key]) == tuple:
-                        if type(x.pack_options[key][0]) == str and type(x.pack_options[key][1]) == str:
+                default_pack_options = {"expand": False, "anchor": "center", "fill": "none", "padx": 0, "pady": 0, "side": "top", "ipadx": 0, "ipady": 0}
+                modified_pack_options = x.pack_options
+                for i in list(modified_pack_options.keys()):
+                    if modified_pack_options[i] == default_pack_options[i]:
+                        modified_pack_options.pop(i)
+                ic(modified_pack_options)
+                for key in list(modified_pack_options.keys()):
+                    if type(modified_pack_options[key]) == str:
+                        p += f'{key}="{modified_pack_options[key]}", '
+                    elif type(modified_pack_options[key]) == tuple or type(modified_pack_options[key]) == list:
+                        """if type(modified_pack_options[key][0]) == str and type(x.pack_options[key][1]) == str:
                             p += f'{key}=("{x.pack_options[key][0]}", "{x.pack_options[key][1]}"), '
-                        else:
-                            p += f"{key}=({x.pack_options[key][0]}, {x.pack_options[key][1]}), "
+                        else:"""
+                        p += f"{key}=({int(modified_pack_options[key][0])}, {int(modified_pack_options[key][1])}), "
                     else:
-                        p += f"{key}={x.pack_options[key]}, "
+                        p += f"{key}={modified_pack_options[key]}, "
 
                 p = p[0:-2]  # Delete ', ' at last part
                 code.add_line(f"self.{x.get_name()}.pack({p})")
@@ -966,7 +1047,6 @@ app.mainloop()
         return new_d
 
     def add_widget(self, w, properties, widget, x=0, y=0):
-        ic(widget)
         if widget.master.master.__class__ == ScrollableFrame:
             new_widget = w(master=widget.master.master.get_me(), **properties)
 
@@ -984,7 +1064,6 @@ app.mainloop()
 
         self.total_num += 1
         self.get_parents(new_widget)
-        ic(self._parents)
 
         self.add_to_dict(self.widgets, self._parents, new_widget)
 
@@ -1008,8 +1087,6 @@ app.mainloop()
         self.hierarchy.delete_children()
         self.hierarchy.update_list(self.widgets, 5)
         #new_widget.place(x=x, y=y)
-        ic(new_widget,widget, widget.master, new_widget.master, widget.winfo_children())
-
         if new_widget.__class__ != SegmentedButton:
             if widget.master.master.__class__ == ScrollableFrame:
                 self.drag_manager.update_children(children=widget.master.master.winfo_children())
@@ -1276,7 +1353,8 @@ class Hierarchy(CTkScrollableFrame):
 
         ic(self.main.get_first_degree_parent(self.main.widgets, self.main._parents), self.main.widgets, self.widget, self.widget.master, self.s, self.main._parents)
         self.main.loop_open(self.s, self.main._parents[-1], copy=True)
-
+        self.main.hierarchy.delete_children()
+        self.main.hierarchy.update_list(self.main.widgets, 5)
 
         self.main._parents = []
 
@@ -1825,7 +1903,7 @@ class App(CTkToplevel):
         self.open_btn.configure(command=self.main.open_file)
         self.hierarchy.delete_children()
         self.hierarchy.update_list(self.main.widgets, 5)
-        self.home_btn.configure(command=lambda : (self.master.deiconify(), self.destroy()))
+        self.home_btn.configure(command=lambda : self.on_closing(command=lambda: (self.master.deiconify(), self.destroy())))
         self.main.apply_theme_to_widget(self.main_window)
 
 if __name__ == "__main__":
