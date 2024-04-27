@@ -71,8 +71,8 @@ class Root(CTk):
         FRAME13 = CTkFrame(master=self.FRAME20_copy, height=65, fg_color=['#f1f0ea', '#0d0c1d'])
         FRAME13.pack_propagate(False)
         FRAME13.pack(padx=['15', 20], anchor="center", expand=0, fill="x", ipadx=0, ipady=0, pady=[10, 0],
-                          side="top")
-        LABEL14 = CTkLabel(master=FRAME13, text=short_name, width=50, height=50,
+                          side="bottom")
+        LABEL14 = CTkLabel(master=FRAME13, text=short_name.upper(), width=50, height=50,
                                 fg_color=['#cf245e', '#cf245e'], corner_radius=3, text_color=['#f1f0ea', '#f1f0ea'],
                                 font=CTkFont(family="SF Display", size=14))
         LABEL14.pack(padx=[8, '0'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
@@ -122,7 +122,7 @@ class Root(CTk):
         except Exception as e:
             print(e)
 
-set_default_color_theme("green")
+set_default_color_theme(os.path.join("Themes", "ctktheme.json"))
 root = Root()
 root.geometry("1000x600")
 root.title("Welcome To Custom Tkinter Builder")

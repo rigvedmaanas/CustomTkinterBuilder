@@ -19,6 +19,18 @@
         {
             "Name": "test1234567890-098765432345678765432",
             "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "Dashboard-UI",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "Dashboard-UI copy",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "AchanAmmaTest",
+            "Directory": "/Users/rigvedmaanas/Downloads"
         }
     ]
 }

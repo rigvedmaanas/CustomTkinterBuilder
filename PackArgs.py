@@ -17,7 +17,7 @@ class PackArgs:
         #self.properties.add_seperator("Layout (Pack)")
 
         self.properties.add_option(self.properties.LAYOUT, "Fill", "COMBO", "Fill", {"vals": ["none", "x", "y", "both"], "default": str(self.pack_info()["fill"]), "callback": lambda val: self.redraw(fill=val, **{k: v for k, v in self.pack_info().items() if k != "fill"})})
-        self.properties.add_option(self.properties.LAYOUT, "Expand", "COMBO", "Expand", {"vals": ["false", "true"], "default": str(self.pack_info()["expand"]), "callback": lambda val: self.redraw(expand=val, **{k: v for k, v in self.pack_info().items() if k != "expand"})})
+        self.properties.add_option(self.properties.LAYOUT, "Expand", "COMBO", "Expand", {"vals": ["false", "true"], "default": str(self._bool_change(self.pack_info()["expand"])), "callback": lambda val: self.redraw(expand=self._bool_change(val), **{k: v for k, v in self.pack_info().items() if k != "expand"})})
         self.properties.add_option(self.properties.LAYOUT, "Side", "COMBO", "Side", {"vals": ["top", "bottom", "left", "right"], "default": str(self.pack_info()["side"]), "callback": lambda val: self.redraw(side=val, **{k: v for k, v in self.pack_info().items() if k != "side"})})
 
         if type(self.pack_info()["padx"]) == int:

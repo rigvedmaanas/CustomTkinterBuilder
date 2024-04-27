@@ -57,11 +57,10 @@ class ScrollFrame(CTkFrame):
                                command=canv.xview)
 
             canv.pack(fill="both", expand=1, anchor="nw",
-                      padx=(self.cget("corner_radius") + self.cget("border_width"), 0),
-                      pady=self.cget("corner_radius") + self.cget("border_width"))
+                      padx=self.cget("corner_radius") + self.cget("border_width"),
+                      pady=(self.cget("corner_radius") + self.cget("border_width"), 0))
 
-
-            vsb.pack(fill="x", pady=self.cget("corner_radius") + self.cget("border_width"))
+            vsb.pack(fill="x", padx=self.cget("corner_radius") + self.cget("border_width"))
 
 
         frame = tkinter.Frame(canv, highlightthickness=0)
@@ -203,10 +202,10 @@ class ScrollFrame(CTkFrame):
 
             else:
                 self.canv.pack(fill="both", expand=1, anchor="nw",
-                          padx=(self.cget("corner_radius") + self.cget("border_width"), 0),
-                          pady=self.cget("corner_radius") + self.cget("border_width"))
+                               padx=self.cget("corner_radius") + self.cget("border_width"),
+                               pady=(self.cget("corner_radius") + self.cget("border_width"), 0))
 
-                self.vsb.pack(fill="x", pady=self.cget("corner_radius") + self.cget("border_width"))
+                self.vsb.pack(fill="x", padx=self.cget("corner_radius") + self.cget("border_width"))
 
             super().configure(corner_radius=new_corner_radius)
 

@@ -1,8 +1,11 @@
 import json
 import shutil
+import threading
 import tkinter.messagebox
 import uuid
 from tkinter.colorchooser import askcolor
+
+import darkdetect
 import userpaths
 from icecream import ic
 from Widgets import ThemedText
@@ -137,6 +140,9 @@ class MainWindow:
             mode = "dark"
 
         self.r._set_appearance_mode(mode)
+        self.r.winfo_toplevel().main_window_panel._set_appearance_mode(mode)
+        self.r.winfo_toplevel().temp._set_appearance_mode(mode)
+
         self.loop_change_appearance(mode, self.widgets[self.r])
         #for widget in wgts:
         #    widget._set_appearance_mode(mode)
@@ -171,12 +177,22 @@ class MainWindow:
             if key == "top_fg_color":
 
                 if widget.get_class() == "CTkFrame":
-                    if widget.master._fg_color == x["fg_color"]:
-                        widget.configure(fg_color=x["top_fg_color"])
-                        #print("top")
-                    else:
-                        widget.configure(fg_color=x["fg_color"])
-                        #print("bottom")
+                    try:
+                        if widget.master._fg_color == x["fg_color"]:
+                            widget.configure(fg_color=x["top_fg_color"])
+                            #print("top")
+                        else:
+                            widget.configure(fg_color=x["fg_color"])
+                            #print("bottom")
+                    except AttributeError as e:
+                        print(e)
+                        print(widget.master)
+                        # Parent widget is a Scrollable Frame
+                        if widget.master.master.master.master._fg_color == x["fg_color"]:
+                            widget.configure(fg_color=x["top_fg_color"])
+                            # print("top")
+                        else:
+                            widget.configure(fg_color=x["fg_color"])
 
                         #print("bottom")
             else:
@@ -455,7 +471,9 @@ app.mainloop()
         d.pop("theme")
         d.pop("palette")
         d.pop("palette_on_change")
-        self.loop_open(d, self.r)
+        t1 = threading.Thread(target=self.loop_open, args=(d, self.r))
+        t1.start()
+        #self.loop_open(d, self.r)
 
     def open_file(self):
         file = askdirectory()
@@ -492,7 +510,9 @@ app.mainloop()
             d.pop("theme")
             d.pop("palette")
             d.pop("palette_on_change")
-            self.loop_open(d, self.r)
+            t2 = threading.Thread(target=self.loop_open, args=(d, self.r))
+            t2.start()
+            #self.loop_open(d, self.r)
 
     def loop_open(self, d, parent, copy=False):
         # I could destroy every child in self.r but could not add new widgets after destroying the children.
@@ -537,7 +557,7 @@ app.mainloop()
             f = CTkFont()
 
             i = None
-
+            family = False
             d_copy = dict(d[x]["parameters"])
             for p in dict(d[x]["parameters"]):
                 if p == "image":
@@ -550,6 +570,7 @@ app.mainloop()
                 elif p == "font_family":
                     ##print(d[x], p)
                     f.configure(family=d[x]["parameters"][p])
+                    family = True
                     d[x]["parameters"].pop("font_family")
                     if w != ScrollableFrame:
                         d[x]["parameters"]["font"] = f
@@ -643,7 +664,11 @@ app.mainloop()
             self._parents = []
 
             self.get_parents(new_widget)
-            ic(self.widgets, self._parents, new_widget)
+            #ic(self.widgets, self._parents, new_widget)
+            if family:
+                #pass
+                new_widget.family = new_widget.cget("font").cget("family")
+
             self.add_to_dict(self.widgets, self._parents, new_widget)
 
             self._parents = []
@@ -652,6 +677,9 @@ app.mainloop()
             #new_widget.configure(bg_color=parent.cget("fg_color"))
             if new_widget.__class__ == SegmentedButton:
                 new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+            elif new_widget.__class__ == ScrollableFrame:
+                new_widget.scrollwindow.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+                new_widget.canv.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
             else:
                 new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
@@ -669,7 +697,7 @@ app.mainloop()
                     ar.append([new_widget._inner_id, i[1][1], i[1][2]])
                     self.properties.color_manager.on_change_list[i[0]] = ar
 
-            ic(new_widget._inner_id, new_widget.cget("fg_color"), d, x)
+            #ic(new_widget._inner_id, new_widget.cget("fg_color"), d, x)
             self.hierarchy.delete_children()
             self.hierarchy.update_list(self.widgets, 5)
             # new_widget.place(x=x, y=y)
@@ -681,7 +709,7 @@ app.mainloop()
             d[x].pop("ID")
 
             if d[x] != {}:
-                ic(d[x], new_widget, copy)
+                #ic(d[x], new_widget, copy)
                 self.loop_open(d[x], new_widget, copy=copy)
 
     def save(self, dir_, name):
@@ -950,6 +978,7 @@ app.mainloop()
         new_widget.num = self.total_num
         new_widget.name = new_widget.type + str(new_widget.num)
         self.apply_theme_to_widget(new_widget)
+        new_widget._set_appearance_mode('light' if self.appearance.get() == 0 else 'dark')
         if new_widget.__class__ == Slider or new_widget.__class__ == Scrollbar or new_widget.__class__ == ScrollableFrame:
             new_widget.props["orientation"] = properties["orientation"]
 
@@ -1119,10 +1148,10 @@ class Hierarchy(CTkScrollableFrame):
         for child in self.winfo_children():
 
             if child.cget("text") != self.widget.get_name():
-                child.configure(fg_color="#113D5F")
+                child.configure(fg_color="#87163D")
             else:
                 self.current_selection = child
-                child.configure(fg_color="#1F6AA5")
+                child.configure(fg_color="#CF245E")
 
     def update_text(self, old_name, new_text):
 
@@ -1205,7 +1234,7 @@ class Hierarchy(CTkScrollableFrame):
         self.widget = None
         for x in list(d.keys()):
             if d[x] != {}:
-                btn = CTkButton(self, text=x.get_name(), fg_color="#113D5F")
+                btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
                 #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                 btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                 btn.widget = x
@@ -1213,7 +1242,7 @@ class Hierarchy(CTkScrollableFrame):
                 self.update_list(d[x], pad+20)
             else:
 
-                btn = CTkButton(self, text=x.get_name(), fg_color="#113D5F")
+                btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
                 #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                 btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                 btn.widget = x
@@ -1365,6 +1394,80 @@ class PaletteEditor(CTkToplevel):
 
     def rgb2hex(self, c):
         return '#%02x%02x%02x' % c
+
+class WindowResizer(CTkFrame):
+    def __init__(self, *args, orientation="vertical", widget=None, multiplier=1.5, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.widget = widget
+        self.multiplier = multiplier
+        self.orientation = orientation
+        if widget != None:
+            self.init()
+
+    def init(self):
+        self.lbl = CTkLabel(self, text="...", font=CTkFont(size=6, weight="bold"))
+        self.lbl.pack(expand=True)
+        if self.orientation == "vertical":
+            self.configure(width=5)
+            self.change_dir = "x"
+            self.val = self.widget.cget("width")
+            self.lbl.configure(cursor="sb_h_double_arrow",  wraplength=1)
+
+            self.bind("<Enter>", lambda e: self.winfo_toplevel().configure(cursor="sb_h_double_arrow"))
+
+        else:
+            self.configure(height=5)
+            self.change_dir = "y"
+            self.val = self.widget.cget("height")
+            self.lbl.configure(cursor="sb_v_double_arrow", text=". . .")
+            self.bind("<Enter>", lambda e: self.winfo_toplevel().configure(cursor="sb_v_double_arrow"))
+
+        self.bind("<Button-1>", self.pressed)
+        self.lbl.bind("<Button-1>", self.pressed)
+        self.bind("<ButtonRelease>", self.released)
+        self.lbl.bind("<ButtonRelease>", self.released)
+        self.bind("<Leave>", lambda e: self.winfo_toplevel().configure(cursor="arrow"))
+
+        self.prev = 0
+
+    def configure(self, require_redraw=False, **kwargs):
+        if "widget" in kwargs:
+            self.widget = kwargs.pop("widget")
+            self.init()
+
+        super().configure(**kwargs)
+
+
+    def pressed(self, e):
+        self.winfo_toplevel().bind("<B1-Motion>", self.dragged)
+        if self.change_dir == "x":
+            self.prev = self.winfo_pointerx()
+        else:
+            self.prev = self.winfo_pointery()
+
+    def dragged(self, e):
+        if self.change_dir == "x":
+            delta = self.winfo_pointerx() - self.prev
+            delta *= self.multiplier
+            self.widget.configure(width=self.val + delta)
+            self.prev = self.winfo_pointerx()
+            self.val += delta
+        else:
+            delta = self.winfo_pointery() - self.prev
+            print(delta)
+
+            delta *= self.multiplier
+            self.widget.configure(height=self.val + delta)
+            self.prev = self.winfo_pointery()
+            self.val += delta
+
+
+    def released(self, e):
+        self.winfo_toplevel().unbind("<B1-Motion>")
+
+
+
+
 class App(CTkToplevel):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -1399,15 +1502,20 @@ class App(CTkToplevel):
         self.palette_btn = CTkButton(self.tool_bar, text="Edit Palette", fg_color="transparent", width=50)
         self.palette_btn.pack(side="left", padx=5, pady=5)
 
-        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode", border_color=("#CF245E", "#CF245E"))
+        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode", border_color=("#CF245E", "#CF245E"), text_color="white")
         self.appearance_mode_switch.pack(side="left", padx=5, pady=5)
-        self.appearance_mode_switch.toggle()
+        if darkdetect.isDark():
+            self.appearance_mode_switch.toggle()
         self.appearance_mode_switch.configure(command=lambda: self.main.change_appearance_mode(self.appearance_mode_switch.get()))
+
         self.widget_panel = CTkTabview(self, width=350)
         self.widget_panel.pack(side=LEFT, padx=10, pady=(0, 10), fill="y")
         self.widget_panel.dragndrop_list = []
         self.widget_panel.add("Core Widgets")
         self.widget_panel.add("Themed Widgets")
+
+        self.widget_panel_resizer = WindowResizer(self, orientation="vertical", widget=self.widget_panel)
+        self.widget_panel_resizer.pack(side="left", fill="y")
 
         self.widget_panel_core_tab = self.widget_panel.tab("Core Widgets")
         self.widget_panel_themed_tab = self.widget_panel.tab("Themed Widgets")
@@ -1599,7 +1707,7 @@ class App(CTkToplevel):
         self.temp_panel = CTkFrame(self, fg_color="transparent")
         self.temp_panel.pack(side="left", pady=10, fill="both", expand=True)
 
-        self.main_window_panel = CTkFrame(self.temp_panel, fg_color=("#0d0c1d", "#0d0c1d"))
+        self.main_window_panel = CTkFrame(self.temp_panel, fg_color=("grey10", "grey80"))
         self.main_window_panel.pack(fill="both", expand=True, padx=5, pady=5)
 
         self.horiz_scrlbar = CTkSlider(master=self.temp_panel, from_=100, to=-100, number_of_steps=200, orientation="horizontal",
@@ -1613,10 +1721,12 @@ class App(CTkToplevel):
         self.vert_scrlbar.pack(side="left", fill="y", padx=(10, 0), pady=10)
 
 
+
         self.temp = CTkFrame(self.main_window_panel, fg_color=self.main_window_panel.cget("fg_color"))
         self.temp.pack(fill="both", expand=True, pady=10, padx=10)
 
-        self.main_window = Main(self.temp, properties=None, width=500, height=500, bg_color="transparent")
+
+        self.main_window = Main(self.temp, properties=None, width=500, height=500, bg_color=("grey10", "grey80"))
         self.main_window.pack_propagate(False)
         self.main_window.place(anchor="center", relx=0.5, rely=0.5)
         self.main_window.type = "MAIN"
@@ -1628,9 +1738,13 @@ class App(CTkToplevel):
         self.main = MainWindow(self.main_window, self.canvas_theme)
         self.main.drag_manager = self.drag_manager
         self.main_window.configure(fg_color=self.main.theme["CTk"]["fg_color"], bg_color=self.main_window.master.cget("fg_color")[1])
-        self.container = CTkFrame(self, width=350)
+
+        self.hierarchy_and_properties_resizer = WindowResizer(self, orientation="vertical", multiplier=-1)
+        self.hierarchy_and_properties_resizer.pack(side="left", fill="y", padx=(5, 0))
+        self.container = CTkFrame(self, width=350, fg_color="transparent")
         self.container.pack(side=LEFT, padx=10, pady=10, fill="y")
         self.container.pack_propagate(False)
+        self.hierarchy_and_properties_resizer.configure(widget=self.container)
 
         self.update()
         visible_area = self.main_window_panel.winfo_height()
@@ -1673,6 +1787,7 @@ class App(CTkToplevel):
         self.hierarchy_tools_container = CTkFrame(self.container, height=40)
         self.hierarchy_tools_container.pack(fill="x", pady=(0, 10))
 
+
         # Need to change those unicode with icons
         self.move_top_btn = CTkButton(self.hierarchy_tools_container, text="south", font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30, command=self.hierarchy.move_up)
         self.move_top_btn.pack(side="left", padx=5)
@@ -1691,7 +1806,11 @@ class App(CTkToplevel):
         self.hierarchy.btns = [self.move_top_btn, self.move_down_btn, self.delete_btn, self.duplicate_btn]
         for btn in self.hierarchy.btns:
             btn.configure(state="disabled")
+
         self.properties_panel = PropertiesManager(self.container, main=self.main)
+        self.properties_panel_resizer = WindowResizer(self.container, orientation="horizontal", multiplier=1, widget=self.hierarchy)
+        self.properties_panel_resizer.pack(fill="x")
+
         self.main.properties = self.properties_panel
         self.properties_panel.pack(fill="both", expand=True)
         self.main_window.properties = self.properties_panel

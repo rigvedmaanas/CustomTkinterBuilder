@@ -24,6 +24,11 @@ class Main(CTkFrame, BaseWidgetClass):
 
         return f"{self.type}_{str(self.order)}"
 
+    def _set_appearance_mode(self, mode_string):
+        bg_color = ("grey10", "grey80")
+        self.configure(bg_color=bg_color[self.properties.main.appearance.get()])
+        super()._set_appearance_mode(mode_string)
+
     def get_class(self):
         return "CTk"
 

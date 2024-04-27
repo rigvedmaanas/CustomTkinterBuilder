@@ -1,4 +1,5 @@
 import pathlib
+import uuid
 from tkinter.colorchooser import askcolor
 from tkinter.filedialog import askopenfilename
 
@@ -240,7 +241,7 @@ class Spinbox(CTkFrame):
                  height: int = 32,
                  step_size: Union[int] = 1,
                  command: Callable = None,
-                 positive=False,
+                 positive=True,
                  **kwargs):
         super().__init__(*args, width=width, height=height, **kwargs)
 
@@ -260,8 +261,10 @@ class Spinbox(CTkFrame):
         self.subtract_button.bind("<Button-1>", lambda e: self.set_long_press(True, "SUB"))
         self.subtract_button.bind("<ButtonRelease>", lambda e: self.set_long_press(False, "SUB"))
 
-        self.entry = CTkEntry(self, width=width-(2*height), height=height-6, border_width=0, justify="center")
+        self.entry = CTkEntry(self, width=width-(2*height), height=height-6, border_width=0, justify="center", state="disabled")
         self.entry.grid(row=0, column=1, columnspan=1, padx=3, pady=3, sticky="ew")
+        self.entry.bind("<Button-1>", self.double)
+
 
         self.add_button = CTkButton(self, text="+", width=height-6, height=height-6,
                                                   command=self.add_button_callback)
@@ -269,23 +272,38 @@ class Spinbox(CTkFrame):
         self.add_button.bind("<Button-1>", lambda e: self.set_long_press(True, "ADD"))
         self.add_button.bind("<ButtonRelease>", lambda e: self.set_long_press(False, "ADD"))
         # default value
+        self.entry.configure(state="normal")
         self.entry.insert(0, "0")
+        self.entry.configure(state="disabled")
+        self.entry.bind("<FocusOut>", lambda e: (self.command(self.entry.get()), self.entry.configure(state="disabled")))
 
-    def do_checks(self, add_or_sub):
-        if self.long_press:
+    def return_set(self, e):
+
+        self.command(self.get())
+        self.entry.configure(state="disabled")
+        self.entry.unbind("<Return>")
+
+    def double(self, e):
+        self.entry.configure(state="normal")
+        self.entry.bind("<Return>", self.return_set)
+
+    def do_checks(self, add_or_sub, id):
+        if self.long_press and self.id == id:
             if add_or_sub == "ADD":
                 self.add_button_callback()
             elif add_or_sub == "SUB":
                 self.subtract_button_callback()
-            self.winfo_toplevel().after(30, lambda: self.do_checks(add_or_sub))
+            self.winfo_toplevel().after(30, lambda: self.do_checks(add_or_sub, id))
 
 
     def set_long_press(self, state, add_or_sub):
         self.long_press = state
 
         if self.long_press:
+            self.id = str(uuid.uuid4())
+            self.winfo_toplevel().after(750, lambda: self.do_checks(add_or_sub, id=self.id))
 
-            self.winfo_toplevel().after(750, lambda: self.do_checks(add_or_sub))
+
 
 
     def add_button_callback(self):
@@ -294,8 +312,11 @@ class Spinbox(CTkFrame):
             value = int(float(self.entry.get())) + self.step_size
             if value < 0 and self.positive:
                 value = int(float(self.entry.get()))
+            self.entry.configure(state="normal")
             self.entry.delete(0, "end")
             self.entry.insert(0, value)
+            self.entry.configure(state="disabled")
+
         except ValueError as e:
             #print(e)
             return
@@ -308,8 +329,11 @@ class Spinbox(CTkFrame):
             value = int(self.entry.get()) - self.step_size
             if value < 0 and self.positive:
                 value = int(float(self.entry.get()))
+            self.entry.configure(state="normal")
             self.entry.delete(0, "end")
             self.entry.insert(0, value)
+            self.entry.configure(state="disabled")
+
         except ValueError:
             return
         if self.command is not None:
@@ -322,8 +346,12 @@ class Spinbox(CTkFrame):
             return None
 
     def set(self, value: int):
+        self.entry.configure(state="normal")
+
         self.entry.delete(0, "end")
         self.entry.insert(0, str(int(value)))
+
+        self.entry.configure(state="disabled")
 
     def set_command(self, command):
         self.command = command
@@ -531,6 +559,16 @@ class CustomCTkComboBox(CTkComboBox):
                                max(self._apply_widget_scaling(self._current_width - left_section_width + 3),
                                    self._apply_widget_scaling(3))),
                          pady=self._apply_widget_scaling(self._border_width))
+        self._entry.bind("<Button-1>", self._clicked)
+        if sys.platform == "darwin":
+            self._entry.configure(cursor="pointinghand")
+            self._canvas.configure(cursor="pointinghand")
+        elif sys.platform.startswith("win"):
+            self._entry.configure(cursor="hand2")
+            self._canvas.configure(cursor="hand2")
+
+
+
 
 
 class PropertiesManager(CTkTabview):
@@ -544,7 +582,6 @@ class PropertiesManager(CTkTabview):
         self.add("Arrangement")
         self.add("Layout")
         self.color_manager = ColorManager(main=self.main)
-
 
         self.scr_geometry_content = CTkScrollableFrame(self.tab("Geometry & Content"), fg_color="transparent")
         self.scr_geometry_content.pack(fill="both", expand=True, pady=10)
@@ -571,7 +608,7 @@ class PropertiesManager(CTkTabview):
 
 
     def add_seperator(self, s, head):
-        frame = CTkFrame(s, height=75, fg_color="transparent")
+        frame = CTkFrame(s, height=75)
         frame.pack(padx=10, pady=(10, 0), fill="x")
 
         txt = CTkLabel(frame, text=head)
@@ -582,7 +619,7 @@ class PropertiesManager(CTkTabview):
         self.ctab = category
 
         if TYPE == "SPINBOX":
-            frame = CTkFrame(self.ctab, height=75)
+            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
             num_spinbox = Spinbox(frame, width=150, command=lambda val: vals["callback"](val))
@@ -596,7 +633,7 @@ class PropertiesManager(CTkTabview):
             self.options[key] = [head, num_spinbox]
 
         elif TYPE == "TEXT":
-            frame = CTkFrame(self.ctab, height=75)
+            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
 
@@ -611,7 +648,7 @@ class PropertiesManager(CTkTabview):
             self.options[key] = [head, entry]
 
         elif TYPE == "SINGLELINE_TEXT":
-            frame = CTkFrame(self.ctab, height=75)
+            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
 
@@ -626,7 +663,7 @@ class PropertiesManager(CTkTabview):
             self.options[key] = [head, entry]
 
         elif TYPE == "TUPLE":
-            frame = CTkFrame(self.ctab, height=75)
+            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
             temp = CTkFrame(frame, height=60, fg_color=frame.cget("fg_color"))
@@ -651,7 +688,7 @@ class PropertiesManager(CTkTabview):
             self.options[key] = [head, num_spinbox_1, num_spinbox_2]
 
         elif TYPE == "COMBO":
-            frame = CTkFrame(self.ctab, height=75)
+            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
             combo = CustomCTkComboBox(frame, width=150, values=vals["vals"], command=vals["callback"], state="readonly")
@@ -662,7 +699,7 @@ class PropertiesManager(CTkTabview):
             self.options[key] = [head, combo]
 
         elif TYPE == "COLOR_COMBO":
-            frame = CTkFrame(self.ctab, height=75)
+            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
             temp = CTkFrame(frame, height=60, fg_color="transparent")
@@ -707,25 +744,26 @@ class PropertiesManager(CTkTabview):
             self.options[key] = [head, clr_1, clr_1]
 
         elif TYPE == "FONT_FAMILY":
-            frame = CTkFrame(self.ctab, height=75)
+            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
             frame.pack(padx=10, pady=(10, 0), fill="x")
             fonts = list(font.families())
             fonts.sort()
-            combo = CustomCTkComboBox(frame, width=150, values=fonts, state="readonly")
+            combo = CustomCTkComboBox(frame, width=150, values=fonts, state="readonly", command=vals["callback"])
             combo.set(vals["default"])
             combo.pack(side="right", padx=10, pady=10)
-            combo.configure(command=vals["callback"])
+            #combo.configure()
             head = CTkLabel(frame, text=header)
             head.pack(side="right", padx=(10, 0), pady=10)
-            frame.after(100, lambda: vals["callback"](vals["default"])) # Added this because sometimes the font family changes randomly. Probably a bug in customtkinter.
+            # Added this because sometimes the font family changes randomly. Probably a bug in customtkinter.
+            frame.after(200, lambda: (vals["callback"](vals["default"]), combo.set(vals["default"])))
 
             self.options[key] = [head, combo]
 
         elif TYPE == "LISTBOX":
-            frame = CTkFrame(self.ctab, height=250)
+            frame = CTkFrame(self.ctab, height=250, fg_color=self.master.master.cget("fg_color"))
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
-            scrl_box = CTkScrollableFrame(frame, label_text=header)
+            scrl_box = CTkScrollableFrame(frame, label_text=header, label_fg_color="transparent")
             scrl_box.pack(padx=5, pady=5, fill="x")
 
             for l in vals["default_vals"]:
@@ -743,7 +781,7 @@ class PropertiesManager(CTkTabview):
             btn.pack(side="right", padx=(3, 0))
 
         elif TYPE == "IMAGE":
-            frame = CTkFrame(self.ctab, height=75)
+            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
             frame.pack(padx=10, pady=(10, 0), fill="x")
 
             temp = CTkFrame(frame, height=60, fg_color="transparent")
