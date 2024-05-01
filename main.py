@@ -805,6 +805,8 @@ app.mainloop()
 
             if d[x] != {}:
                 #ic(d[x], new_widget, copy)
+                #t2 = threading.Thread(target=self.loop_open, args=(d[x], new_widget), kwargs={"copy": copy})
+                #t2.start()
                 self.loop_open(d[x], new_widget, copy=copy)
 
     def save(self, dir_, name):
@@ -1229,6 +1231,7 @@ class WidgetButton(CTkButton):
 class Hierarchy(CTkScrollableFrame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.change_parent_selection = None
         self.current_selection = None
         self.widget = None
         self.main = None
@@ -1349,6 +1352,80 @@ class Hierarchy(CTkScrollableFrame):
                 btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                 btn.widget = x
                 btn.pack(fill="x", padx=(pad, 5), pady=2.5)
+
+    def _change_parent(self, widget, new_parent):
+
+        self.s = {new_parent.get_name(): {}}
+        self.main._parents = []
+        self.main.get_parents(new_parent)
+        self.parent_parents = self.main._parents
+        self.main._parents = []
+        self.main.get_parents(widget)
+
+        # ic(self.main._parents)
+        d = self.main.widgets.copy()
+
+        for key in self.main._parents:
+            d = d[key]
+
+        val = d[widget]
+        d = {widget: val}
+
+        # ic(self.main.widgets)
+
+        # ic(d)
+        self.main._parents = []
+        self.main.loop_save(d, new_parent.get_name(), self.s)
+        self.s = self.s[new_parent.get_name()]
+
+        # ic(self.main.widgets)
+        self.main._parents = []
+        self.main.get_parents(new_parent)
+        self.main._parents.append(new_parent)
+
+        self.main.loop_open(self.s, self.main._parents[-1], copy=False)
+        self.main.hierarchy.delete_children()
+        self.main.hierarchy.update_list(self.main.widgets, 5)
+
+        self.main._parents = []
+
+        # self.s[self.r.get_name()]["theme"] = self.theme_manager.name
+        # ic(self.main.widgets)
+        self.widget = widget
+        self.delete_widget()
+        self.top_level.destroy()
+
+
+    def get_frames_scrollbar_only(self):
+        new_arr = []
+        children = self.winfo_children()
+        for widget in children:
+            #print(widget.widget)
+            if widget.widget.__class__ in [Frame, Main, ScrollableFrame]:
+                new_arr.append([widget, widget.pack_info()["padx"], widget.widget])
+        return new_arr
+
+    def set_change_parent_selection(self, x, btn):
+        self.change_parent_selection = x
+        self._change_parent(widget=self.widget, new_parent=self.change_parent_selection)
+
+
+    def change_parent(self):
+        self.top_level = CTkToplevel()
+        self.top_level.geometry("500x500")
+        self.top_level.title("Change Parent")
+
+        self.scrl = CTkScrollableFrame(self.top_level)
+        self.scrl.pack(fill="both", expand=True)
+
+        arr = self.get_frames_scrollbar_only()
+        for x in arr:
+            btn = CTkButton(self.scrl, text=x[2].get_name(), fg_color="#87163D")
+            # x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
+            btn.configure(command=lambda x=x[2], btn=btn: (self.set_change_parent_selection(x, btn)))
+            btn.widget = x[2]
+            btn.pack(fill="x", padx=x[1], pady=2.5)
+
 
 
     def duplicate_widget(self):
@@ -1906,7 +1983,13 @@ class App(CTkToplevel):
                                     command=self.hierarchy.duplicate_widget)
         self.duplicate_btn.pack(side="left", padx=5)
 
-        self.hierarchy.btns = [self.move_top_btn, self.move_down_btn, self.delete_btn, self.duplicate_btn]
+        self.change_parent_btn = CTkButton(self.hierarchy_tools_container, text="change_circle",
+                                       font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30,
+                                       height=30,
+                                       command=self.hierarchy.change_parent)
+        self.change_parent_btn.pack(side="left", padx=5)
+
+        self.hierarchy.btns = [self.move_top_btn, self.move_down_btn, self.delete_btn, self.duplicate_btn, self.change_parent_btn]
         for btn in self.hierarchy.btns:
             btn.configure(state="disabled")
 
