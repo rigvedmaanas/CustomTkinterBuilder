@@ -237,7 +237,10 @@ class ScrollableFrame(ScrollFrame, PackArgs, BaseWidgetClass):
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
-        self.bind_mouse(properties)
+        self.scrollwindow.bind("<MouseWheel>", properties.main.on_vert_mouse)
+        self.scrollwindow.bind("<Shift-MouseWheel>", properties.main.on_horiz_mouse)
+        self.canv.bind("<MouseWheel>", properties.main.on_vert_mouse)
+        self.canv.bind("<Shift-MouseWheel>", properties.main.on_horiz_mouse)
 
     def __repr__(self):
 

@@ -33,13 +33,11 @@ from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image
-import timeit
-
 
 ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
-blockPrint()
+#blockPrint()
 class ThemeUtl:
     def __init__(self, theme_dir, theme_name):
         path = os.path.join(theme_dir, f"{theme_name}.json")
@@ -181,31 +179,43 @@ class MainWindow:
 
 
         d = {}
+
         for key in list(x.keys()):
             if key == "top_fg_color":
 
                 if widget.get_class() == "CTkFrame":
                     try:
-                        if widget.master._fg_color == x["fg_color"]:
-                            widget.configure(fg_color=x["top_fg_color"])
-                            #print("top")
+                        #ic(widget, widget.master)
+                        if widget.master.cget("fg_color") == x["fg_color"]:
+                            d["fg_color"] = x["top_fg_color"]
+                            #widget.configure(fg_color=x["top_fg_color"])
+                            print(x["top_fg_color"])
+                            #print("1 top")
                         else:
-                            widget.configure(fg_color=x["fg_color"])
-                            #print("bottom")
-                    except AttributeError as e:
-                        print(e)
-                        print(widget.master)
+                            d["fg_color"] = x["fg_color"]
+
+                            #widget.configure(fg_color=x["fg_color"])
+                            #print("1 bottom")
+                    except tkinter.TclError as e:
+                        #print(e)
+                        #print(widget.master)
                         # Parent widget is a Scrollable Frame
                         if widget.master.master.master.master._fg_color == x["fg_color"]:
-                            widget.configure(fg_color=x["top_fg_color"])
-                            # print("top")
-                        else:
-                            widget.configure(fg_color=x["fg_color"])
+                            d["fg_color"] = x["top_fg_color"]
 
-                        #print("bottom")
+                            #widget.configure(fg_color=x["top_fg_color"])
+                            #print("2 top")
+                        else:
+                            d["fg_color"] = x["fg_color"]
+
+                            #widget.configure(fg_color=x["fg_color"])
+                            #print(x["fg_color"])
+
+                            #print("2 bottom")
             else:
                 d[key] = x[key]
 
+        #print(d)
         #widget.configure(**d)
 
         if widget.__class__ not in [Frame, ProgressBar, Scrollbar, Slider, Main, ScrollableFrame]:
@@ -351,8 +361,8 @@ app.mainloop()
         for x in list(d.keys()):
             if x.props == {}:
                 code.add_line(f"{x.get_name()} = {x.get_class()}(master={parent})")
-                if x.type == "FRAME":
-                    code.add_line(f"{x.get_name()}.pack_propagate(False)")
+                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
+                    code.add_line(f"{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
             else:
                 p = ""
                 font = "font=CTkFont("
@@ -387,7 +397,7 @@ app.mainloop()
                         if type(x.props[key]) == str:
                             k = self.escape_special_chars(x.props[key])
                             p += f'{key}="{k}", '
-                        elif type(x.props[key]) == tuple or type(x.props[key]) == list:
+                        elif type(x.props[key]) == tuple or type(x.props[key]) == list and len(x.props[key]) == 2:
                             if type(x.props[key][0]) == str and type(x.props[key][1]) == str:
                                 p += f'{key}=("{x.props[key][0]}", "{x.props[key][1]}"), '
                             else:
@@ -410,8 +420,10 @@ app.mainloop()
 
                 p = p[0:-2]
                 code.add_line(f"{x.get_name()} = {x.get_class()}(master={parent}, {p})")
-                if x.type == "FRAME":
-                    code.add_line(f"{x.get_name()}.pack_propagate(False)")
+                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
+                    code.add_line(f"{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
+
+                    #code.add_line(f"{x.get_name()}.pack_propagate(False)")
             if x.pack_options == {}:
                 code.add_line(f"{x.get_name()}.pack()")
 
@@ -729,6 +741,7 @@ app.mainloop()
             if not copy:
                 new_widget.name = x
             else:
+
                 new_widget.name = new_widget.type + str(new_widget.num + 1) + "_copy"
             self.total_num += 1
             self._parents = []
@@ -756,6 +769,9 @@ app.mainloop()
             else:
                 new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
+            if new_widget.__class__ in [ComboBox, OptionMenu]:
+                new_widget.set(d_copy["values"][0])
+
             # new_widget.bind("<Button-1>", new_widget.on_drag_start)
             # new_widget.on_drag_start(None)
 
@@ -770,6 +786,9 @@ app.mainloop()
                     ar = self.properties.color_manager.on_change_list[i[0]]
                     ar.append([new_widget._inner_id, i[1][1], i[1][2]])
                     self.properties.color_manager.on_change_list[i[0]] = ar
+            if new_widget.__class__ == Frame:
+                new_widget.change_pack_propagate(d[x]["PACK_PROPAGATE"])
+                d[x].pop("PACK_PROPAGATE")
 
             #ic(new_widget._inner_id, new_widget.cget("fg_color"), d, x)
             #self.hierarchy.delete_children()
@@ -782,6 +801,7 @@ app.mainloop()
             d[x].pop("pack_options")
             d[x].pop("parameters")
             d[x].pop("ID")
+
 
             if d[x] != {}:
                 #ic(d[x], new_widget, copy)
@@ -845,8 +865,10 @@ app.mainloop()
                 #ic(x.props["image"].cget("dark_image").filename, self.file)
                 shutil.copy2(x.props["image"].cget("dark_image").filename, f"{self.file[0]}/{self.file[1]}/Assets")
                 props["image"] = {"image": path, "size": [x.size[0], x.size[1]]}
-
-            code[parent][x.get_name()] = {"TYPE": x.type, "parameters": props, "pack_options": x.pack_options, "ID": x._inner_id}
+            if x.get_class() == "CTkFrame":
+                code[parent][x.get_name()] = {"TYPE": x.type, "parameters": props, "pack_options": x.pack_options, "ID": x._inner_id, "PACK_PROPAGATE": x.propagate_on_pack}
+            else:
+                code[parent][x.get_name()] = {"TYPE": x.type, "parameters": props, "pack_options": x.pack_options, "ID": x._inner_id}
 
             if d[x] != {}:
                 self.loop_save(d[x], x.get_name(), code[parent])
@@ -859,8 +881,8 @@ app.mainloop()
             if x.props == {}:
 
                 code.add_line(f"self.{x.get_name()} = {x.get_class()}(master={parent})")
-                if x.type == "FRAME":
-                    code.add_line(f"self.{x.get_name()}.pack_propagate(False)")
+                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
+                    code.add_line(f"self.{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
             else:
 
                 p = ""
@@ -892,7 +914,7 @@ app.mainloop()
                         if type(x.props[key]) == str:
                             k = self.escape_special_chars(x.props[key])
                             p += f'{key}="{k}", '
-                        elif type(x.props[key]) == tuple or type(x.props[key]) == list:
+                        elif type(x.props[key]) == tuple or type(x.props[key]) == list and len(x.props[key]) == 2:
                             if type(x.props[key][0]) == str and type(x.props[key][1]) == str:
                                 p += f'{key}=("{x.props[key][0]}", "{x.props[key][1]}"), '
                             else:
@@ -914,9 +936,12 @@ app.mainloop()
 
                 p = p[0:-2]
                 code.add_line(f"self.{x.get_name()} = {x.get_class()}(master={parent}, {p})")
-                if x.type == "FRAME":
-                    code.add_line(f"self.{x.get_name()}.pack_propagate(False)")
+                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
+                    code.add_line(f"self.{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
+
+                    #code.add_line(f"self.{x.get_name()}.pack_propagate(False)")
             if x.pack_options == {}:
+
                 code.add_line(f"self.{x.get_name()}.pack()")
             else:
                 p = ""
