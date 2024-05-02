@@ -33,11 +33,19 @@
             "Directory": "/Users/rigvedmaanas/Documents"
         },
         {
-            "Name": "hello",
+            "Name": "Demo",
             "Directory": "/Users/rigvedmaanas/Downloads"
         },
         {
-            "Name": "Demo",
+            "Name": "Spotify-Demo",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "Login-Demo",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "hello",
             "Directory": "/Users/rigvedmaanas/Downloads"
         }
     ]

@@ -61,7 +61,7 @@ class Slider(CTkSlider, PackArgs, BaseWidgetClass):
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "From_", "SPINBOX", "from_", {"to": 500, "from": 0, "val": int(self.cget("from_")), "callback": lambda val: self.save(lambda val: self.configure(from_=val), "from_", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "To", "SPINBOX", "to", {"to": 500, "from": 0, "val": int(self.cget("to")), "callback": lambda val: self.save(lambda val: self.configure(to=val), "to", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Number Of Steps", "SPINBOX", "number_of_steps", {"to": 500, "from": 0, "val": int(self.cget("number_of_steps")), "callback": lambda val: self.save(lambda val: self.configure(number_of_steps=val), "number_of_steps", int(val), int(val))})
-        self.properties.add_option(self.properties.ARRANGEMENT, "Orientation", "COMBO", "orientation", {"vals": ["vertical", "horizontal"], "default": self.cget("orientation"), "callback": lambda val: self.save(lambda val: (self.configure(width=self.cget("height"), height=self.cget("width")), self.configure(orientation=val)), "orientation", val, val)})
+        #self.properties.add_option(self.properties.ARRANGEMENT, "Orientation", "COMBO", "orientation", {"vals": ["vertical", "horizontal"], "default": self.cget("orientation"), "callback": lambda val: self.save(lambda val: (self.configure(width=self.cget("height"), height=self.cget("width")), self.configure(orientation=val)), "orientation", val, val)})
 
 
 

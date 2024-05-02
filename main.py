@@ -164,59 +164,32 @@ class MainWindow:
         else:
             mode = "dark"
 
-
         widget._set_appearance_mode(mode)
-
-
 
         if widget.get_class() == "CTkScrollableFrame":
             x = self.theme["CTkFrame"]
 
-
         else:
             x = self.theme[widget.get_class()]
-
-
 
         d = {}
 
         for key in list(x.keys()):
             if key == "top_fg_color":
-
-                if widget.get_class() == "CTkFrame":
+                if widget.get_class() == "CTkFrame" or widget.get_class() == "CTkScrollableFrame":
                     try:
-                        #ic(widget, widget.master)
                         if widget.master.cget("fg_color") == x["fg_color"]:
                             d["fg_color"] = x["top_fg_color"]
-                            #widget.configure(fg_color=x["top_fg_color"])
-                            print(x["top_fg_color"])
-                            #print("1 top")
                         else:
                             d["fg_color"] = x["fg_color"]
-
-                            #widget.configure(fg_color=x["fg_color"])
-                            #print("1 bottom")
                     except tkinter.TclError as e:
-                        #print(e)
-                        #print(widget.master)
                         # Parent widget is a Scrollable Frame
                         if widget.master.master.master.master._fg_color == x["fg_color"]:
                             d["fg_color"] = x["top_fg_color"]
-
-                            #widget.configure(fg_color=x["top_fg_color"])
-                            #print("2 top")
                         else:
                             d["fg_color"] = x["fg_color"]
-
-                            #widget.configure(fg_color=x["fg_color"])
-                            #print(x["fg_color"])
-
-                            #print("2 bottom")
             else:
                 d[key] = x[key]
-
-        #print(d)
-        #widget.configure(**d)
 
         if widget.__class__ not in [Frame, ProgressBar, Scrollbar, Slider, Main, ScrollableFrame]:
             for y in list(self.theme["CTkFont"].keys()):
@@ -231,9 +204,6 @@ class MainWindow:
                                       weight=self.theme["CTkFont"]["Linux"]["weight"])
 
         widget.configure(**d)
-
-
-
 
         if widget.get_class() == "CTkScrollableFrame":
             ic(self.theme["CTkScrollbar"]["fg_color"])
@@ -1223,7 +1193,15 @@ class WidgetButton(CTkButton):
         self.configure(fg_color=("#0d0c1d", "#0d0c1d"), border_width=1, border_color=["#CF245E", "#CF245E"], height=40)
 
     def pack(self, **kwargs):
-        self.master.master.master.master.master.dragndrop_list.append(self)
+        try:
+            self.master.master.master.master.master.dragndrop_list.append(self)
+        except AttributeError as e:
+            # There is a parent widget
+            try:
+                self.master.master.master.master.master.master.dragndrop_list.append(self)
+            except AttributeError as e:
+                self.master.master.master.master.master.master.master.dragndrop_list.append(self)
+
         super().pack(**kwargs)
 
 
@@ -1725,71 +1703,8 @@ class App(CTkToplevel):
                                                                                                  widget=widget))
         self.add_horiz_scrl_frame_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-
-        self.add_button_1_btn = WidgetButton(master=self.widget_panel_themed, text="Button 1", height=50,
-                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_1, properties={
-                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_button_1_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_button_2_btn = WidgetButton(master=self.widget_panel_themed, text="Button 2", height=50,
-                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_2, properties={
-                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_button_2_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_button_3_btn = WidgetButton(master=self.widget_panel_themed, text="Button 3", height=50,
-                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_3, properties={
-                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_button_3_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_icon_white_btn = WidgetButton(master=self.widget_panel_themed, text="Icon White", height=50,
-                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_white, properties={
-                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_icon_white_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_icon_black_btn = WidgetButton(master=self.widget_panel_themed, text="Icon Black", height=50,
-                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_black, properties={
-                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_icon_black_btn.pack(padx=10, pady=(10, 0), fill="x")
-
         self.add_label_btn = WidgetButton(master=self.widget_panel_core, text="Label", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Label, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_label_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_heading_1_btn = WidgetButton(master=self.widget_panel_themed, text="Heading 1", height=50,
-                                          on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_1, properties={
-                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_heading_1_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_heading_2_btn = WidgetButton(master=self.widget_panel_themed, text="Heading 2", height=50,
-                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_2,
-                                                                                              properties={
-                                                                                                  "properties": self.properties_panel},
-                                                                                              x=x, y=y, widget=widget))
-        self.add_heading_2_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_heading_3_btn = WidgetButton(master=self.widget_panel_themed, text="Sub Heading", height=50,
-                                              on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.SubHeading,
-                                                                                                properties={
-                                                                                                    "properties": self.properties_panel},
-                                                                                                x=x, y=y,
-                                                                                                widget=widget))
-        self.add_heading_3_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_paragraph_1_btn = WidgetButton(master=self.widget_panel_themed, text="Paragraph 1", height=50,
-                                              on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Paragraph_1,
-                                                                                                properties={
-                                                                                                    "properties": self.properties_panel},
-                                                                                                x=x, y=y,
-                                                                                                widget=widget))
-        self.add_paragraph_1_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_wrapped_paragraph_btn = WidgetButton(master=self.widget_panel_themed, text="Wrapped Paragraph", height=50,
-                                                on_drag=lambda x, y, widget: self.main.add_widget(
-                                                    ThemedText.WrappedParagraph,
-                                                    properties={
-                                                        "properties": self.properties_panel},
-                                                    x=x, y=y,
-                                                    widget=widget))
-        self.add_wrapped_paragraph_btn.pack(padx=10, pady=(10, 0), fill="x")
 
         self.add_entry_btn = WidgetButton(master=self.widget_panel_core, text="Entry", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Entry, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
@@ -1900,11 +1815,88 @@ class App(CTkToplevel):
         self.vert_scrlbar.configure(progress_color=self.vert_scrlbar.cget("bg_color"), fg_color=self.vert_scrlbar.cget("bg_color"))
         self.vert_scrlbar.pack(side="left", fill="y", padx=(10, 0), pady=10)
 
+        # Themed Widgets
+        t = CTkFrame(self.widget_panel_themed)
+        t.pack(fill="x")
+        self.add_button_1_btn = WidgetButton(master=t, text="Button 1", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_1, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_1_btn.pack(side="left", fill="x", expand=True, padx=5, pady=(10, 0))
+        self.add_button_1_btn.configure(text="Button 1", width=140, height=38, corner_radius=3, fg_color=("#797979", "#000000"), hover_color=("#4e4e4e", "#434343"), border_color=("#000000", "#a2a2a2"), border_width=1, font=CTkFont(size=15, weight="normal"))
 
+        self.add_button_2_btn = WidgetButton(master=t, text="Button 2", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_2, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_2_btn.pack(side="right", fill="x", expand=True, padx=5, pady=(10, 0))
+        self.add_button_2_btn.configure(image=CTkImage(Image.open("Assets/baseline_arrow_forward_white_18dp_1x.png"), size=(18, 18)), width=140, height=38, compound="right", text="Next", corner_radius=30, fg_color=("#2CC985", "#2FA572"), text_color=("gray98", "#DCE4EE"), hover_color=("#0C955A", "#106A43"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), font=CTkFont(size=15, weight="normal"))
+        t = CTkFrame(self.widget_panel_themed)
+        t.pack(fill="x")
+
+        self.add_button_3_btn = WidgetButton(master=t, text="Button 3", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_3, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_3_btn.pack(fill="x", side="left", expand=True, pady=(10, 0), padx=(5, 0))
+        self.add_button_3_btn.configure(width=140, height=38, text="Purchase", corner_radius=3, fg_color=("#993500", "#282525"), text_color=("gray98", "#ffffff"), hover_color=("#2d2929", "#993500"), border_color=("#5f5f5f", "#ffffff"), border_width=1, text_color_disabled=("gray78", "gray68"), font=CTkFont(size=15, weight="bold"))
+
+        o = CTkFrame(t, width=self.add_button_3_btn.cget("width"), height=50, fg_color="transparent")
+        o.pack(fill="x", side="right", expand=True, padx=5, pady=(10, 0))
+        o.pack_propagate(False)
+        self.add_icon_white_btn = WidgetButton(master=o, text="Icon White", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_white, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_icon_white_btn.pack(side="left", expand=True)
+        self.add_icon_white_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=("#3965FF", "#3965FF"), text_color=("#ffffff", "#ffffff"), hover_color=("#2B4DC6", "#2B4DC6"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), image=CTkImage(Image.open("Assets/baseline_people_white_18dp_1x.png"), size=(18, 18)))
+
+        self.add_icon_black_btn = WidgetButton(master=o, text="Icon Black", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_black, properties={
+                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_icon_black_btn.pack(side="right", expand=True)
+        self.add_icon_black_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=("#40B6FF", "#40B6FF"), text_color=("#ffffff", "#ffffff"), hover_color=("#00D9FF", "#00D9FF"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), image=CTkImage(Image.open("Assets/baseline_people_black_18dp_1x.png"), size=(18, 18)))
+
+        self.add_heading_1_btn = WidgetButton(master=self.widget_panel_themed, text="Heading 1", height=50,
+                                          on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_1, properties={
+                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_heading_1_btn.pack(padx=5, pady=(10, 0), fill="x")
+        self.add_heading_1_btn.configure(text="Heading 1", font=CTkFont(size=45, weight="bold"), border_width=0)
+
+        self.add_heading_2_btn = WidgetButton(master=self.widget_panel_themed, text="Heading 2", height=50,
+                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_2,
+                                                                                              properties={
+                                                                                                  "properties": self.properties_panel},
+                                                                                              x=x, y=y, widget=widget))
+        self.add_heading_2_btn.pack(padx=5, pady=(10, 0), fill="x")
+        self.add_heading_2_btn.configure(text="Heading 2", font=CTkFont(size=45, weight="normal"), border_width=0)
+
+
+        self.add_heading_3_btn = WidgetButton(master=self.widget_panel_themed, text="Sub Heading", height=50,
+                                              on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.SubHeading,
+                                                                                                properties={
+                                                                                                    "properties": self.properties_panel},
+                                                                                                x=x, y=y,
+                                                                                                widget=widget))
+        self.add_heading_3_btn.pack(padx=5, pady=(10, 0), fill="x")
+        self.add_heading_3_btn.configure(text="Sub Heading", font=CTkFont(size=30, weight="normal"), border_width=0)
+
+        self.add_paragraph_1_btn = WidgetButton(master=self.widget_panel_themed, text="Paragraph 1", height=50,
+                                              on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Paragraph_1,
+                                                                                                properties={
+                                                                                                    "properties": self.properties_panel},
+                                                                                                x=x, y=y,
+                                                                                                widget=widget))
+        self.add_paragraph_1_btn.pack(padx=5, pady=(10, 0), fill="x")
+        self.add_paragraph_1_btn.configure(text="I am Paragraph 1", font=CTkFont(size=15, weight="normal"), border_width=0)
+        self.add_wrapped_paragraph_btn = WidgetButton(master=self.widget_panel_themed, text="Wrapped Paragraph", height=50,
+                                                on_drag=lambda x, y, widget: self.main.add_widget(
+                                                    ThemedText.WrappedParagraph,
+                                                    properties={
+                                                        "properties": self.properties_panel},
+                                                    x=x, y=y,
+                                                    widget=widget))
+        self.add_wrapped_paragraph_btn.pack(padx=5, pady=(10, 0), fill="x")
+        self.add_wrapped_paragraph_btn.configure(text="Lorem ipsum dolor sit amet,\n consectetur adipiscing elit,\n sed do eiusmod tempor\n incididunt ut labore et dolore\n magna aliqua.", font=CTkFont(size=15, weight="normal"), border_width=0)
 
         self.temp = CTkFrame(self.main_window_panel, fg_color=self.main_window_panel.cget("fg_color"))
         self.temp.pack(fill="both", expand=True, pady=10, padx=10)
-
 
         self.main_window = Main(self.temp, properties=None, width=500, height=500, bg_color=("grey10", "grey80"))
         self.main_window.pack_propagate(False)
