@@ -39,7 +39,21 @@ class Frame(CTkFrame, PackArgs, BaseWidgetClass):
         self.props[key] = val
         func(arg)
 
+    def get_not_transparent_color(self, widget):
+        try:
+            c = widget.get_class()
+            if widget.master.cget("fg_color") != "transparent":
+                return widget.master.cget("fg_color")
+            else:
+                return self.get_not_transparent_color(widget.master)
+        except Exception as e:
+            return self.get_not_transparent_color(widget.master)
+
     def configure(self, require_redraw=False, **kwargs):
+        ##print(kwargs)
+        if "bg_color" in kwargs:
+            if kwargs["bg_color"] == "transparent":
+                kwargs["bg_color"] = self.get_not_transparent_color(self)
         #print(kwargs)
         super().configure(require_redraw, **kwargs)
 

@@ -19,10 +19,11 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
         self.name = None
         self.family = self.cget("font").cget("family")
         #print(self.family)
-
+        self.configure(bg_color="transparent")
         #self.bind("<B1-Motion>", self.on_drag_motion)
         self.props = {}
         self.bind_mouse(properties)
+
 
     def __repr__(self):
 
@@ -42,8 +43,22 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
         self.props[key] = val
         func(arg)
 
+    def get_not_transparent_color(self, widget):
+        try:
+            c = widget.get_class()
+            if widget.master.cget("fg_color") != "transparent":
+                return widget.master.cget("fg_color")
+            else:
+                return self.get_not_transparent_color(widget.master)
+        except Exception as e:
+            return self.get_not_transparent_color(widget.master)
+
     def configure(self, require_redraw=False, **kwargs):
         ##print(kwargs)
+        if "bg_color" in kwargs:
+            if kwargs["bg_color"] == "transparent":
+                kwargs["bg_color"] = self.get_not_transparent_color(self)
+
         super().configure(require_redraw, **kwargs)
 
 
@@ -58,6 +73,8 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
 
 
     def on_drag_start(self, event):
+        print(self.cget("bg_color"))
+
         #self._drag_start_x = event.x
         #self._drag_start_y = event.y
         self.properties.destroy_children()

@@ -4,6 +4,7 @@ import uuid
 class BaseWidgetClass:
     def __init__(self, **kwargs):
         self._inner_id = str(uuid.uuid4())
+        #self.configure(bg_color="transparent")
         if "master" in kwargs:
             self.parent = kwargs["master"]
         else:

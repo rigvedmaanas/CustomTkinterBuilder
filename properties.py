@@ -9,7 +9,7 @@ from tkinterdnd2 import TkinterDnD, DND_ALL
 import math
 from customtkinter import *
 from typing import Union, Callable
-from tkinter import font
+from tkinter import font, messagebox
 from PIL import Image
 import requests
 
@@ -84,9 +84,13 @@ class ImageChooser(Toplevel):
         self.instruct_lbl5 = CTkLabel(self.color_fr, text="Color", font=CTkFont(size=20), anchor="w")
         self.instruct_lbl5.pack(padx=20, pady=(10, 0), fill="x")
 
-        self.icon_color = CTkOptionMenu(self.color_fr, width=250,
-                                          values=["Black", "White"])
+        #self.icon_color = CTkOptionMenu(self.color_fr, width=250,
+        #                                  values=["Black", "White"])
+        #self.icon_color.pack(pady=10, side="left", padx=20)
+
+        self.icon_color = CTkButton(self.color_fr, width=250, border_width=2, border_color="#FFFFFF", fg_color="#FFFFFF", command=self.get_color, hover=False, text="")
         self.icon_color.pack(pady=10, side="left", padx=20)
+        self.icon_color.color = (255, 255, 255)
 
         self.img_lbl = CTkLabel(self.fr, text="")
         self.img_lbl.grid(row=2, column=1, pady=20, padx=20)
@@ -95,7 +99,7 @@ class ImageChooser(Toplevel):
         self.temp_fr = CTkFrame(self.tab.tab("Icon"))
         self.temp_fr.pack(fill="x")
 
-        self.download_btn = CTkButton(self.temp_fr, text="Download", height=40, command=lambda : self.get_icon(self.icon_name.get(), self.icon_type.get(), self.icon_size.get(), self.icon_density.get(), self.icon_color.get(), self.img_lbl))
+        self.download_btn = CTkButton(self.temp_fr, text="Download", height=40, command=lambda : self.get_icon(self.icon_name.get(), self.icon_type.get(), self.icon_size.get(), self.icon_density.get(), self.img_lbl))
         self.download_btn.pack(pady=20, padx=40, side="left")
 
         self.use_btn = CTkButton(self.temp_fr, text="Use", height=40, state="disabled", command=lambda : (self.callback(self.image), self.destroy()))
@@ -116,6 +120,13 @@ class ImageChooser(Toplevel):
         self.lbl = CTkButton(self.dnd_frame, text="Click to choose the file or Drag and Drop the File", font=CTkFont(size=13),
                         hover=False, fg_color="transparent", command=self.choose_file)
         self.lbl.pack(expand=True, fill="both")
+
+    def get_color(self):
+        color = askcolor(initialcolor=self.icon_color.color)
+        if color != (None, None):
+            new_color = (math.floor(color[0][0]), math.floor(color[0][1]), math.floor(color[0][2]))
+            self.icon_color.color = new_color
+
 
     def kill(self):
         self.callback(self.image)
@@ -160,7 +171,7 @@ class ImageChooser(Toplevel):
         width, height = img.size
         new_img = img.copy()
 
-
+        new_color = self.icon_color.color
         # Loop through each pixel
         for x in range(width):
             for y in range(height):
@@ -172,15 +183,16 @@ class ImageChooser(Toplevel):
                 green = pixel[1]
                 blue = pixel[2]
                 alpha = pixel[3]
-                red_new = math.floor(self.map_range(red, 0, 255, 255, 0))
-                green_new = math.floor(self.map_range(green, 0, 255, 255, 0))
-                blue_new = math.floor(self.map_range(blue, 0, 255, 255, 0))
+                if alpha != 0:
+                    red_new = new_color[0]
+                    green_new = new_color[1]
+                    blue_new = new_color[2]
 
-                new_img.putpixel((x, y), (red_new, green_new, blue_new, alpha))
+                    new_img.putpixel((x, y), (red_new, green_new, blue_new, alpha))
         # Save the grayscale image
-        return new_img
+        return new_img, str(new_color)
 
-    def get_icon(self, name, type_, size, density, color, display):
+    def get_icon(self, name, type_, size, density, display):
 
 
         if type_ == "Filled":
@@ -211,14 +223,10 @@ class ImageChooser(Toplevel):
             image = Image.open(response.raw)
             if image.mode == "LA":
                 image = image.convert("RGBA")
-            if color == "White":
-                image = self.change_color_to_white(image)
+            image, color = self.change_color_to_white(image)
 
             self.image = image
-            if color == "White":
-                self.image.color_type = "white"
-            else:
-                self.image.color_type = "black"
+            self.image.color_type = color
             self.image.url = url
             self.image.save(f"temp/{n}_{name}_{self.image.color_type}_{size}_{density}.png")
             self.image = f"temp/{n}_{name}_{self.image.color_type}_{size}_{density}.png"
@@ -227,8 +235,7 @@ class ImageChooser(Toplevel):
             self.use_btn.configure(state="normal")
 
         else:
-            pass
-            #print("Invalid Name of Icon")
+            messagebox.showinfo("Error", f"'{name}' icon doesn't exist")
 
 
 

@@ -153,8 +153,22 @@ class ScrollFrame(CTkFrame):
 
         self.vsb._set_appearance_mode(mode_string)
 
+    def get_not_transparent_color(self, widget):
+        try:
+            c = widget.get_class()
+            if widget.master.cget("fg_color") != "transparent":
+                return widget.master.cget("fg_color")
+            else:
+                return self.get_not_transparent_color(widget.master)
+        except Exception as e:
+            return self.get_not_transparent_color(widget.master)
 
-    def configure(self, **kwargs):
+    def configure(self, require_redraw=False, **kwargs):
+        ##print(kwargs)
+        if "bg_color" in kwargs:
+            if kwargs["bg_color"] == "transparent":
+                kwargs["bg_color"] = self.get_not_transparent_color(self)
+
         if "width" in kwargs:
             self._set_dimensions(width=kwargs.pop("width"))
 
@@ -227,6 +241,7 @@ class ScrollableFrame(ScrollFrame, PackArgs, BaseWidgetClass):
         self.properties = properties
         print(self.properties)
         self.pack_options = {}
+        self.self_configure(bg_color="transparent")
         #self.pack_propagate(False)
         #self.configure(bg_color=self.master.cget("fg_color"))
         self.order = 0
@@ -257,8 +272,9 @@ class ScrollableFrame(ScrollFrame, PackArgs, BaseWidgetClass):
         self.props[key] = val
         func(arg)
 
+
+
     def self_configure(self, require_redraw=False, **kwargs):
-        #print(kwargs)
         kwargs["require_redraw"] = require_redraw
         super().configure(**kwargs)
 
@@ -295,7 +311,7 @@ class ScrollableFrame(ScrollFrame, PackArgs, BaseWidgetClass):
 
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Corner Radius", "SPINBOX", "Corner Radius", {"to": 100, "from": 0, "val": self.cget("corner_radius"), "callback": lambda val: self.save(lambda val: self.self_configure(corner_radius=val), "corner_radius", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Border Width", "SPINBOX", "Border Width", {"to": 100, "from": 0, "val": self.cget("border_width"), "callback": lambda val: self.save(lambda val: self.self_configure(border_width=val), "border_width", int(val), int(val))})
-        self.properties.add_option(self.properties.STYLES, "FG Color", "COLOR_COMBO", "fg_color", {"color": self.cget("fg_color"), "key": "fg_color", "transparent": True, "callback": lambda val: self.save(lambda val: self.self_configure(fg_color=val), "fg_color", val, val)})
+        self.properties.add_option(self.properties.STYLES, "FG Color", "COLOR_COMBO", "fg_color", {"color": self.cget("fg_color"), "key": "fg_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.self_configure(fg_color=val), "fg_color", val, val)})
         self.properties.add_option(self.properties.STYLES, "BG Color", "COLOR_COMBO", "bg_color", {"color": self.cget("bg_color"), "key": "bg_color", "transparent": True, "callback": lambda val: self.save(lambda val: self.self_configure(bg_color=val), "bg_color", val, val)})
         self.properties.add_option(self.properties.STYLES, "Border Color", "COLOR_COMBO", "border_color", {"color": self.cget("border_color"), "key": "border_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.self_configure(border_color=val), "border_color", val, val)})
         #self.properties.add_option(self.properties.STYLES, "Scrollbar FG Color", "COLOR_COMBO", "scrollbar_fg_color", {"color": self.cget("scrollbar_fg_color"), "key": "scrollbar_fg_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.self_configure(scrollbar_fg_color=val), "scrollbar_fg_color", val, val)})
