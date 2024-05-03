@@ -85,7 +85,7 @@ class Frame(CTkFrame, PackArgs, BaseWidgetClass):
 
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", int(val), int(val))})
-        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Pack Propagate", "COMBO", "pack_propagate", {"vals": ["True", "False"], "default": self.propagate_on_pack, "callback": lambda val: self.change_pack_propagate(val)})
+        self.properties.add_option(self.properties.LAYOUT, "Pack Propagate", "COMBO", "pack_propagate", {"vals": ["True", "False"], "default": self.propagate_on_pack, "callback": lambda val: self.change_pack_propagate(val)})
 
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Corner Radius", "SPINBOX", "Corner Radius", {"to": 100, "from": 0, "val": self.cget("corner_radius"), "callback": lambda val: self.save(lambda val: self.configure(corner_radius=val), "corner_radius", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Border Width", "SPINBOX", "Border Width", {"to": 100, "from": 0, "val": self.cget("border_width"), "callback": lambda val: self.save(lambda val: self.configure(border_width=val), "border_width", int(val), int(val))})
