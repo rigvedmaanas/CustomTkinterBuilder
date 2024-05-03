@@ -50,11 +50,14 @@ class ThemeUtl:
         return self.theme
 
 class SaveFileDialog(CTkToplevel):
-    def __init__(self, *args, callback, **kwargs):
+    def __init__(self, *args, callback, theme=False, **kwargs):
         super().__init__(*args, **kwargs)
         #self.pack_propagate(False)
         self.callback = callback
-        self.geometry("500x280+600+200")
+        if theme:
+            self.geometry("500x380+600+200")
+        else:
+            self.geometry("500x280+600+200")
 
         self.project_name_lbl = CTkLabel(self, text="Project Name", anchor="w", padx=5, font=CTkFont(size=20))
         self.project_name_lbl.pack(pady=(20, 0), padx=20, fill="x")
@@ -77,8 +80,23 @@ class SaveFileDialog(CTkToplevel):
         self.select_dir = CTkButton(self.fr, text="...", width=20, command=self.choose_dir)
         self.select_dir.pack(side="right", padx=(0, 20), pady=(0, 20))
 
-        self.save_btn = CTkButton(self, text="Save", height=35, command=lambda: (self.callback(dir_=self.dir_entry.get(), name=self.project_name_entry.get()), self.destroy()))
-        self.save_btn.pack(fill="x", padx=20, pady=20)
+        if theme:
+            self.f = CTkFrame(self, fg_color="transparent")
+            self.f.pack(fill="x")
+
+            self.theme_lbl = CTkLabel(self.f, text="Theme", anchor="w", padx=5, font=CTkFont(size=20))
+            self.theme_lbl.pack(pady=(20, 10), padx=20, fill="x")
+
+            self.theme_entry = CTkOptionMenu(self.f, values=["green", "blue", "dark-blue"])
+            self.theme_entry.pack(padx=20, pady=(0, 20), fill="x", side="left", expand=True)
+
+            self.save_btn = CTkButton(self, text="Save", height=35, command=lambda: (
+            self.callback(dir_=self.dir_entry.get(), name=self.project_name_entry.get(), theme=self.theme_entry.get()), self.destroy()))
+            self.save_btn.pack(fill="x", padx=20, pady=20)
+
+        else:
+            self.save_btn = CTkButton(self, text="Save", height=35, command=lambda: (self.callback(dir_=self.dir_entry.get(), name=self.project_name_entry.get()), self.destroy()))
+            self.save_btn.pack(fill="x", padx=20, pady=20)
 
     def choose_dir(self):
         dir = askdirectory()
@@ -740,7 +758,10 @@ app.mainloop()
                 new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
             if new_widget.__class__ in [ComboBox, OptionMenu]:
-                new_widget.set(d_copy["values"][0])
+                try:
+                    new_widget.set(d_copy["values"][0])
+                except KeyError as e:
+                    print(e)
 
             # new_widget.bind("<Button-1>", new_widget.on_drag_start)
             # new_widget.on_drag_start(None)
@@ -1044,13 +1065,19 @@ app.mainloop()
         return new_d
 
     def add_widget(self, w, properties, widget, x=0, y=0):
+
         if widget.master.master.__class__ == ScrollableFrame:
             new_widget = w(master=widget.master.master.get_me(), **properties)
 
         elif widget.master.master.master.__class__ == ScrollableFrame:
             new_widget = w(master=widget.master.master.master.get_me(), **properties)
         else:
-            new_widget = w(master=widget.master, **properties)
+            if widget.master.__class__ not in [ScrollableFrame, Frame, Main]:
+
+                new_widget = w(master=widget.master.master, **properties)
+
+            else:
+                new_widget = w(master=widget.master, **properties)
 
         new_widget.num = self.total_num
         new_widget.name = new_widget.type + str(new_widget.num)

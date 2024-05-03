@@ -37,7 +37,7 @@ class Root(CTk):
         self.ENTRY9 = CTkEntry(master=self.FRAME7, placeholder_text="Search Projects", fg_color=['#e0ddcf', '#161b33'], border_width=0, text_color=['#0d0c1d', '#f1f0ea'], placeholder_text_color=['#161b33', '#e0ddcf'], font=CTkFont(family="SF Display", size=14), textvariable=self.var)
         self.ENTRY9.pack(padx=['10', 10], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=0, side="left")
         self.var.trace_add("write", self.search)
-        self.BUTTON10 = CTkButton(master=self.FRAME6, text="New Project", corner_radius=3, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['gray98', '#f1f0ea'], font=CTkFont(family="SF Display", size=14), command=lambda: SaveFileDialog(callback=self.create_project))
+        self.BUTTON10 = CTkButton(master=self.FRAME6, text="New Project", corner_radius=3, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['gray98', '#f1f0ea'], font=CTkFont(family="SF Display", size=14), command=lambda: SaveFileDialog(callback=self.create_project, theme=True))
         self.BUTTON10.pack(padx=[5, '5'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
         self.BUTTON13_copy = CTkButton(master=self.FRAME6, text="Open", corner_radius=3, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['gray98', '#f1f0ea'], width=90, font=CTkFont(family="SF Display", size=14), command=self.open_project_from_disk)
         self.BUTTON13_copy.pack(padx=['5', 10], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
@@ -146,7 +146,7 @@ class Root(CTk):
             root.show_project(project["Name"][0:2].upper(), project["Name"], project["Directory"])
 
 
-    def create_project(self, name="Project 1", dir_="~/Project 1"):
+    def create_project(self, name="Project 1", dir_="~/Project 1", theme="green"):
         try:
             json_ = {
                 "MAIN-1": {
@@ -154,7 +154,7 @@ class Root(CTk):
                     "parameters": {},
                     "pack_options": {},
                     "ID": str(uuid.uuid4()),
-                    "theme": "green",
+                    "theme": theme,
                     "palette_on_change": {},
                     "palette": {}
                 }
