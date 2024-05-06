@@ -18,6 +18,11 @@ class SegmentedButton(CTkSegmentedButton, PackArgs, BaseWidgetClass):
         self.props = {}
         #self.bind_mouse(properties)
 
+    def _set_appearance_mode(self, mode_string):
+        for x in self._buttons_dict.values():
+            #print(x)
+            x._set_appearance_mode(mode_string)
+
     def __repr__(self):
 
         return f"{self.type}_{str(self.order)}"
@@ -35,6 +40,8 @@ class SegmentedButton(CTkSegmentedButton, PackArgs, BaseWidgetClass):
     def configure(self, require_redraw=False, **kwargs):
         #print(kwargs)
         super().configure(**kwargs)
+        self._set_appearance_mode("light" if self.properties.main.appearance.get() == 0 else "dark")
+
 
 
     def _bool_change(self, val):
@@ -67,7 +74,7 @@ class SegmentedButton(CTkSegmentedButton, PackArgs, BaseWidgetClass):
         # self.properties.add_option(self.properties.STYLES, "State", "COMBO", "state", {"vals": ["normal", "disabled"], "default": self.cget("state"), "callback": lambda val: self.save(lambda val: self.configure(state=val), "state", val, val)})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Corner Radius", "SPINBOX", "Corner Radius", {"to": 100, "from": 0, "val": self.cget("corner_radius"), "callback": lambda val: self.save(lambda val: self.configure(corner_radius=val), "corner_radius", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Border Width", "SPINBOX", "Border Width", {"to": 100, "from": 0, "val": self.cget("border_width"), "callback": lambda val: self.save(lambda val: self.configure(border_width=val), "border_width", int(val), int(val))})
-        self.properties.add_option(self.properties.STYLES, "FG Color", "COLOR_COMBO", "fg_color", {"color": self.cget("fg_color"), "key": "fg_color", "transparent": True, "callback": lambda val: self.save(lambda val: self.configure(fg_color=val), "fg_color", val, val)})
+        self.properties.add_option(self.properties.STYLES, "FG Color", "COLOR_COMBO", "fg_color", {"color": self.cget("fg_color"), "key": "fg_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(fg_color=val), "fg_color", val, val)})
         self.properties.add_option(self.properties.STYLES, "BG Color", "COLOR_COMBO", "bg_color", {"color": self.cget("bg_color"), "key": "bg_color", "transparent": True, "callback": lambda val: self.save(lambda val: self.configure(bg_color=val), "bg_color", val, val)})
         self.properties.add_option(self.properties.STYLES, "Selected Color", "COLOR_COMBO", "selected_color", {"color": self.cget("selected_color"), "key": "selected_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(selected_color=val), "selected_color", val, val)})
         self.properties.add_option(self.properties.STYLES, "Selected Hover Color", "COLOR_COMBO", "selected_hover_color", {"color": self.cget("selected_hover_color"), "key": "selected_hover_color", "transparent": False, "callback": lambda val: self.save(lambda val: self.configure(selected_hover_color=val), "selected_hover_color", val, val)})

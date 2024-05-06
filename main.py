@@ -317,6 +317,7 @@ root.mainloop()
         self.current = oop_code
         self.not_current = code
 
+
     def change_oop(self):
 
         if self.oop_code_switch.get() == 0:
@@ -416,11 +417,18 @@ root.mainloop()
                 code.add_line(f"{x.get_name()}.pack()")
 
                 if run:
-                    code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
-                    if x.get_class() == "CTkScrollableFrame":
-                        code.add_line(f"{x.get_name()}._parent_frame._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
-                        code.add_line(f"{x.get_name()}._scrollbar._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
-                        #code.add_line(f"{x.get_name()}._parent_frame.configure(fg_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}], border_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}])")
+                    if x.get_class() != "CTkSegmentedButton":
+                        code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                        if x.get_class() == "CTkScrollableFrame":
+                            code.add_line(f"{x.get_name()}._parent_frame._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                            code.add_line(f"{x.get_name()}._scrollbar._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                            #code.add_line(f"{x.get_name()}._parent_frame.configure(fg_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}], border_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}])")
+                    else:
+                        code.add_line(f"""
+for x in {x.get_name()}._buttons_dict.values():
+    x._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')
+
+""")
 
 
             else:
@@ -1098,7 +1106,7 @@ root.mainloop()
 
         if new_widget.__class__ == SegmentedButton:
             new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
-        if new_widget.__class__ == ScrollableFrame:
+        elif new_widget.__class__ == ScrollableFrame:
             new_widget.scrollwindow.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
             new_widget.canv.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
         else:
