@@ -473,6 +473,7 @@ class ColorPicker(CTkToplevel):
     def __init__(self, *args, color=(255, 255, 255), color_manager, command=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("500x500")
+        self.title("Color Picker")
         self.color = color
         self.command = command
         self.current_selection = [None, None]

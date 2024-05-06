@@ -282,7 +282,7 @@ root.configure(fg_color={self.r.cget("fg_color")})
 from customtkinter import *
 from PIL import Image
 
-class Root(CTk):
+class App(CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 """)
@@ -291,11 +291,11 @@ class Root(CTk):
         self.loop_generate_oop(d=self.widgets[self.r], parent="self", code=oop_code)
         oop_code.add_line(f"""
 set_default_color_theme("{self.theme_manager.name}")
-app = Root()
-app.geometry("{self.r.cget("width")}x{self.r.cget("height")}")
-app.title("{self.escape_special_chars(self.title)}")
-app.configure(fg_color={self.r.cget("fg_color")})
-app.mainloop()
+root = App()
+root.geometry("{self.r.cget("width")}x{self.r.cget("height")}")
+root.title("{self.escape_special_chars(self.title)}")
+root.configure(fg_color={self.r.cget("fg_color")})
+root.mainloop()
             """)
 
         top = CTkToplevel()
@@ -1478,7 +1478,7 @@ class PaletteEditor(CTkToplevel):
         super().__init__(*args, **kwargs)
         self.geometry("500x500")
         self.color = "#FFFFFF"
-
+        self.title("Palette Editor")
         self.current_selection = [None, None]
         self.clickables = []
         self.color_manager = color_manager.color_manager

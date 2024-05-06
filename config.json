@@ -49,20 +49,20 @@
             "Directory": "/Users/rigvedmaanas/Documents"
         },
         {
-            "Name": "Login-Demo",
-            "Directory": "/Users/rigvedmaanas/Downloads"
-        },
-        {
             "Name": "Untitled",
-            "Directory": "/Users/rigvedmaanas/Documents"
-        },
-        {
-            "Name": "blue",
             "Directory": "/Users/rigvedmaanas/Documents"
         },
         {
             "Name": "HelloWorld",
             "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
+        },
+        {
+            "Name": "Login-Demo",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "blue",
+            "Directory": "/Users/rigvedmaanas/Documents"
         }
     ]
 }
