@@ -126,6 +126,7 @@ class ImageChooser(Toplevel):
         if color != (None, None):
             new_color = (math.floor(color[0][0]), math.floor(color[0][1]), math.floor(color[0][2]))
             self.icon_color.color = new_color
+            self.icon_color.configure(fg_color=color[1])
 
 
     def kill(self):
