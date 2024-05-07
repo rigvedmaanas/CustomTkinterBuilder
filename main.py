@@ -830,6 +830,22 @@ for x in {x.get_name()}._buttons_dict.values():
             json_object = json.dumps(self.s, indent=4)
             with open(os.path.join(os.path.join(dir_, name), f"{name}.json"), "w") as outfile:
                 outfile.write(json_object)
+            with open(os.path.join(dir_, name, name + ".json"), "w") as f:
+                f.write(json_object)
+
+            self.r.winfo_toplevel().title(f"Custom Tkinter Builder - {os.path.join(dir_, name)}")
+
+            with open("config.json", 'r') as openfile:
+                configure = json.load(openfile)
+
+            self.project_files = configure["project_files"]
+            self.project_files.append({"Name": name, "Directory": dir_})
+            configure["project_files"] = self.project_files
+            json_object = json.dumps(configure, indent=4)
+            with open("config.json", 'w') as f:
+                f.write(json_object)
+            short_name = name[0:2].upper()
+            self.r.winfo_toplevel().master.show_project(short_name, name, dir_)
             messagebox.showinfo("Saved", "Your file has been successfully saved")
 
         except FileExistsError as e:

@@ -52,6 +52,7 @@ class Root(CTk):
         self.withdraw()
         set_default_color_theme(os.path.join("Themes", "ctktheme.json"))
         app = App()
+        app.title(f"Custom Tkinter Builder - {os.path.join(dir_, name)}")
 
         def on_closing(command=None):
             msg = messagebox.askyesno("Quit", "Save changes before closing?")
