@@ -57,8 +57,12 @@ class SaveFileDialog(CTkToplevel):
         self.callback = callback
         if theme:
             self.geometry("500x380+600+200")
+            self.title("New Project")
+
         else:
             self.geometry("500x280+600+200")
+            self.title("Save as project")
+
 
         self.project_name_lbl = CTkLabel(self, text="Project Name", anchor="w", padx=5, font=CTkFont(size=20))
         self.project_name_lbl.pack(pady=(20, 0), padx=20, fill="x")
