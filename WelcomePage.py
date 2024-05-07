@@ -197,7 +197,6 @@ class Root(CTk):
 
 
 
-
 set_default_color_theme(os.path.join("Themes", "ctktheme.json"))
 set_appearance_mode("dark") # I like the dark theme. Besides the main window doesn't have a light theme.
 root = Root()

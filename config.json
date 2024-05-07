@@ -53,12 +53,12 @@
             "Directory": "/Users/rigvedmaanas/Documents"
         },
         {
-            "Name": "HelloWorld",
-            "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
-        },
-        {
             "Name": "Login-Demo",
             "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "HelloWorld",
+            "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
         },
         {
             "Name": "blue",

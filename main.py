@@ -3,6 +3,7 @@ import shutil
 import threading
 import tkinter.messagebox
 import uuid
+from tkinter import messagebox
 from tkinter.colorchooser import askcolor
 
 import darkdetect
@@ -825,6 +826,8 @@ for x in {x.get_name()}._buttons_dict.values():
             json_object = json.dumps(self.s, indent=4)
             with open(os.path.join(os.path.join(dir_, name), f"{name}.json"), "w") as outfile:
                 outfile.write(json_object)
+            messagebox.showinfo("Saved", "Your file has been successfully saved")
+
         except FileExistsError as e:
             self.file = ""
             tkinter.messagebox.showerror("Error", f"File Exists: {os.path.join(dir_, name)}")
@@ -851,6 +854,8 @@ for x in {x.get_name()}._buttons_dict.values():
             json_object = json.dumps(self.s, indent=4)
             with open(os.path.join(os.path.join(self.file[0], self.file[1]), f"{self.file[1]}.json"), "w") as outfile:
                 outfile.write(json_object)
+            messagebox.showinfo("Saved", "Your file has been successfully saved")
+
 
     def saveas_file(self):
         f = SaveFileDialog(callback=self.save)
