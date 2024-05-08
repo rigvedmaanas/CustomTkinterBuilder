@@ -852,7 +852,11 @@ class PropertiesManager(CTkTabview):
 
 
                 image_btn.configure(text=txt, width=120)
-                img = Image.open(vals["image"])
+                try:
+                    img = Image.open(vals["image"])
+                except FileNotFoundError as e:
+                    img = Image.open(tempify(vals["image"]))
+
                 img.thumbnail((200, 200))
                 frame.pack(padx=10, pady=(0, 10), fill="x")
                 frame2.pack(padx=10, pady=(0, 10), fill="x")
