@@ -247,7 +247,7 @@ class MainWindow:
 root = CTkToplevel()
 root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
-root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("{os.path.join('Themes', 'ctktheme.json')}"), root.destroy()))
+root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("{resource_path(os.path.join('Themes', 'ctktheme.json'))}"), root.destroy()))
 root.configure(fg_color="{self.r.cget("fg_color")[self.appearance.get()]}")
 set_default_color_theme("{self.theme_manager.name}")
 
