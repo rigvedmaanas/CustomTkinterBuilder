@@ -1,16 +1,8 @@
 import os.path
 import shutil
-
-from icecream import ic
-
+from get_path import resource_path
 from Widgets.Button import Button
-from customtkinter import CTkButton, CTkImage, CTkFont
-import tkinter
-from PackArgs import PackArgs
-from widgets import BaseWidgetClass
-from PIL import Image, ImageTk
-from typing import Union, Tuple, Callable, Optional, Any
-from customtkinter.windows.widgets.theme.theme_manager import ThemeManager
+
 class Button_1(Button):
     def __init__(self, *args, properties, **kwargs):
         super().__init__(*args, properties=properties, **kwargs)
@@ -36,9 +28,10 @@ class Button_2(Button):
 
     def pack(self, **kwargs):
         super().pack(**kwargs)
-        shutil.copy2(os.path.join("ThemeAssets", "ThemedButton", "Button_2", "baseline_arrow_forward_white_18dp_1x.png"), f"temp")
+        shutil.copy2(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Button_2", "baseline_arrow_forward_white_18dp_1x.png")), resource_path("temp"))
 
-        self.set_image(os.path.join("ThemeAssets", "ThemedButton", "Button_2", "baseline_arrow_forward_white_18dp_1x.png"), size=(18, 18))
+        #self.set_image(os.path.join("ThemeAssets", "ThemedButton", "Button_2", "baseline_arrow_forward_white_18dp_1x.png"), size=(18, 18))
+        self.set_image(resource_path(os.path.join("temp", "baseline_arrow_forward_white_18dp_1x.png")), size=(18, 18))
 
         self.save(lambda val: self.configure(width=val), "width", 140, 140)
         self.save(lambda val: self.configure(height=val), "height", 38, 38)
@@ -95,8 +88,9 @@ class Button_Icon_white(Button):
         self.save(lambda val: self.configure(border_color=val), "border_color", ["#3E454A", "#949A9F"], ["#3E454A", "#949A9F"])
         self.save(lambda val: self.configure(border_width=val), "border_width", 0, 0)
         self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", ["gray78", "gray68"], ["gray78", "gray68"])
-        shutil.copy2(os.path.join("ThemeAssets", "ThemedButton", "Icon_White", "baseline_people_white_18dp_1x.png"), f"temp")
-        self.set_image(os.path.join("ThemeAssets", "ThemedButton", "Icon_White", "baseline_people_white_18dp_1x.png"), size=(18, 18))
+        shutil.copy2(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Icon_White", "baseline_people_white_18dp_1x.png")), resource_path("temp"))
+        #self.set_image(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Icon_White", "baseline_people_white_18dp_1x.png")), size=(18, 18))
+        self.set_image(resource_path(os.path.join("temp", "baseline_people_white_18dp_1x.png")), size=(18, 18))
 
 
 class Button_Icon_black(Button):
@@ -115,7 +109,8 @@ class Button_Icon_black(Button):
         self.save(lambda val: self.configure(border_color=val), "border_color", ["#3E454A", "#949A9F"], ["#3E454A", "#949A9F"])
         self.save(lambda val: self.configure(border_width=val), "border_width", 0, 0)
         self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", ["gray78", "gray68"], ["gray78", "gray68"])
-        shutil.copy2(os.path.join("ThemeAssets", "ThemedButton", "Icon_Black", "baseline_people_black_18dp_1x.png"), f"temp")
-        self.set_image(os.path.join("ThemeAssets", "ThemedButton", "Icon_Black", "baseline_people_black_18dp_1x.png"), size=(18, 18))
+        shutil.copy2(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Icon_Black", "baseline_people_black_18dp_1x.png")), resource_path("temp"))
+        #self.set_image(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Icon_Black", "baseline_people_black_18dp_1x.png")), size=(18, 18))
+        self.set_image(resource_path(os.path.join("temp", "baseline_people_black_18dp_1x.png")), size=(18, 18))
 
 

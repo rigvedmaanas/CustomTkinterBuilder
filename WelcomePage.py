@@ -7,6 +7,8 @@ from customtkinter import *
 from PIL import Image
 from main import SaveFileDialog, App
 from thefuzz import process
+from get_path import resource_path
+
 class Root(CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -50,7 +52,7 @@ class Root(CTk):
         print(dir_, name)
 
         self.withdraw()
-        set_default_color_theme(os.path.join("Themes", "ctktheme.json"))
+        set_default_color_theme(resource_path(os.path.join("Themes", "ctktheme.json")))
         app = App()
         app.title(f"Custom Tkinter Builder - {os.path.join(dir_, name)}")
 
@@ -96,13 +98,13 @@ class Root(CTk):
         file = askdirectory()
         if file != "":
             file = [os.path.dirname(file), os.path.basename(file)]
-            with open("config.json", 'r') as openfile:
+            with open(resource_path("config.json"), 'r') as openfile:
                 configure = json.load(openfile)
             project_files = configure["project_files"]
             project_files.append({"Name": file[1], "Directory": file[0]})
             configure["project_files"] = project_files
             json_object = json.dumps(configure, indent=4)
-            with open("config.json", 'w') as f:
+            with open(resource_path("config.json"), 'w') as f:
                 f.write(json_object)
 
             short_name = file[1][0:2].upper()
@@ -131,7 +133,7 @@ class Root(CTk):
             x.bind('<Double-Button-1>', lambda e, dir_=dir_, name=name: (self.bring_to_top(dir_, name), self.open_project_in_editor(dir_=dir_, name=name)))
 
     def bring_to_top(self, dir_, name):
-        with open("config.json", 'r') as openfile:
+        with open(resource_path("config.json"), 'r') as openfile:
             configure = json.load(openfile)
         self.project_files = configure["project_files"]
         index = self.project_files.index({"Name": name, "Directory": dir_})
@@ -139,7 +141,7 @@ class Root(CTk):
         self.project_files.append(content)
         configure["project_files"] = self.project_files
         json_object = json.dumps(configure, indent=4)
-        with open("config.json", 'w') as f:
+        with open(resource_path("config.json"), 'w') as f:
             f.write(json_object)
         for widget in self.FRAME20_copy.winfo_children():
             widget.destroy()
@@ -165,13 +167,13 @@ class Root(CTk):
             json_object = json.dumps(json_, indent=4)
             with open(os.path.join(dir_, name, name+".json"), "w") as f:
                 f.write(json_object)
-            with open("config.json", 'r') as openfile:
+            with open(resource_path("config.json"), 'r') as openfile:
                 configure = json.load(openfile)
             self.project_files = configure["project_files"]
             self.project_files.append({"Name": name, "Directory": dir_})
             configure["project_files"] = self.project_files
             json_object = json.dumps(configure, indent=4)
-            with open("config.json", 'w') as f:
+            with open(resource_path("config.json"), 'w') as f:
                 f.write(json_object)
 
             short_name = name[0:2].upper()
@@ -198,14 +200,14 @@ class Root(CTk):
 
 
 
-set_default_color_theme(os.path.join("Themes", "ctktheme.json"))
+set_default_color_theme(resource_path(os.path.join("Themes", "ctktheme.json")))
 set_appearance_mode("dark") # I like the dark theme. Besides the main window doesn't have a light theme.
 root = Root()
 root.geometry("1000x600")
 root.title("Welcome To Custom Tkinter Builder")
 root.configure(fg_color=['#f1f0ea', '#0d0c1d'])
 #for x in range(100):
-with open("config.json", 'r') as openfile:
+with open(resource_path("config.json"), 'r') as openfile:
     configure = json.load(openfile)
 root.project_files = configure["project_files"]
 

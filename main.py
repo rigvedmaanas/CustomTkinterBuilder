@@ -34,14 +34,14 @@ from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image
-
+from get_path import resource_path
 ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
 #blockPrint()
 class ThemeUtl:
     def __init__(self, theme_dir, theme_name):
-        path = os.path.join(theme_dir, f"{theme_name}.json")
+        path = resource_path(os.path.join(theme_dir, f"{theme_name}.json"))
         with open(path, "r") as f:
             self.theme = json.load(f)
         self.path = path
@@ -364,12 +364,12 @@ root.mainloop()
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
                         if not run:
-                            p += f'image=CTkImage(Image.open("Assets/{os.path.basename(x.props["image"].cget("dark_image").filename)}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                            p += f'image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                         else:
                             p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key == "hover_image":
                         if not run:
-                            p += f'hover_image=CTkImage(Image.open("Assets/{os.path.basename(x.props["hover_image"].cget("dark_image").filename)}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
+                            p += f'hover_image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                         else:
                             p += f'hover_image=CTkImage(Image.open("{x.props["hover_image"].cget("dark_image").filename}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
@@ -472,8 +472,8 @@ for x in {x.get_name()}._buttons_dict.values():
     def open_file_without_asking(self):
         file = os.path.join(self.file[0], self.file[1])
         print(self.file, file)
-        shutil.rmtree('temp')
-        shutil.copytree(os.path.join(file, "Assets"), "temp")
+        shutil.rmtree(resource_path('temp'))
+        shutil.copytree(os.path.join(file, "Assets"), resource_path("temp"))
 
         with open(os.path.join(file, f"{os.path.basename(file)}.json"), 'r') as openfile:
             d = json.load(openfile)
@@ -556,8 +556,8 @@ for x in {x.get_name()}._buttons_dict.values():
         if file != "":
             self.file = [os.path.dirname(file), os.path.basename(file)]
 
-            shutil.rmtree('temp')
-            shutil.copytree(os.path.join(file, "Assets"), "temp")
+            shutil.rmtree(resource_path('temp'))
+            shutil.copytree(os.path.join(file, "Assets"), resource_path("temp"))
 
             with open(os.path.join(file, f"{os.path.basename(file)}.json"), 'r') as openfile:
                 d = json.load(openfile)
@@ -639,7 +639,7 @@ for x in {x.get_name()}._buttons_dict.values():
                 if p == "image":
                     path = d[x]["parameters"]["image"]["image"]
                     file_name = os.path.basename(path)
-                    img = os.path.join("temp", file_name)
+                    img = resource_path(os.path.join("temp", file_name))
                     i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
                     d[x]["parameters"]["image"] = i
 
@@ -832,17 +832,18 @@ for x in {x.get_name()}._buttons_dict.values():
                 outfile.write(json_object)
             with open(os.path.join(dir_, name, name + ".json"), "w") as f:
                 f.write(json_object)
+            # I have a doubt whether json is being written twice
 
             self.r.winfo_toplevel().title(f"Custom Tkinter Builder - {os.path.join(dir_, name)}")
 
-            with open("config.json", 'r') as openfile:
+            with open(resource_path("config.json"), 'r') as openfile:
                 configure = json.load(openfile)
 
             self.project_files = configure["project_files"]
             self.project_files.append({"Name": name, "Directory": dir_})
             configure["project_files"] = self.project_files
             json_object = json.dumps(configure, indent=4)
-            with open("config.json", 'w') as f:
+            with open(resource_path("config.json"), 'w') as f:
                 f.write(json_object)
             short_name = name[0:2].upper()
             self.r.winfo_toplevel().master.show_project(short_name, name, dir_)
@@ -917,9 +918,9 @@ for x in {x.get_name()}._buttons_dict.values():
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
 
-                        p += f'image=CTkImage(Image.open("Assets/{os.path.basename(x.props["image"].cget("dark_image").filename)}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                        p += f'image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key == "hover_image":
-                        p += f'hover_image=CTkImage(Image.open("Assets/{os.path.basename(x.props["hover_image"].cget("dark_image").filename)}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
+                        p += f'hover_image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                  "font_overstrike"]:
                         if type(x.props[key]) == str:
@@ -1698,7 +1699,7 @@ class App(CTkToplevel):
         self.tool_bar = CTkFrame(self, height=40)
         self.tool_bar.pack(side="top", fill="x", padx=10, pady=(10, 0))
 
-        self.home_btn = CTkButton(self.tool_bar, text="", height=28, width=28, image=CTkImage(light_image=Image.open(os.path.join("Assets", "baseline_home_white_18dp_1x.png")), dark_image=Image.open(os.path.join("Assets", "baseline_home_white_18dp_1x.png")), size=(18, 18)))
+        self.home_btn = CTkButton(self.tool_bar, text="", height=28, width=28, image=CTkImage(light_image=Image.open(resource_path(os.path.join("Assets", "baseline_home_white_18dp_1x.png"))), dark_image=Image.open(resource_path(os.path.join("Assets", "baseline_home_white_18dp_1x.png"))), size=(18, 18)))
         self.home_btn.pack(side="left", padx=5, pady=5)
         #self.home_btn.configure(image=self.home_btn.image)
 
