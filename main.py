@@ -34,7 +34,7 @@ from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image
-from get_path import resource_path
+from get_path import resource_path, tempify
 ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
@@ -472,8 +472,8 @@ for x in {x.get_name()}._buttons_dict.values():
     def open_file_without_asking(self):
         file = os.path.join(self.file[0], self.file[1])
         print(self.file, file)
-        shutil.rmtree(resource_path('temp'))
-        shutil.copytree(os.path.join(file, "Assets"), resource_path("temp"))
+        shutil.rmtree(tempify('temp'))
+        shutil.copytree(os.path.join(file, "Assets"), tempify("temp"))
 
         with open(os.path.join(file, f"{os.path.basename(file)}.json"), 'r') as openfile:
             d = json.load(openfile)
@@ -556,8 +556,8 @@ for x in {x.get_name()}._buttons_dict.values():
         if file != "":
             self.file = [os.path.dirname(file), os.path.basename(file)]
 
-            shutil.rmtree(resource_path('temp'))
-            shutil.copytree(os.path.join(file, "Assets"), resource_path("temp"))
+            shutil.rmtree(tempify('temp'))
+            shutil.copytree(os.path.join(file, "Assets"), tempify("temp"))
 
             with open(os.path.join(file, f"{os.path.basename(file)}.json"), 'r') as openfile:
                 d = json.load(openfile)
@@ -639,7 +639,7 @@ for x in {x.get_name()}._buttons_dict.values():
                 if p == "image":
                     path = d[x]["parameters"]["image"]["image"]
                     file_name = os.path.basename(path)
-                    img = resource_path(os.path.join("temp", file_name))
+                    img = tempify(os.path.join("temp", file_name))
                     i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
                     d[x]["parameters"]["image"] = i
 
@@ -1694,8 +1694,8 @@ class App(CTkToplevel):
         self.title("Custom Tkinter Builder")
         self.app_theme = "blue"
         self.canvas_theme = "green"
-        shutil.rmtree(resource_path("temp"))
-        os.mkdir(resource_path("temp"))
+        shutil.rmtree(tempify("temp"))
+        os.mkdir(tempify("temp"))
         self.tool_bar = CTkFrame(self, height=40)
         self.tool_bar.pack(side="top", fill="x", padx=10, pady=(10, 0))
 

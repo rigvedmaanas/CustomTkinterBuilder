@@ -1,1 +1,0 @@
-This File is created so that `temp` folder would be added during build

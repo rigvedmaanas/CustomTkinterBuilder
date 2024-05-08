@@ -12,7 +12,7 @@ from typing import Union, Callable
 from tkinter import font, messagebox
 from PIL import Image
 import requests
-from get_path import resource_path
+from get_path import resource_path, tempify
 
 
 class Toplevel(CTkToplevel, TkinterDnD.DnDWrapper):
@@ -229,8 +229,8 @@ class ImageChooser(Toplevel):
             self.image = image
             self.image.color_type = color
             self.image.url = url
-            self.image.save(f"{resource_path(os.path.join('temp', f'{n}_{name}_{self.image.color_type}_{size}_{density}.png'))}")
-            self.image = f"{resource_path(os.path.join('temp', f'{n}_{name}_{self.image.color_type}_{size}_{density}.png'))}"
+            self.image.save(f"{tempify(os.path.join('temp', f'{n}_{name}_{self.image.color_type}_{size}_{density}.png'))}")
+            self.image = f"{tempify(os.path.join('temp', f'{n}_{name}_{self.image.color_type}_{size}_{density}.png'))}"
             display.configure(image=CTkImage(light_image=image, dark_image=image, size=(image.size[0], image.size[1])))
 
             self.use_btn.configure(state="normal")

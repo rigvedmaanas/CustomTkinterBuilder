@@ -7,7 +7,7 @@ from customtkinter import *
 from PIL import Image
 from main import SaveFileDialog, App
 from thefuzz import process
-from get_path import resource_path
+from get_path import resource_path, tempify
 
 class Root(CTk):
     def __init__(self, *args, **kwargs):
@@ -199,7 +199,7 @@ class Root(CTk):
                 self.show_project(project_data["Name"][0:2].upper(), project_data["Name"], project_data["Directory"])
 
 
-
+print(os.getcwd(), sys._MEIPASS)
 set_default_color_theme(resource_path(os.path.join("Themes", "ctktheme.json")))
 set_appearance_mode("dark") # I like the dark theme. Besides the main window doesn't have a light theme.
 root = Root()
