@@ -1889,7 +1889,7 @@ class App(CTkToplevel):
                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_2, properties={
                                                "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_button_2_btn.pack(side="right", fill="x", expand=True, padx=5, pady=(10, 0))
-        self.add_button_2_btn.configure(image=CTkImage(Image.open("Assets/baseline_arrow_forward_white_18dp_1x.png"), size=(18, 18)), width=140, height=38, compound="right", text="Next", corner_radius=30, fg_color=("#2CC985", "#2FA572"), text_color=("gray98", "#DCE4EE"), hover_color=("#0C955A", "#106A43"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), font=CTkFont(size=15, weight="normal"))
+        self.add_button_2_btn.configure(image=CTkImage(Image.open(resource_path(os.path.join("Assets", "baseline_arrow_forward_white_18dp_1x.png"))), size=(18, 18)), width=140, height=38, compound="right", text="Next", corner_radius=30, fg_color=("#2CC985", "#2FA572"), text_color=("gray98", "#DCE4EE"), hover_color=("#0C955A", "#106A43"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), font=CTkFont(size=15, weight="normal"))
         t = CTkFrame(self.widget_panel_themed)
         t.pack(fill="x")
 
@@ -1906,13 +1906,13 @@ class App(CTkToplevel):
                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_white, properties={
                                                "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_icon_white_btn.pack(side="left", expand=True)
-        self.add_icon_white_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=("#3965FF", "#3965FF"), text_color=("#ffffff", "#ffffff"), hover_color=("#2B4DC6", "#2B4DC6"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), image=CTkImage(Image.open("Assets/baseline_people_white_18dp_1x.png"), size=(18, 18)))
+        self.add_icon_white_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=("#3965FF", "#3965FF"), text_color=("#ffffff", "#ffffff"), hover_color=("#2B4DC6", "#2B4DC6"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), image=CTkImage(Image.open(resource_path(os.path.join("Assets", "baseline_people_white_18dp_1x.png"))), size=(18, 18)))
 
         self.add_icon_black_btn = WidgetButton(master=o, text="Icon Black", height=50,
                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_black, properties={
                                                "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_icon_black_btn.pack(side="right", expand=True)
-        self.add_icon_black_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=("#40B6FF", "#40B6FF"), text_color=("#ffffff", "#ffffff"), hover_color=("#00D9FF", "#00D9FF"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), image=CTkImage(Image.open("Assets/baseline_people_black_18dp_1x.png"), size=(18, 18)))
+        self.add_icon_black_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=("#40B6FF", "#40B6FF"), text_color=("#ffffff", "#ffffff"), hover_color=("#00D9FF", "#00D9FF"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), image=CTkImage(Image.open(resource_path(os.path.join("Assets", "baseline_people_black_18dp_1x.png"))), size=(18, 18)))
 
         self.add_heading_1_btn = WidgetButton(master=self.widget_panel_themed, text="Heading 1", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_1, properties={
