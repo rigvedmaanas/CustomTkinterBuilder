@@ -1694,8 +1694,8 @@ class App(CTkToplevel):
         self.title("Custom Tkinter Builder")
         self.app_theme = "blue"
         self.canvas_theme = "green"
-        shutil.rmtree("temp")
-        os.mkdir("temp")
+        shutil.rmtree(resource_path("temp"))
+        os.mkdir(resource_path("temp"))
         self.tool_bar = CTkFrame(self, height=40)
         self.tool_bar.pack(side="top", fill="x", padx=10, pady=(10, 0))
 
