@@ -856,6 +856,7 @@ class PropertiesManager(CTkTabview):
                     img = Image.open(vals["image"])
                 except FileNotFoundError as e:
                     img = Image.open(tempify(vals["image"]))
+                    vals["image"] = tempify(vals["image"])
 
                 img.thumbnail((200, 200))
                 frame.pack(padx=10, pady=(0, 10), fill="x")
