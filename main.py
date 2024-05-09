@@ -1,5 +1,7 @@
 import json
+import platform
 import shutil
+import sys
 import threading
 import tkinter.messagebox
 import uuid
@@ -892,6 +894,17 @@ for x in {x.get_name()}._buttons_dict.values():
                 #ic(x.props["image"].cget("dark_image").filename, self.file)
                 shutil.copy2(x.props["image"].cget("dark_image").filename, f"{self.file[0]}/{self.file[1]}/Assets")
                 props["image"] = {"image": path, "size": [x.size[0], x.size[1]]}
+            if "font_family" in list(props.keys()):
+                current_os = platform.system()
+                if current_os == "Darwin":
+                    current_os = "macOS"
+                elif current_os == "Windows":
+                    current_os = "Windows"
+                elif current_os == "Linux":
+                    current_os = "Linux"
+                if props["font_family"] == self.theme["CTkFont"][current_os]["family"]:
+                    props.pop("font_family")
+
             if x.get_class() == "CTkFrame":
                 code[parent][x.get_name()] = {"TYPE": x.type, "parameters": props, "pack_options": x.pack_options, "ID": x._inner_id, "PACK_PROPAGATE": x.propagate_on_pack}
             else:
