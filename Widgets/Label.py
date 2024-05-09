@@ -116,7 +116,7 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
         return self.size
 
     def set_image(self, img, size):
-        if img is not None:
+        if img != "":
             self.image = img
             img = Image.open(img)
             img = CTkImage(light_image=img, dark_image=img, size=size)
@@ -143,11 +143,10 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
             with_img_height = self.winfo_height()
             real_width = self.cget("width")
             real_height = self.cget("height")
-            self.configure(image=None, width=with_img_width, height=with_img_height)
+            self.configure(image="", width=with_img_width, height=with_img_height)
             self.update()
             self.configure(width=real_width, height=real_height)
-
-
+            self.props.pop("image")
             #self.properties.main.redraw(self.properties.main.widgets[self.properties.main.r])
 
             #self.properties.main.r.update()

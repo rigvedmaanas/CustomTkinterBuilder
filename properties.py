@@ -957,7 +957,7 @@ class PropertiesManager(CTkTabview):
             vals["callback"]("transparent")
     def _discard(self, vals, img_lbl, image_btn, frame, num_spinbox, frame2, num_spinbox2):
 
-        vals["callback"](None, (0, 0))
+        vals["callback"]("", (0, 0))
         img_lbl.configure(image="", height=1)
         image_btn.configure(text="None")
         num_spinbox.set_command(command=None)

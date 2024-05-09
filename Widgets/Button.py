@@ -99,7 +99,7 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
         self.on_drag_motion(event)  # Some awkward problem
 
     def set_image(self, img, size):
-        if img is not None:
+        if img != "":
             self.image = img
             img = Image.open(img)
             img = CTkImage(light_image=img, dark_image=img, size=size)
@@ -131,6 +131,7 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
             self.update()
             self.configure(width=real_width, height=real_height)
             self.size = None
+            self.props.pop("image")
 
             #self.properties.main.redraw(self.properties.main.widgets[self.properties.main.r])
 
