@@ -84,7 +84,7 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Text", "TEXT", "text", {"val": self.cget("text"), "callback": lambda val: self.save(lambda val: self.configure(text=val), "text", val, val)})
-        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Image", "IMAGE", "image", {"image": self.image, "key": "image", "callback": self.set_image})
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Image", "IMAGE", "image", {"image": self.image, "size": self.get_size, "key": "image", "callback": self.set_image})
 
 
         # Had to reset the image for compound option to take effect
@@ -112,12 +112,15 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
         self.default()
         #self.on_drag_motion(event)  # Some awkward problem
 
+    def get_size(self):
+        return self.size
+
     def set_image(self, img, size):
         if img is not None:
             self.image = img
             img = Image.open(img)
             img = CTkImage(light_image=img, dark_image=img, size=size)
-
+            #print(img, int(self.cget("width"))+1, type(int(self.cget("width"))+1))
             # Image is not updating. Changing the width is the workaround I found. Need to change this if possible
             self.configure(image=img, width=int(self.cget("width"))+1)
             self.configure(width=int(self.cget("width"))-1)

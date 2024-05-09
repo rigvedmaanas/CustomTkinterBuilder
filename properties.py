@@ -837,7 +837,7 @@ class PropertiesManager(CTkTabview):
             if vals["image"] is not None:
                 n = 15
                 if os.path.basename(os.path.dirname(vals["image"])) == "Assets":
-                    vals["image"] = os.path.join(os.path.join(str(pathlib.PurePath(vals["image"]).parent.parent), "temp"), str(pathlib.PurePath(vals["image"]).name))
+                    vals["image"] = os.path.join(os.path.join(str(pathlib.PurePath(vals["image"]).parent.parent), tempify("temp")), str(pathlib.PurePath(vals["image"]).name))
 
                 if type(vals["image"]) == str:
                     if len(vals["image"]) > n:
@@ -847,8 +847,8 @@ class PropertiesManager(CTkTabview):
                 else:
                     txt = "Icon"
                 # txt = textwrap.shorten(file, width=10, placeholder="...")
-                num_spinbox.set_command(command=lambda val: (vals["callback"](vals["image"], (val, num_spinbox2.get()))))
-                num_spinbox2.set_command(command=lambda val: (vals["callback"](vals["image"], (num_spinbox.get(), val))))
+                num_spinbox.set_command(command=lambda val: (vals["callback"](vals["image"], (int(val), int(num_spinbox2.get())))))
+                num_spinbox2.set_command(command=lambda val: (vals["callback"](vals["image"], (int(num_spinbox.get()), int(val)))))
 
 
                 image_btn.configure(text=txt, width=120)
@@ -858,12 +858,17 @@ class PropertiesManager(CTkTabview):
                     img = Image.open(tempify(vals["image"]))
                     vals["image"] = tempify(vals["image"])
 
-                img.thumbnail((200, 200))
                 frame.pack(padx=10, pady=(0, 10), fill="x")
                 frame2.pack(padx=10, pady=(0, 10), fill="x")
-                num_spinbox.set(img.size[0])
-                num_spinbox2.set(img.size[1])
+                if vals["size"]() is not None:
+                    num_spinbox.set(vals["size"]()[0])
+                    num_spinbox2.set(vals["size"]()[1])
+                else:
+                    num_spinbox.set(img.size[0])
+                    num_spinbox2.set(img.size[1])
+
                 vals["callback"](vals["image"], (int(num_spinbox.get()), int(num_spinbox2.get())))
+                img.thumbnail((200, 200))
 
                 img = CTkImage(img, size=img.size)
                 img_lbl.configure(image=img)

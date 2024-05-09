@@ -69,10 +69,6 @@
             "Directory": "/Users/rigvedmaanas/Documents"
         },
         {
-            "Name": "Youtube-Demo",
-            "Directory": "/Users/rigvedmaanas/Downloads"
-        },
-        {
             "Name": "HelloWorld",
             "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
         },
@@ -82,6 +78,10 @@
         },
         {
             "Name": "Spotify-Demo",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "Youtube-Demo",
             "Directory": "/Users/rigvedmaanas/Downloads"
         }
     ]

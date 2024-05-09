@@ -54,6 +54,9 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
     def change_name(self, name):
         self.name = name
 
+    def get_size(self):
+        return self.size
+
     def on_drag_start(self, event):
         #self._drag_start_x = event.x
         #self._drag_start_y = event.y
@@ -63,7 +66,7 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.configure(width=val), "width", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.configure(height=val), "height", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Text", "TEXT", "text", {"val": self.cget("text"), "callback": lambda val: self.save(lambda val: self.configure(text=val), "text", val, val)})
-        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Image", "IMAGE", "image", {"image": self.image, "key": "image", "callback": self.set_image})
+        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Image", "IMAGE", "image", {"image": self.image, "size":self.get_size ,"key": "image", "callback": self.set_image})
 
 
         # Had to reset the image for compound option to take effect
