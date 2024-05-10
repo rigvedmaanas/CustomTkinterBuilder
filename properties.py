@@ -1,4 +1,5 @@
 import pathlib
+import shutil
 import uuid
 from tkinter.colorchooser import askcolor
 from tkinter.filedialog import askopenfilename
@@ -136,14 +137,22 @@ class ImageChooser(Toplevel):
     def choose_file(self):
         file = askopenfilename(filetypes=[(".png", "png"), (".jpg", "jpg"), (".PNG", "PNG"), (".JPG", "JPG"), (".jpeg", "jpeg"), (".JPEG", "JPEG")])
         if file != "":
-            self.image = file
+            shutil.copy2(file, tempify("temp"))
+
+            self.image = tempify(os.path.join("temp", os.path.basename(file)))
+            #self.image.save(f"{tempify(os.path.join('temp', f'{n}_{name}_{self.image.color_type}_{size}_{density}.png'))}")
+
             self.callback(self.image)
             #print(self.image)
             self.destroy()
     def open_file(self, event):
         if event.data.endswith(".png") or event.data.endswith(".PNG") or event.data.endswith(".jpg") or event.data.endswith(".JPG") or event.data.endswith(".JPEG") or event.data.endswith(".jpeg"):
             #print(event.data)
-            self.image = event.data
+            shutil.copy2(event.data, tempify("temp"))
+
+            self.image = tempify(os.path.join("temp", os.path.basename(event.data)))
+
+            #self.image = event.data
             self.callback(self.image)
             self.destroy()
 

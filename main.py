@@ -376,11 +376,28 @@ root.mainloop()
                             p += f'hover_image=CTkImage(Image.open("{x.props["hover_image"].cget("dark_image").filename}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                "font_overstrike"]:
-                        if type(x.props[key]) == str:
+                        if key == "font_family":
+                            current_os = platform.system()
+                            if current_os == "Darwin":
+                                current_os = "macOS"
+                            elif current_os == "Windows":
+                                current_os = "Windows"
+                            elif current_os == "Linux":
+                                current_os = "Linux"
+                            if x.props[key] == self.theme["CTkFont"][current_os]["family"]:
+                                pass
+                            else:
+                                if type(x.props[key]) == str:
 
-                            font += f'{key[5::]}="{x.props[key]}", '
+                                    font += f'{key[5::]}="{x.props[key]}", '
+                                else:
+                                    font += f'{key[5::]}={x.props[key]}, '
                         else:
-                            font += f'{key[5::]}={x.props[key]}, '
+                            if type(x.props[key]) == str:
+
+                                font += f'{key[5::]}="{x.props[key]}", '
+                            else:
+                                font += f'{key[5::]}={x.props[key]}, '
                     elif key in ["hover_font_family", "hover_font_size", "hover_font_weight", "hover_font_slant", "hover_font_underline",
                                "hover_font_overstrike"]:
                         ic(key, x.props[key])
@@ -892,7 +909,7 @@ for x in {x.get_name()}._buttons_dict.values():
                 img = os.path.basename(x.props["image"].cget("dark_image").filename)
                 path = os.path.join("Assets", img)
                 #ic(x.props["image"].cget("dark_image").filename, self.file)
-                shutil.copy2(x.props["image"].cget("dark_image").filename, f"{self.file[0]}/{self.file[1]}/Assets")
+                shutil.copy2(x.props["image"].cget("dark_image").filename, os.path.join(self.file[0], self.file[1], "Assets"))
                 props["image"] = {"image": path, "size": [x.size[0], x.size[1]]}
             if "font_family" in list(props.keys()):
                 current_os = platform.system()
@@ -936,11 +953,28 @@ for x in {x.get_name()}._buttons_dict.values():
                         p += f'hover_image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
                                  "font_overstrike"]:
-                        if type(x.props[key]) == str:
+                        if key == "font_family":
+                            current_os = platform.system()
+                            if current_os == "Darwin":
+                                current_os = "macOS"
+                            elif current_os == "Windows":
+                                current_os = "Windows"
+                            elif current_os == "Linux":
+                                current_os = "Linux"
+                            if x.props[key] == self.theme["CTkFont"][current_os]["family"]:
+                                pass
+                            else:
+                                if type(x.props[key]) == str:
 
-                            font += f'{key[5::]}="{x.props[key]}", '
+                                    font += f'{key[5::]}="{x.props[key]}", '
+                                else:
+                                    font += f'{key[5::]}={x.props[key]}, '
                         else:
-                            font += f'{key[5::]}={x.props[key]}, '
+                            if type(x.props[key]) == str:
+
+                                font += f'{key[5::]}="{x.props[key]}", '
+                            else:
+                                font += f'{key[5::]}={x.props[key]}, '
                     elif key in ["hover_font_family", "hover_font_size", "hover_font_weight", "hover_font_slant",
                                  "hover_font_underline",
                                  "hover_font_overstrike"]:
