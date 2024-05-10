@@ -2,7 +2,7 @@
     "MAIN-1": {
         "TYPE": "MAIN",
         "parameters": {
-            "title": "Custom Tkinter Builder Login Demo",
+            "title": "Custom Tkinter Builder - Login Demo",
             "width": 1000,
             "height": 600
         },
@@ -32,7 +32,6 @@
                 "TYPE": "LABEL",
                 "parameters": {
                     "text": "",
-                    "font_family": "SF Display",
                     "anchor": "w",
                     "text_color": [
                         "gray10",
@@ -64,7 +63,6 @@
                 "TYPE": "LABEL",
                 "parameters": {
                     "text": "Welcome\nBack !",
-                    "font_family": "Poppins",
                     "justify": "left",
                     "anchor": "w",
                     "font_size": 82,
@@ -120,7 +118,6 @@
                     "TYPE": "LABEL",
                     "parameters": {
                         "text": "Login",
-                        "font_family": "Poppins",
                         "anchor": "w",
                         "font_size": 39,
                         "text_color": [
@@ -137,7 +134,6 @@
                     "TYPE": "LABEL",
                     "parameters": {
                         "text": "Welcome Back! Please login to your account",
-                        "font_family": "Poppins",
                         "anchor": "w",
                         "font_size": 14,
                         "text_color": [
@@ -174,7 +170,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "User Name",
-                            "font_family": "Poppins",
                             "anchor": "w",
                             "font_size": 15,
                             "text_color": [
@@ -191,7 +186,6 @@
                         "TYPE": "ENTRY",
                         "parameters": {
                             "placeholder_text": "example@gmail.com",
-                            "font_family": "Poppins",
                             "height": 35,
                             "corner_radius": 3,
                             "text_color": [
@@ -224,7 +218,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "Password",
-                            "font_family": "Poppins",
                             "anchor": "w",
                             "font_size": 15,
                             "text_color": [
@@ -241,7 +234,6 @@
                         "TYPE": "ENTRY",
                         "parameters": {
                             "placeholder_text": "",
-                            "font_family": "Poppins",
                             "height": 35,
                             "corner_radius": 3,
                             "text_color": [
@@ -273,7 +265,6 @@
                         "TYPE": "CHECKBOX",
                         "parameters": {
                             "text": "Remember Me",
-                            "font_family": "Poppins",
                             "fg_color": [
                                 "#8651ff",
                                 "#8651ff"
@@ -298,7 +289,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "Forgot Password?",
-                            "font_family": "Poppins",
                             "fg_color": "transparent",
                             "hover": false,
                             "text_color": [
@@ -316,7 +306,6 @@
                     "TYPE": "BUTTON",
                     "parameters": {
                         "text": "Login",
-                        "font_family": "Poppins",
                         "height": 35,
                         "text_color": [
                             "gray98",
@@ -356,7 +345,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "New User?",
-                            "font_family": "Poppins",
                             "text_color": [
                                 "gray10",
                                 "#FFFFFF"
@@ -371,7 +359,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "Sign Up",
-                            "font_family": "Poppins",
                             "width": 70,
                             "fg_color": "transparent",
                             "hover": false,

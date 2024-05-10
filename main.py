@@ -227,7 +227,6 @@ class MainWindow:
                 else:
                     d["font"] = CTkFont(family=self.theme["CTkFont"]["Linux"]["family"], size=self.theme["CTkFont"]["Linux"]["size"],
                                       weight=self.theme["CTkFont"]["Linux"]["weight"])
-
         widget.configure(**d)
 
         if widget.get_class() == "CTkScrollableFrame":

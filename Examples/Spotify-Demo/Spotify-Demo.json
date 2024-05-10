@@ -2,7 +2,7 @@
     "MAIN-1": {
         "TYPE": "MAIN",
         "parameters": {
-            "title": "Custom Tkinter Builder Spotify Example",
+            "title": "Custom Tkinter Builder- Spotify Demo",
             "width": 1365,
             "height": 770
         },
@@ -56,7 +56,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "Home",
-                            "font_family": "Poppins",
                             "corner_radius": 3,
                             "height": 40,
                             "image": {
@@ -95,7 +94,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "Search",
-                            "font_family": "Poppins",
                             "corner_radius": 3,
                             "height": 40,
                             "image": {
@@ -131,7 +129,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "Your Library",
-                            "font_family": "Poppins",
                             "corner_radius": 3,
                             "height": 40,
                             "image": {
@@ -183,7 +180,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "Playlists",
-                            "font_family": "Poppins",
                             "text_color": [
                                 "#ffffff",
                                 "#ffffff"
@@ -201,7 +197,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "Create Playlist",
-                            "font_family": "Poppins",
                             "corner_radius": 3,
                             "height": 40,
                             "image": {
@@ -237,7 +232,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "Liked Songs",
-                            "font_family": "Poppins",
                             "corner_radius": 3,
                             "height": 40,
                             "image": {
@@ -310,7 +304,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "2024 Greatest Hits",
-                            "font_family": "Poppins",
                             "anchor": "w",
                             "font_size": 15,
                             "height": 20,
@@ -334,7 +327,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "At Work",
-                            "font_family": "Poppins",
                             "anchor": "w",
                             "font_size": 15,
                             "height": 20,
@@ -358,7 +350,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "Playlist #2",
-                            "font_family": "Poppins",
                             "anchor": "w",
                             "font_size": 15,
                             "height": 20,
@@ -383,7 +374,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "Playlist #4",
-                            "font_family": "Poppins",
                             "anchor": "w",
                             "font_size": 15,
                             "height": 20,
@@ -425,7 +415,6 @@
                     "TYPE": "LABEL",
                     "parameters": {
                         "text": "Good Morning",
-                        "font_family": "Poppins",
                         "font_size": 30,
                         "anchor": "w",
                         "text_color": [
@@ -486,7 +475,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "",
-                                "font_family": "Poppins",
                                 "width": 70,
                                 "height": 70,
                                 "fg_color": [
@@ -504,7 +492,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "Daily Mix 1",
-                                "font_family": "Poppins",
                                 "anchor": "w",
                                 "font_size": 15,
                                 "text_color": [
@@ -549,7 +536,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "",
-                                "font_family": "Poppins",
                                 "width": 70,
                                 "height": 70,
                                 "fg_color": [
@@ -567,7 +553,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "Daily Mix 2",
-                                "font_family": "Poppins",
                                 "anchor": "w",
                                 "font_size": 15,
                                 "text_color": [
@@ -612,7 +597,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "",
-                                "font_family": "Poppins",
                                 "width": 70,
                                 "height": 70,
                                 "fg_color": [
@@ -630,7 +614,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "Daily Mix 3",
-                                "font_family": "Poppins",
                                 "anchor": "w",
                                 "font_size": 15,
                                 "text_color": [
@@ -691,7 +674,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "",
-                                "font_family": "Poppins",
                                 "width": 70,
                                 "height": 70,
                                 "fg_color": [
@@ -709,7 +691,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "Daily Mix 4",
-                                "font_family": "Poppins",
                                 "anchor": "w",
                                 "font_size": 15,
                                 "text_color": [
@@ -754,7 +735,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "",
-                                "font_family": "Poppins",
                                 "width": 70,
                                 "height": 70,
                                 "fg_color": [
@@ -772,7 +752,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "Daily Mix 5",
-                                "font_family": "Poppins",
                                 "anchor": "w",
                                 "font_size": 15,
                                 "text_color": [
@@ -817,7 +796,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "",
-                                "font_family": "Poppins",
                                 "width": 70,
                                 "height": 70,
                                 "fg_color": [
@@ -835,7 +813,6 @@
                             "TYPE": "LABEL",
                             "parameters": {
                                 "text": "Daily Mix 6",
-                                "font_family": "Poppins",
                                 "anchor": "w",
                                 "font_size": 15,
                                 "text_color": [
@@ -876,7 +853,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "Your Frequent Plays",
-                            "font_family": "Poppins",
                             "font_size": 19,
                             "text_color": [
                                 "gray10",
@@ -935,7 +911,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -956,7 +931,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 1",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -981,7 +955,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1031,7 +1004,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1052,7 +1024,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 2",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1077,7 +1048,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1127,7 +1097,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1148,7 +1117,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 3",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1173,7 +1141,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1223,7 +1190,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1244,7 +1210,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 4",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1269,7 +1234,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1319,7 +1283,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1340,7 +1303,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 5",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1365,7 +1327,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1415,7 +1376,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1436,7 +1396,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 6",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1461,7 +1420,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1511,7 +1469,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1532,7 +1489,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 7",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1557,7 +1513,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1607,7 +1562,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1628,7 +1582,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 8",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1653,7 +1606,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1703,7 +1655,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1724,7 +1675,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 9",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1749,7 +1699,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1799,7 +1748,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1820,7 +1768,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 10",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1845,7 +1792,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -1890,7 +1836,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "Top 10 International",
-                            "font_family": "Poppins",
                             "font_size": 19,
                             "text_color": [
                                 "gray10",
@@ -1949,7 +1894,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -1970,7 +1914,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 1",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -1995,7 +1938,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2045,7 +1987,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -2066,7 +2007,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 2",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -2091,7 +2031,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2141,7 +2080,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -2162,7 +2100,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 3",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -2187,7 +2124,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2237,7 +2173,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -2258,7 +2193,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 4",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -2283,7 +2217,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2333,7 +2266,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -2354,7 +2286,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 5",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -2379,7 +2310,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2429,7 +2359,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -2450,7 +2379,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 6",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -2475,7 +2403,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2525,7 +2452,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -2546,7 +2472,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 7",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -2571,7 +2496,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2621,7 +2545,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -2642,7 +2565,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 8",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -2667,7 +2589,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2717,7 +2638,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -2738,7 +2658,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 9",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -2763,7 +2682,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2813,7 +2731,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "",
-                                    "font_family": "Poppins",
                                     "width": 180,
                                     "height": 180,
                                     "fg_color": [
@@ -2834,7 +2751,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Music 10",
-                                    "font_family": "Poppins",
                                     "font_size": 15,
                                     "text_color": [
                                         "gray10",
@@ -2859,7 +2775,6 @@
                                 "TYPE": "LABEL",
                                 "parameters": {
                                     "text": "Somebody",
-                                    "font_family": "Poppins",
                                     "font_size": 13,
                                     "text_color": [
                                         "gray10",
@@ -2922,7 +2837,6 @@
                     "TYPE": "LABEL",
                     "parameters": {
                         "text": "",
-                        "font_family": "Poppins",
                         "width": 60,
                         "fg_color": [
                             "#CF245E",
@@ -2961,7 +2875,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "Music 1",
-                            "font_family": "Poppins",
                             "font_size": 15,
                             "anchor": "w",
                             "height": 2,
@@ -2979,7 +2892,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "Somebody",
-                            "font_family": "Poppins",
                             "font_size": 11,
                             "compound": "top",
                             "anchor": "w",
@@ -2999,7 +2911,6 @@
                     "TYPE": "BUTTON",
                     "parameters": {
                         "text": "",
-                        "font_family": "Poppins",
                         "width": 30,
                         "height": 30,
                         "image": {
@@ -3040,7 +2951,6 @@
                     "TYPE": "BUTTON",
                     "parameters": {
                         "text": "",
-                        "font_family": "Poppins",
                         "width": 35,
                         "height": 35,
                         "image": {
@@ -3091,7 +3001,6 @@
                     "TYPE": "BUTTON",
                     "parameters": {
                         "text": "",
-                        "font_family": "Poppins",
                         "width": 35,
                         "height": 35,
                         "image": {
@@ -3152,7 +3061,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "0:00",
-                            "font_family": "Poppins",
                             "text_color": [
                                 "gray10",
                                 "#ffffff"
@@ -3167,7 +3075,6 @@
                         "TYPE": "LABEL",
                         "parameters": {
                             "text": "3:38",
-                            "font_family": "Poppins",
                             "text_color": [
                                 "gray10",
                                 "#ffffff"
@@ -3222,7 +3129,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "",
-                            "font_family": "Poppins",
                             "width": 40,
                             "height": 40,
                             "corner_radius": 6,
@@ -3248,7 +3154,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "",
-                            "font_family": "Poppins",
                             "width": 40,
                             "height": 40,
                             "corner_radius": 6,
@@ -3279,7 +3184,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "",
-                            "font_family": "Poppins",
                             "width": 40,
                             "height": 40,
                             "corner_radius": 6,
@@ -3313,7 +3217,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "",
-                            "font_family": "Poppins",
                             "width": 40,
                             "height": 40,
                             "corner_radius": 6,
@@ -3344,7 +3247,6 @@
                         "TYPE": "BUTTON",
                         "parameters": {
                             "text": "",
-                            "font_family": "Poppins",
                             "width": 40,
                             "height": 40,
                             "corner_radius": 6,
