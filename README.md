@@ -1,5 +1,3 @@
-![Custom Tkinter Builder](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/37de9c83-6fd1-42cd-af8d-78c6f78b71aa)
-
 # Welcome To Custom Tkinter Builder
 
 This is a Free and Open Source Software (FOSS) [RAD](https://en.wikipedia.org/wiki/Rapid_application_development) tool for [Custom Tkinter](https://github.com/TomSchimansky/CustomTkinter). This software allows you to create complex UI faster than ever⚡
@@ -27,15 +25,20 @@ This is a Free and Open Source Software (FOSS) [RAD](https://en.wikipedia.org/wi
 
 ## Login
 ### Dark Mode
-![Login Light Mode](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/f6835a63-6e9d-4145-a1ce-832fce8646d0)
+![Dark Mode - Login](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/133ef73f-3b55-4181-bf78-a4ba1e9b19a3)
 ### Light Mode
-![Login Dark Mode](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/d29b705f-888e-4212-b9ae-00b96a8f0acc)
+![Light Mode - Login](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/482ed8c3-0573-4103-9aa6-45d0258eacdf)
+
 
 ## Music Player
 ### Dark Mode
-![Music Player Light Mode](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/4ac4dac0-2f96-4337-a912-9694d7892d64)
+![Dark Mode - Spotify](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/28970507-3125-4cd8-bb42-d6a7d3fee359)
 ### Light Mode
-![Music Player Dark Mode](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/8243918e-d388-47f9-bca4-ffb16c07a05d)
+![Light Mode - Spotify](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/eb2a3b08-02ac-4bea-bf5f-9da723bb6101)
+
+## Video Library
+![Youtube](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/612572d7-456c-45ef-aeff-ea1108cbf995)
+
 
 # Available Widgets
 
