@@ -3,7 +3,6 @@ import shutil
 import uuid
 from tkinter.colorchooser import askcolor
 from tkinter.filedialog import askopenfilename
-
 import icecream
 from icecream import ic
 from tkinterdnd2 import TkinterDnD, DND_ALL
@@ -27,6 +26,8 @@ class ImageChooser(Toplevel):
         self.callback = callback
         self.geometry("700x550+600+200")
         self.protocol("WM_DELETE_WINDOW", self.kill)
+        self.after(20, self.lift)
+
         #self.attributes('-topmost', True)
         self.title("Choose Image or Icon")
         self.image = ""
@@ -492,6 +493,8 @@ class ColorPicker(CTkToplevel):
         self.scrl.pack(fill="both", expand=True, padx=10, pady=(10, 0))
         self.fr = CTkFrame(self)
         self.fr.pack(padx=10, pady=10, fill="x")
+        self.after(20, self.lift)
+
 
         self.c = CTkButton(self.fr, width=100, height=100, text="", fg_color=self.color, hover=False, command=self.get_color)
         self.c.pack(side="left")
@@ -568,6 +571,10 @@ class ColorPicker(CTkToplevel):
         return '#%02x%02x%02x' % c
 
 class CustomCTkComboBox(CTkComboBox):
+    def __init__(self, *args, **kwargs):
+        super(CustomCTkComboBox, self).__init__(*args, **kwargs)
+
+
     def _create_grid(self):
         self._canvas.grid(row=0, column=0, rowspan=1, columnspan=1, sticky="nsew")
 
@@ -584,6 +591,7 @@ class CustomCTkComboBox(CTkComboBox):
         elif sys.platform.startswith("win"):
             self._entry.configure(cursor="hand2")
             self._canvas.configure(cursor="hand2")
+
 
 
 

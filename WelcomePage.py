@@ -55,6 +55,7 @@ class Root(CTk):
         set_default_color_theme(resource_path(os.path.join("Themes", "ctktheme.json")))
         app = App()
         app.title(f"Custom Tkinter Builder - {os.path.join(dir_, name)}")
+        app.focus_get()
 
         def on_closing(command=None):
             msg = messagebox.askyesno("Quit", "Save changes before closing?")
@@ -213,6 +214,6 @@ root.project_files = configure["project_files"]
 
 for project in root.project_files:
     root.show_project(project["Name"][0:2].upper(), project["Name"], project["Directory"])
-root.center(root)
+#root.center(root)
 root.mainloop()
             

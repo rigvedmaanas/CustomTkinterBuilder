@@ -36,7 +36,8 @@ from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image
-from get_path import resource_path, tempify
+from get_path import resource_path, tempify, joinpath
+
 ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
@@ -57,6 +58,7 @@ class SaveFileDialog(CTkToplevel):
         super().__init__(*args, **kwargs)
         #self.pack_propagate(False)
         self.callback = callback
+        self.after(20, self.lift)
         if theme:
             self.geometry("500x380+600+200")
             self.title("New Project")
@@ -251,6 +253,7 @@ root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
 root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("{resource_path(os.path.join('Themes', 'ctktheme.json'))}"), root.destroy()))
 root.configure(fg_color="{self.r.cget("fg_color")[self.appearance.get()]}")
 set_default_color_theme("{self.theme_manager.name}")
+root.after(20, root.lift)
 
 """)
 
@@ -308,6 +311,7 @@ root.mainloop()
         top.geometry("1000x800+500+100")
         top.title("Export Code")
         top.configure(fg_color=["gray95", "gray10"])
+        top.after(20, top.lift)
 
         self.codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=oop_code.get_code(), language="python", theme="monokai", font=CTkFont(size=20))
         self.codeviewer.configure(wrap="none")
@@ -365,12 +369,14 @@ root.mainloop()
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
                         if not run:
-                            p += f'image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                            ic("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))
+                            ic(joinpath("Assets", os.path.basename(x.props["image"].cget("dark_image").filename)))
+                            p += f'image=CTkImage(Image.open("{joinpath("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                         else:
                             p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key == "hover_image":
                         if not run:
-                            p += f'hover_image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
+                            p += f'hover_image=CTkImage(Image.open("{joinpath("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                         else:
                             p += f'hover_image=CTkImage(Image.open("{x.props["hover_image"].cget("dark_image").filename}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
@@ -555,6 +561,7 @@ for x in {x.get_name()}._buttons_dict.values():
         loading_window.title("Loading....")
         loading_window.overrideredirect(1)
         loading_window.overrideredirect(0)
+        loading_window.after(20, loading_window.lift)
 
         self.center(loading_window)
         frm = CTkFrame(loading_window, fg_color="transparent")
@@ -1499,7 +1506,7 @@ class Hierarchy(CTkScrollableFrame):
         self.top_level = CTkToplevel()
         self.top_level.geometry("500x500")
         self.top_level.title("Change Parent")
-
+        self.top_level.after(20, self.top_level.lift)
         self.scrl = CTkScrollableFrame(self.top_level)
         self.scrl.pack(fill="both", expand=True)
 
@@ -1559,6 +1566,7 @@ class PaletteEditor(CTkToplevel):
         self.geometry("500x500")
         self.color = "#FFFFFF"
         self.title("Palette Editor")
+        self.after(20, self.lift)
         self.current_selection = [None, None]
         self.clickables = []
         self.color_manager = color_manager.color_manager
@@ -1740,6 +1748,8 @@ class App(CTkToplevel):
         self.title("Custom Tkinter Builder")
         self.app_theme = "blue"
         self.canvas_theme = "green"
+        self.after(20, self.lift)
+
         shutil.rmtree(tempify("temp"))
         os.mkdir(tempify("temp"))
         self.tool_bar = CTkFrame(self, height=40)

@@ -1,4 +1,12 @@
 {
     "project_files": [
+        {
+            "Name": "test",
+            "Directory": "E:/RigvedMaanas-Projects"
+        },
+        {
+            "Name": "Login-Demo",
+            "Directory": "E:/RigvedMaanas-Projects/Custom Tkinter Builder/CustomTkinterBuilder/Examples"
+        }
     ]
 }

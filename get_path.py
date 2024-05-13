@@ -26,3 +26,6 @@ def tempify(path):
         base_path = os.path.abspath(".")
 
     return os.path.join(base_path, path)
+
+def joinpath(rootdir, targetdir):
+    return os.path.join(rootdir, os.path.sep, targetdir)
