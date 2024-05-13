@@ -12,14 +12,7 @@
                 "fg_color": "transparent"
             },
             "pack_options": {
-                "expand": true,
-                "anchor": "center",
-                "fill": "none",
-                "ipadx": 0,
-                "ipady": 0,
-                "padx": 0,
-                "pady": 0,
-                "side": "top"
+                "expand": true
             },
             "ID": "153c524d-73d8-4f35-a255-d98e21c51d92",
             "PACK_PROPAGATE": "True",
@@ -27,7 +20,6 @@
                 "TYPE": "LABEL",
                 "parameters": {
                     "text": "Hello World",
-                    "font_family": "SF Display",
                     "font_size": 30
                 },
                 "pack_options": {},
@@ -36,8 +28,7 @@
             "BUTTON2": {
                 "TYPE": "BUTTON",
                 "parameters": {
-                    "text": "Click Me",
-                    "font_family": "SF Display"
+                    "text": "Click Me"
                 },
                 "pack_options": {},
                 "ID": "940ed8c7-b549-4906-9329-a434b0ad19ec"

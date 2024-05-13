@@ -1,12 +1,20 @@
 {
     "project_files": [
         {
-            "Name": "test",
-            "Directory": "E:/RigvedMaanas-Projects"
+            "Name": "Login-Demo",
+            "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
         },
         {
-            "Name": "Login-Demo",
-            "Directory": "E:/RigvedMaanas-Projects/Custom Tkinter Builder/CustomTkinterBuilder/Examples"
+            "Name": "Spotify-Demo",
+            "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
+        },
+        {
+            "Name": "HelloWorld",
+            "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
+        },
+        {
+            "Name": "Youtube-Demo",
+            "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
         }
     ]
 }

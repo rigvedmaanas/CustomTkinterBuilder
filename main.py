@@ -663,7 +663,8 @@ for x in {x.get_name()}._buttons_dict.values():
             for p in dict(d[x]["parameters"]):
                 if p == "image":
                     path = d[x]["parameters"]["image"]["image"]
-                    file_name = os.path.basename(path)
+                    #file_name = os.path.basename(path)
+                    file_name = path
                     img = tempify(os.path.join("temp", file_name))
                     i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
                     d[x]["parameters"]["image"] = i
@@ -916,7 +917,7 @@ for x in {x.get_name()}._buttons_dict.values():
                 path = os.path.join("Assets", img)
                 #ic(x.props["image"].cget("dark_image").filename, self.file)
                 shutil.copy2(x.props["image"].cget("dark_image").filename, os.path.join(self.file[0], self.file[1], "Assets"))
-                props["image"] = {"image": path, "size": [x.size[0], x.size[1]]}
+                props["image"] = {"image": img, "size": [x.size[0], x.size[1]]}
             if "font_family" in list(props.keys()):
                 current_os = platform.system()
                 if current_os == "Darwin":

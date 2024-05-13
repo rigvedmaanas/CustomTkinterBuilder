@@ -57,7 +57,7 @@
                     "parameters": {
                         "text": "",
                         "image": {
-                            "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                            "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
                             "size": [
                                 24,
                                 24
@@ -80,7 +80,7 @@
                     "parameters": {
                         "text": "",
                         "image": {
-                            "image": "Assets/outline_notifications_(255, 255, 255)_24dp_1x.png",
+                            "image": "outline_notifications_(255, 255, 255)_24dp_1x.png",
                             "size": [
                                 24,
                                 24
@@ -103,7 +103,7 @@
                     "parameters": {
                         "text": "",
                         "image": {
-                            "image": "Assets/outline_videocam_(255, 255, 255)_24dp_1x.png",
+                            "image": "outline_videocam_(255, 255, 255)_24dp_1x.png",
                             "size": [
                                 24,
                                 24
@@ -180,7 +180,7 @@
                         "parameters": {
                             "text": "",
                             "image": {
-                                "image": "Assets/outline_search_(255, 255, 255)_24dp_1x.png",
+                                "image": "outline_search_(255, 255, 255)_24dp_1x.png",
                                 "size": [
                                     24,
                                     24
@@ -217,7 +217,7 @@
                     "parameters": {
                         "text": "",
                         "image": {
-                            "image": "Assets/outline_mic_(255, 255, 255)_24dp_1x.png",
+                            "image": "outline_mic_(255, 255, 255)_24dp_1x.png",
                             "size": [
                                 24,
                                 24
@@ -266,7 +266,7 @@
                     "text": "Home",
                     "height": 40,
                     "image": {
-                        "image": "Assets/baseline_home_(255, 255, 255)_24dp_1x.png",
+                        "image": "baseline_home_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -294,7 +294,7 @@
                     "text": "Shorts",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_recent_actors_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_recent_actors_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -323,7 +323,7 @@
                     "text": "Subscriptions",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_video_library_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_video_library_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -372,7 +372,7 @@
                     "text": "You",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_chevron_right_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_chevron_right_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -402,7 +402,7 @@
                     "text": "Your channel",
                     "height": 40,
                     "image": {
-                        "image": "Assets/baseline_live_tv_(255, 255, 255)_24dp_1x.png",
+                        "image": "baseline_live_tv_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -431,7 +431,7 @@
                     "text": "History",
                     "height": 40,
                     "image": {
-                        "image": "Assets/baseline_history_(255, 255, 255)_24dp_1x.png",
+                        "image": "baseline_history_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -460,7 +460,7 @@
                     "text": "Playlists",
                     "height": 40,
                     "image": {
-                        "image": "Assets/baseline_playlist_play_(255, 255, 255)_24dp_1x.png",
+                        "image": "baseline_playlist_play_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -489,7 +489,7 @@
                     "text": "Your videos",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_smart_display_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_smart_display_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -518,7 +518,7 @@
                     "text": "Watch later",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_schedule_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_schedule_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -547,7 +547,7 @@
                     "text": "Liked videos",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_thumb_up_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_thumb_up_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -617,7 +617,7 @@
                     "text": "Channel 1",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -646,7 +646,7 @@
                     "text": "Channel 2",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -675,7 +675,7 @@
                     "text": "Channel 3",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -704,7 +704,7 @@
                     "text": "Channel 4",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -733,7 +733,7 @@
                     "text": "Channel 5",
                     "height": 40,
                     "image": {
-                        "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
                         "size": [
                             24,
                             24
@@ -858,7 +858,7 @@
                                 "width": 311,
                                 "height": 175,
                                 "image": {
-                                    "image": "Assets/16-311x175.jpg",
+                                    "image": "16-311x175.jpg",
                                     "size": [
                                         311,
                                         175
@@ -913,7 +913,7 @@
                                     "wraplength": 254,
                                     "justify": "left",
                                     "image": {
-                                        "image": "Assets/baseline_verified_(120, 174, 255)_18dp_1x.png",
+                                        "image": "baseline_verified_(120, 174, 255)_18dp_1x.png",
                                         "size": [
                                             18,
                                             18
@@ -950,7 +950,7 @@
                             "parameters": {
                                 "text": "",
                                 "image": {
-                                    "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
                                     "size": [
                                         48,
                                         48
@@ -990,7 +990,7 @@
                                 "width": 311,
                                 "height": 175,
                                 "image": {
-                                    "image": "Assets/160-311x175.jpg",
+                                    "image": "160-311x175.jpg",
                                     "size": [
                                         311,
                                         175
@@ -1045,7 +1045,7 @@
                                     "wraplength": 254,
                                     "justify": "left",
                                     "image": {
-                                        "image": "Assets/baseline_verified_(120, 174, 255)_18dp_1x.png",
+                                        "image": "baseline_verified_(120, 174, 255)_18dp_1x.png",
                                         "size": [
                                             18,
                                             18
@@ -1082,7 +1082,7 @@
                             "parameters": {
                                 "text": "",
                                 "image": {
-                                    "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
                                     "size": [
                                         48,
                                         48
@@ -1122,7 +1122,7 @@
                                 "width": 311,
                                 "height": 175,
                                 "image": {
-                                    "image": "Assets/464-311x175.jpg",
+                                    "image": "464-311x175.jpg",
                                     "size": [
                                         311,
                                         175
@@ -1207,7 +1207,7 @@
                             "parameters": {
                                 "text": "",
                                 "image": {
-                                    "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
                                     "size": [
                                         48,
                                         48
@@ -1264,7 +1264,7 @@
                                 "width": 311,
                                 "height": 175,
                                 "image": {
-                                    "image": "Assets/957-311x175.jpg",
+                                    "image": "957-311x175.jpg",
                                     "size": [
                                         311,
                                         175
@@ -1319,7 +1319,7 @@
                                     "wraplength": 254,
                                     "justify": "left",
                                     "image": {
-                                        "image": "Assets/baseline_verified_(120, 174, 255)_18dp_1x.png",
+                                        "image": "baseline_verified_(120, 174, 255)_18dp_1x.png",
                                         "size": [
                                             18,
                                             18
@@ -1356,7 +1356,7 @@
                             "parameters": {
                                 "text": "",
                                 "image": {
-                                    "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
                                     "size": [
                                         48,
                                         48
@@ -1396,7 +1396,7 @@
                                 "width": 311,
                                 "height": 175,
                                 "image": {
-                                    "image": "Assets/974-311x175.jpg",
+                                    "image": "974-311x175.jpg",
                                     "size": [
                                         311,
                                         175
@@ -1481,7 +1481,7 @@
                             "parameters": {
                                 "text": "",
                                 "image": {
-                                    "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
                                     "size": [
                                         48,
                                         48
@@ -1521,7 +1521,7 @@
                                 "width": 311,
                                 "height": 175,
                                 "image": {
-                                    "image": "Assets/6-311x175.jpg",
+                                    "image": "6-311x175.jpg",
                                     "size": [
                                         311,
                                         175
@@ -1606,7 +1606,7 @@
                             "parameters": {
                                 "text": "",
                                 "image": {
-                                    "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
                                     "size": [
                                         48,
                                         48
@@ -1663,7 +1663,7 @@
                                 "width": 311,
                                 "height": 175,
                                 "image": {
-                                    "image": "Assets/385-311x175.jpg",
+                                    "image": "385-311x175.jpg",
                                     "size": [
                                         311,
                                         175
@@ -1718,7 +1718,7 @@
                                     "wraplength": 254,
                                     "justify": "left",
                                     "image": {
-                                        "image": "Assets/baseline_verified_(120, 174, 255)_18dp_1x.png",
+                                        "image": "baseline_verified_(120, 174, 255)_18dp_1x.png",
                                         "size": [
                                             18,
                                             18
@@ -1755,7 +1755,7 @@
                             "parameters": {
                                 "text": "",
                                 "image": {
-                                    "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
                                     "size": [
                                         48,
                                         48
@@ -1795,7 +1795,7 @@
                                 "width": 311,
                                 "height": 175,
                                 "image": {
-                                    "image": "Assets/492-311x175.jpg",
+                                    "image": "492-311x175.jpg",
                                     "size": [
                                         311,
                                         175
@@ -1880,7 +1880,7 @@
                             "parameters": {
                                 "text": "",
                                 "image": {
-                                    "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
                                     "size": [
                                         48,
                                         48
@@ -1920,7 +1920,7 @@
                                 "width": 311,
                                 "height": 175,
                                 "image": {
-                                    "image": "Assets/128-311x175.jpg",
+                                    "image": "128-311x175.jpg",
                                     "size": [
                                         311,
                                         175
@@ -2005,7 +2005,7 @@
                             "parameters": {
                                 "text": "",
                                 "image": {
-                                    "image": "Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
                                     "size": [
                                         48,
                                         48
