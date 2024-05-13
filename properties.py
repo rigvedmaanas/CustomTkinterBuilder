@@ -27,6 +27,7 @@ class ImageChooser(Toplevel):
         self.geometry("700x550+600+200")
         self.protocol("WM_DELETE_WINDOW", self.kill)
         self.after(20, self.lift)
+        self.after(25, self.focus_get)
 
         #self.attributes('-topmost', True)
         self.title("Choose Image or Icon")
@@ -494,6 +495,7 @@ class ColorPicker(CTkToplevel):
         self.fr = CTkFrame(self)
         self.fr.pack(padx=10, pady=10, fill="x")
         self.after(20, self.lift)
+        self.after(25, self.focus_get)
 
 
         self.c = CTkButton(self.fr, width=100, height=100, text="", fg_color=self.color, hover=False, command=self.get_color)

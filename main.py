@@ -59,6 +59,8 @@ class SaveFileDialog(CTkToplevel):
         #self.pack_propagate(False)
         self.callback = callback
         self.after(20, self.lift)
+        self.after(25, self.focus_get)
+
         if theme:
             self.geometry("500x380+600+200")
             self.title("New Project")
@@ -312,6 +314,8 @@ root.mainloop()
         top.title("Export Code")
         top.configure(fg_color=["gray95", "gray10"])
         top.after(20, top.lift)
+        top.after(25, top.focus_get)
+
 
         self.codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=oop_code.get_code(), language="python", theme="monokai", font=CTkFont(size=20))
         self.codeviewer.configure(wrap="none")
@@ -562,6 +566,7 @@ for x in {x.get_name()}._buttons_dict.values():
         loading_window.overrideredirect(1)
         loading_window.overrideredirect(0)
         loading_window.after(20, loading_window.lift)
+        loading_window.after(25, loading_window.focus_get)
 
         self.center(loading_window)
         frm = CTkFrame(loading_window, fg_color="transparent")
@@ -1568,6 +1573,8 @@ class PaletteEditor(CTkToplevel):
         self.color = "#FFFFFF"
         self.title("Palette Editor")
         self.after(20, self.lift)
+        self.after(25, self.focus_get)
+
         self.current_selection = [None, None]
         self.clickables = []
         self.color_manager = color_manager.color_manager
@@ -1750,6 +1757,7 @@ class App(CTkToplevel):
         self.app_theme = "blue"
         self.canvas_theme = "green"
         self.after(20, self.lift)
+        self.after(25, self.focus_get)
 
         shutil.rmtree(tempify("temp"))
         os.mkdir(tempify("temp"))
