@@ -530,10 +530,18 @@ for x in {x.get_name()}._buttons_dict.values():
         d.pop("theme")
         d.pop("palette")
         d.pop("palette_on_change")
+        self.current_widget_count = IntVar(value=0)
+        self.current_widget_count.trace("w", self.changed_value)
+        self.widgetnumber = IntVar(value=1)
+        self.get_number_of_widgets(json.loads(json.dumps(d)))
         t1 = self.launch_thread_with_message(target=self.loop_open, args=(d, self.r))
 
         #self.loop_open(d, self.r)
-
+    def changed_value(self, a, b, c):
+        if (self.widgetnumber.get()-1) == self.current_widget_count.get():
+            self.lbl.configure(text="Updating Hierarchy....")
+        self.lbl2.configure(text=f"{self.current_widget_count.get()}/{self.widgetnumber.get()}")
+        self.progressbar.step()
     def center(self, toplevel):
         toplevel.update_idletasks()
 
@@ -552,30 +560,47 @@ for x in {x.get_name()}._buttons_dict.values():
 
         toplevel.geometry("+%d+%d" % (x, y))
 
+    def show_loading(self):
+        m = self.r.winfo_toplevel()
+        self.loading_frame = CTkFrame(m)
+        self.loading_frame.place(x=0, y=0, relwidth=1, relheight=1)
+        frm = CTkFrame(self.loading_frame, fg_color="transparent", width=700, height=50)
+        frm.pack_propagate(False)
+        txt_frame = CTkFrame(frm, fg_color="transparent")
+        txt_frame.pack(pady=1, fill="x", expand=True, padx=100)
+        self.lbl = CTkLabel(txt_frame, text="Creating Editable Widgets....", font=CTkFont(size=15))
+        self.lbl.pack(side="left")
+        self.lbl2 = CTkLabel(txt_frame, text=f"0/{self.widgetnumber.get()}", font=CTkFont(size=15))
+        self.lbl2.pack(side="right")
+        stepval = ((1/self.widgetnumber.get())*50) # Looking at source code I found that the step val is from 1 --> 50. Not mentioned in the documentation.
+        self.progressbar = CTkProgressBar(frm, height=15, orientation="horizontal", mode="determinate", determinate_speed=stepval)
+        self.progressbar.set(0)
+        self.progressbar.pack(fill="x", padx=100)
+        #self.progressbar.start()
+        frm.pack(expand=True)
+
+    def destroy_loading(self):
+        self.loading_frame.destroy()
 
     def launch_thread_with_message(self, target, args=(), kwargs={}):
         def target_with_msg(*args, **kwargs):
             target(*args, **kwargs)
             self.hierarchy.delete_children()
             self.hierarchy.update_list(self.widgets, 5)
-            loading_window.destroy()
+            self.destroy_loading()
 
+        """
         loading_window = CTkToplevel()
         loading_window.geometry(f"500x100")
         loading_window.title("Loading....")
         loading_window.overrideredirect(1)
         loading_window.overrideredirect(0)
+        if sys.platform.startswith("win"):
+            loading_window.overrideredirect(True)
         loading_window.after(20, loading_window.lift)
         loading_window.after(25, loading_window.focus_get)
-
-        self.center(loading_window)
-        frm = CTkFrame(loading_window, fg_color="transparent")
-        lbl = CTkLabel(frm, text="Loading....")
-        lbl.pack(pady=1)
-        progressbar = CTkProgressBar(frm, height=25, orientation="horizontal", mode="indeterminate")
-        progressbar.pack(fill="x", padx=10)
-        progressbar.start()
-        frm.pack(expand=True, fill="x")
+        """
+        self.show_loading()
         thread = threading.Thread(target=target_with_msg, args=args, kwargs=kwargs)
         thread.start()
         return thread
@@ -616,6 +641,10 @@ for x in {x.get_name()}._buttons_dict.values():
             d.pop("theme")
             d.pop("palette")
             d.pop("palette_on_change")
+            self.current_widget_count = IntVar(value=0)
+            self.current_widget_count.trace("w", self.changed_value)
+            self.widgetnumber = IntVar(value=1)
+            self.get_number_of_widgets(json.loads(json.dumps(d)))
             t2 = self.launch_thread_with_message(target=self.loop_open, args=(d, self.r))
             #self.loop_open(d, self.r)
 
@@ -837,12 +866,27 @@ for x in {x.get_name()}._buttons_dict.values():
             d[x].pop("parameters")
             d[x].pop("ID")
 
-
+            self.current_widget_count.set(self.current_widget_count.get()+1)
             if d[x] != {}:
                 #ic(d[x], new_widget, copy)
                 #t2 = threading.Thread(target=self.loop_open, args=(d[x], new_widget), kwargs={"copy": copy})
                 #t2.start()
                 self.loop_open(d[x], new_widget, copy=copy)
+
+    def get_number_of_widgets(self, d):
+        # I could destroy every child in self.r but could not add new widgets after destroying the children.
+
+        for x in list(d.keys()):
+            y = d[x]["TYPE"]
+            if y == "FRAME":
+                d[x].pop("PACK_PROPAGATE")
+            d[x].pop("TYPE")
+            d[x].pop("pack_options")
+            d[x].pop("parameters")
+            d[x].pop("ID")
+            self.widgetnumber.set(self.widgetnumber.get()+1)
+            if d[x] != {}:
+                self.get_number_of_widgets(d[x])
 
     def save(self, dir_, name):
         try:

@@ -1,11 +1,7 @@
 {
     "project_files": [
         {
-            "Name": "Login-Demo",
-            "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
-        },
-        {
-            "Name": "Spotify-Demo",
+            "Name": "Youtube-Demo",
             "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
         },
         {
@@ -13,7 +9,11 @@
             "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
         },
         {
-            "Name": "Youtube-Demo",
+            "Name": "Login-Demo",
+            "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
+        },
+        {
+            "Name": "Spotify-Demo",
             "Directory": "/Users/rigvedmaanas/CustomTkinterBuilder/Examples"
         }
     ]
