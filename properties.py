@@ -294,13 +294,16 @@ class Spinbox(CTkFrame):
         self.entry.configure(state="normal")
         self.entry.insert(0, "0")
         self.entry.configure(state="disabled")
-        self.entry.bind("<FocusOut>", lambda e: (self.command(self.entry.get()), self.entry.configure(state="disabled")))
+        self.entry.bind("<FocusOut>", lambda e: (self.command(self.entry.get()), self.entry.configure(state="disabled"), self.main.r.winfo_toplevel().update(),self.main.draw_box(self.main.hierarchy.widget)))
 
     def return_set(self, e):
 
         self.command(self.get())
         self.entry.configure(state="disabled")
         self.entry.unbind("<Return>")
+        self.main.r.winfo_toplevel().update()
+        self.main.draw_box(self.main.hierarchy.widget)
+
 
     def double(self, e):
         self.entry.configure(state="normal")
@@ -341,6 +344,7 @@ class Spinbox(CTkFrame):
             return
         if self.command is not None:
             self.command(self.get())
+            self.main.draw_box(self.main.hierarchy.widget)
 
     def subtract_button_callback(self):
 
@@ -357,6 +361,7 @@ class Spinbox(CTkFrame):
             return
         if self.command is not None:
             self.command(self.get())
+            self.main.draw_box(self.main.hierarchy.widget)
 
     def get(self) -> Union[int, None]:
         try:
@@ -653,6 +658,7 @@ class PropertiesManager(CTkTabview):
             num_spinbox = Spinbox(frame, width=150, command=lambda val: vals["callback"](val))
             num_spinbox.pack(side="right", padx=(10, 10), pady=10)
             num_spinbox.set(vals["val"])
+            num_spinbox.main = self.main
 
 
             head = CTkLabel(frame, text=header)
@@ -701,12 +707,16 @@ class PropertiesManager(CTkTabview):
             vals["callback"](int(val), num_spinbox_2.get())))
             num_spinbox_1.pack(padx=(10, 10))
             num_spinbox_1.set(vals["val1"])
+            num_spinbox_1.main = self.main
+
 
             num_spinbox_2 = Spinbox(temp, width=150, positive=True, command=lambda val: (
             vals["callback"](num_spinbox_1.get(), int(val))))
             num_spinbox_2.pack(padx=(10, 10), pady=(10, 0))
 
             num_spinbox_2.set(vals["val2"])
+            num_spinbox_2.main = self.main
+
 
             head = CTkLabel(frame, text=header)
             head.pack(side="right", padx=(10, 0), pady=10)
@@ -833,6 +843,7 @@ class PropertiesManager(CTkTabview):
 
             num_spinbox = Spinbox(frame1, width=150)
             num_spinbox.pack(side="right", padx=(10, 0), pady=10)
+            num_spinbox.main = self.main
 
             frame1.pack_forget()
 
@@ -844,6 +855,7 @@ class PropertiesManager(CTkTabview):
 
             num_spinbox2 = Spinbox(frame2, width=150)
             num_spinbox2.pack(side="right", padx=(10, 0), pady=10)
+            num_spinbox2.main = self.main
 
             frame2.pack_forget()
 

@@ -138,7 +138,7 @@ class MainWindow:
         self.theme_manager = ThemeUtl(theme_dir=f"Themes", theme_name=theme_name)
         self.horiz_max_offset = 100
         self.vert_max_offset = 100
-
+        self.current_selected_widget = None
         self.theme = self.theme_manager.get_theme_by_name()
         self.widget_colors = {
             "CTk": ["fg_color"],
@@ -580,7 +580,10 @@ for x in {x.get_name()}._buttons_dict.values():
         frm.pack(expand=True)
 
     def destroy_loading(self):
-        self.loading_frame.destroy()
+        try:
+            self.loading_frame.destroy()
+        except Exception as e:
+            pass
 
     def launch_thread_with_message(self, target, args=(), kwargs={}):
         def target_with_msg(*args, **kwargs):
@@ -700,6 +703,7 @@ for x in {x.get_name()}._buttons_dict.values():
                     #file_name = os.path.basename(path)
                     file_name = path
                     img = tempify(os.path.join("temp", file_name))
+                    print(img)
                     i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
                     d[x]["parameters"]["image"] = i
 
@@ -776,8 +780,9 @@ for x in {x.get_name()}._buttons_dict.values():
 
                 try:
                     ##print(d_copy)
+                    #img = tempify(os.path.join("temp", file_name))
 
-                    new_widget.image = d_copy["image"]["image"]
+                    new_widget.image = os.path.join("Assets", d_copy["image"]["image"])
                     img = d[x]["parameters"]["image"]
                     d_copy["image"] = img
                     new_widget.size = (d[x]["parameters"]["image"].cget("size")[0], d[x]["parameters"]["image"].cget("size")[1])
@@ -1326,6 +1331,9 @@ for x in {x.get_name()}._buttons_dict.values():
 
         y = self.map_range(e, -100, 100, -self.vert_max_offset, self.vert_max_offset)
         self.r.place(y=y)
+        self.r.winfo_toplevel().update()
+        if self.current_selected_widget != None:
+            self.draw_box(self.current_selected_widget)
 
     def on_vert_mouse(self, e):
         y = self.vert_scrl.get()
@@ -1334,19 +1342,79 @@ for x in {x.get_name()}._buttons_dict.values():
         self.vert_scrl.set(y)
         y = self.map_range(y, -100, 100, -self.vert_max_offset, self.vert_max_offset)
         self.r.place(y=y)
+        self.r.winfo_toplevel().update()
+        if self.current_selected_widget != None:
+            self.draw_box(self.current_selected_widget)
 
     def on_horiz_scrl(self, e):
 
         x = self.map_range(e, -100, 100, -self.horiz_max_offset, self.horiz_max_offset)
         self.r.place(x=x)
+        self.r.winfo_toplevel().update()
+        if self.current_selected_widget != None:
+            self.draw_box(self.current_selected_widget)
 
     def on_horiz_mouse(self, e):
+        last_x = self.r.winfo_x()
         x = self.horiz_scrl.get()
         x += e.delta
+
         x = max(-100, min(x, 100))
         self.horiz_scrl.set(x)
+
         x = self.map_range(x, -100, 100, -self.horiz_max_offset, self.horiz_max_offset)
+
         self.r.place(x=x)
+        self.r.winfo_toplevel().update()
+        if self.current_selected_widget != None:
+            self.draw_box(self.current_selected_widget)
+
+
+
+    def get_x(self, widget):
+        x = widget.winfo_x()
+        y = 0
+        if widget.master != self.r.master:
+            y = self.get_x(widget.master)
+        return x + y
+
+    def get_y(self, widget):
+        x = widget.winfo_y()
+        y = 0
+        if widget.master != self.r.master:
+            y = self.get_y(widget.master)
+        return x + y
+
+    def draw_box(self, widget):
+        self.current_selected_widget = widget
+        pad = 5
+        x = self.get_x(widget) - pad
+        y = self.get_y(widget) - pad
+        parent = self.r.master
+        width = widget.winfo_width() + (pad * 2)
+        height = widget.winfo_height() + (pad * 2)
+        self.destroy_box()
+        self.left_box = CTkFrame(parent, width=2, height=height, fg_color="red", bg_color="red")
+        self.left_box.place(x=x, y=y, anchor="nw")
+
+        self.right_box = CTkFrame(parent, width=2, height=height, fg_color="red", bg_color="red")
+        self.right_box.place(x=x+width, y=y, anchor="ne")
+
+        self.top_box = CTkFrame(parent, width=width, height=2, fg_color="red", bg_color="red")
+        self.top_box.place(x=x, y=y, anchor="nw")
+
+        self.bottom_box = CTkFrame(parent, width=width, height=2, fg_color="red", bg_color="red")
+        self.bottom_box.place(x=x, y=y+height, anchor="sw")
+    def destroy_box(self):
+        try:
+            self.left_box.destroy()
+            self.right_box.destroy()
+            self.top_box.destroy()
+            self.bottom_box.destroy()
+        except Exception as e:
+            pass
+
+
 
 
 class WidgetButton(CTkButton):
@@ -1400,6 +1468,8 @@ class Hierarchy(CTkScrollableFrame):
                 self.current_selection = child
                 child.configure(fg_color="#CF245E")
 
+        self.main.draw_box(x)
+
     def update_text(self, old_name, new_text):
 
         for child in self.winfo_children():
@@ -1417,6 +1487,7 @@ class Hierarchy(CTkScrollableFrame):
         self.widget.destroy()
         self.widget = None
         self.current_selection = None
+        self.main.destroy_box()
         self.delete_children()
         self.update_list(self.main.widgets, 5)
         for btn in self.btns:
@@ -1445,6 +1516,8 @@ class Hierarchy(CTkScrollableFrame):
 
             self.main._parents = []
             self.current_selection = None
+            self.main.destroy_box()
+
             self.widget = None
             for btn in self.btns:
                 btn.configure(state="disabled")
@@ -1471,6 +1544,8 @@ class Hierarchy(CTkScrollableFrame):
 
             self.main._parents = []
             self.current_selection = None
+            self.main.destroy_box()
+
             self.widget = None
             for btn in self.btns:
                 btn.configure(state="disabled")
@@ -1478,6 +1553,8 @@ class Hierarchy(CTkScrollableFrame):
 
     def update_list(self, d, pad):
         self.current_selection = None
+        self.main.destroy_box()
+
         self.widget = None
         for x in list(d.keys()):
             if d[x] != {}:
@@ -1536,6 +1613,8 @@ class Hierarchy(CTkScrollableFrame):
         self.widget = widget
         self.delete_widget()
         self.top_level.destroy()
+        self.main.destroy_box()
+
 
 
     def get_frames_scrollbar_only(self):
