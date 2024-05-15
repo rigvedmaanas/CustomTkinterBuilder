@@ -1690,6 +1690,7 @@ class Hierarchy(CTkScrollableFrame):
         for widget in self.winfo_children():
             widget.destroy()
 
+
 class PaletteEditor(CTkToplevel):
     def __init__(self, *args, color_manager, **kwargs):
         super().__init__(*args, **kwargs)
@@ -2215,24 +2216,23 @@ class App(CTkToplevel):
         self.hierarchy_tools_container = CTkFrame(self.container, height=40)
         self.hierarchy_tools_container.pack(fill="x", pady=(0, 10))
 
-
-        # Need to change those unicode with icons
-        self.move_top_btn = CTkButton(self.hierarchy_tools_container, text="south", font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30, command=self.hierarchy.move_up)
+        #FontManager.load_font("Fonts/MaterialIconsOutlined-Regular.otf") # Can't load fonts
+        self.move_top_btn = CTkButton(self.hierarchy_tools_container, text="south", font=("MaterialIconsOutlined-Regular", 22), width=30, height=30, command=self.hierarchy.move_up)
         self.move_top_btn.pack(side="left", padx=5)
 
-        self.move_down_btn = CTkButton(self.hierarchy_tools_container, text="north", font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30, command=self.hierarchy.move_down)
+        self.move_down_btn = CTkButton(self.hierarchy_tools_container, text="north", font=("MaterialIconsOutlined-Regular", 22), width=30, height=30, command=self.hierarchy.move_down)
         self.move_down_btn.pack(side="left", padx=5)
 
-        self.delete_btn = CTkButton(self.hierarchy_tools_container, text="delete", font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30, command=self.hierarchy.delete_widget)
+        self.delete_btn = CTkButton(self.hierarchy_tools_container, text="delete", font=("MaterialIconsOutlined-Regular", 22), width=30, height=30, command=self.hierarchy.delete_widget)
         self.delete_btn.pack(side="left", padx=5)
 
         self.duplicate_btn = CTkButton(self.hierarchy_tools_container, text="content_copy",
-                                    font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30, height=30,
+                                    font=("MaterialIconsOutlined-Regular", 22), width=30, height=30,
                                     command=self.hierarchy.duplicate_widget)
         self.duplicate_btn.pack(side="left", padx=5)
 
         self.change_parent_btn = CTkButton(self.hierarchy_tools_container, text="change_circle",
-                                       font=CTkFont(family="MaterialIconsOutlined-Regular", size=22), width=30,
+                                       font=("MaterialIconsOutlined-Regular", 22), width=30,
                                        height=30,
                                        command=self.hierarchy.change_parent)
         self.change_parent_btn.pack(side="left", padx=5)
