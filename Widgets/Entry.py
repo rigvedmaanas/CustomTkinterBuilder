@@ -84,46 +84,6 @@ class Entry(CTkEntry, PackArgs, BaseWidgetClass):
         self.default()
         self.on_drag_motion(event)  # Some awkward problem
 
-    def set_image(self, img, size):
-        if img is not None:
-            self.image = img
-            img = Image.open(img)
-            img = CTkImage(light_image=img, dark_image=img, size=size)
-
-            # Image is not updating. Changing the width is the workaround I found. Need to change this if possible
-            self.configure(image=img, width=int(self.cget("width"))+1)
-            self.configure(width=int(self.cget("width"))-1)
-            self.img = img
-            self.size = size
-            self.props["image"] = img
-        else:
-            self.image = None
-            # Bug - 1
-            # Image is not updating. Changing the width is the workaround I found. Need to change this if possible
-            # An Artifact is seen when the image is removed. Changing the height is the workaround I found. Need to change this if possible
-            # Images are facing this issue https://github.com/TomSchimansky/CustomTkinter/issues/1899 and the pull request resolving it - https://github.com/TomSchimansky/CustomTkinter/pull/1931
-            # Bug - 2
-            # This is done just because there is a big bug when the image is removed from a button.
-            # When the image is removed from the button an unexpected button is seen underneath.
-
-            # Is this my issue or just a hidden bug in the customtkinter library
-
-            with_img_width = self.winfo_width()
-            with_img_height = self.winfo_height()
-            real_width = self.cget("width")
-            real_height = self.cget("height")
-            self.configure(image=None, width=with_img_width, height=with_img_height)
-            self.update()
-            self.configure(width=real_width, height=real_height)
-
-
-            #self.properties.main.redraw(self.properties.main.widgets[self.properties.main.r])
-
-            #self.properties.main.r.update()
-
-            #print("redrawn")
-    def set_compound(self, image):
-        self.set_image(image, self.size)
 
 
     def on_drag_motion(self, event):

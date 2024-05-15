@@ -138,6 +138,8 @@ class Button(CTkButton, PackArgs, BaseWidgetClass):
             #self.properties.main.r.update()
 
             #print("redrawn")
+        self.update()
+        self.properties.main.draw_box(self.properties.main.hierarchy.widget)
     def set_compound(self, image):
         self.set_image(image, self.size)
 

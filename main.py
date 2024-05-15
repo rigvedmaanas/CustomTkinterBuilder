@@ -539,7 +539,7 @@ for x in {x.get_name()}._buttons_dict.values():
         #self.loop_open(d, self.r)
     def changed_value(self, a, b, c):
         if (self.widgetnumber.get()-1) == self.current_widget_count.get():
-            self.lbl.configure(text="Updating Hierarchy....")
+            self.edit_lbl.configure(text="Updating Hierarchy....")
         self.lbl2.configure(text=f"{self.current_widget_count.get()}/{self.widgetnumber.get()}")
         self.progressbar.step()
     def center(self, toplevel):
@@ -568,8 +568,8 @@ for x in {x.get_name()}._buttons_dict.values():
         frm.pack_propagate(False)
         txt_frame = CTkFrame(frm, fg_color="transparent")
         txt_frame.pack(pady=1, fill="x", expand=True, padx=100)
-        self.lbl = CTkLabel(txt_frame, text="Creating Editable Widgets....", font=CTkFont(size=15))
-        self.lbl.pack(side="left")
+        self.edit_lbl = CTkLabel(txt_frame, text="Creating Editable Widgets....", font=CTkFont(size=15))
+        self.edit_lbl.pack(side="left")
         self.lbl2 = CTkLabel(txt_frame, text=f"0/{self.widgetnumber.get()}", font=CTkFont(size=15))
         self.lbl2.pack(side="right")
         stepval = ((1/self.widgetnumber.get())*50) # Looking at source code I found that the step val is from 1 --> 50. Not mentioned in the documentation.
@@ -1386,25 +1386,26 @@ for x in {x.get_name()}._buttons_dict.values():
         return x + y
 
     def draw_box(self, widget):
-        self.current_selected_widget = widget
-        pad = 5
-        x = self.get_x(widget) - pad
-        y = self.get_y(widget) - pad
-        parent = self.r.master
-        width = widget.winfo_width() + (pad * 2)
-        height = widget.winfo_height() + (pad * 2)
-        self.destroy_box()
-        self.left_box = CTkFrame(parent, width=2, height=height, fg_color="red", bg_color="red")
-        self.left_box.place(x=x, y=y, anchor="nw")
+        if widget is not None:
+            self.current_selected_widget = widget
+            pad = 5
+            x = self.get_x(widget) - pad
+            y = self.get_y(widget) - pad
+            parent = self.r.master
+            width = widget.winfo_width() + (pad * 2)
+            height = widget.winfo_height() + (pad * 2)
+            self.destroy_box()
+            self.left_box = CTkFrame(parent, width=2, height=height, fg_color="red", bg_color="red")
+            self.left_box.place(x=x, y=y, anchor="nw")
 
-        self.right_box = CTkFrame(parent, width=2, height=height, fg_color="red", bg_color="red")
-        self.right_box.place(x=x+width, y=y, anchor="ne")
+            self.right_box = CTkFrame(parent, width=2, height=height, fg_color="red", bg_color="red")
+            self.right_box.place(x=x+width, y=y, anchor="ne")
 
-        self.top_box = CTkFrame(parent, width=width, height=2, fg_color="red", bg_color="red")
-        self.top_box.place(x=x, y=y, anchor="nw")
+            self.top_box = CTkFrame(parent, width=width, height=2, fg_color="red", bg_color="red")
+            self.top_box.place(x=x, y=y, anchor="nw")
 
-        self.bottom_box = CTkFrame(parent, width=width, height=2, fg_color="red", bg_color="red")
-        self.bottom_box.place(x=x, y=y+height, anchor="sw")
+            self.bottom_box = CTkFrame(parent, width=width, height=2, fg_color="red", bg_color="red")
+            self.bottom_box.place(x=x, y=y+height, anchor="sw")
     def destroy_box(self):
         try:
             self.left_box.destroy()

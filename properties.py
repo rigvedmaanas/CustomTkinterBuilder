@@ -580,7 +580,12 @@ class ColorPicker(CTkToplevel):
 class CustomCTkComboBox(CTkComboBox):
     def __init__(self, *args, **kwargs):
         super(CustomCTkComboBox, self).__init__(*args, **kwargs)
+        self.main = None
 
+    def _dropdown_callback(self, value: str):
+        super()._dropdown_callback(value=value)
+        self.update_idletasks()
+        self.main.draw_box(self.main.hierarchy.widget)
 
     def _create_grid(self):
         self._canvas.grid(row=0, column=0, rowspan=1, columnspan=1, sticky="nsew")
@@ -672,7 +677,7 @@ class PropertiesManager(CTkTabview):
 
 
             sv = StringVar()
-            sv.trace_add("write", lambda e1, e2, e3: vals["callback"](sv.get()))
+            sv.trace_add("write", lambda e1, e2, e3: (vals["callback"](sv.get()), self.main.r.winfo_toplevel().update(), self.main.draw_box(self.main.hierarchy.widget)))
             entry = TextExtension(frame, width=150, height=100, textvariable=sv)
             entry.pack(side="right", padx=10, pady=10)
             head = CTkLabel(frame, text=header)
@@ -731,6 +736,7 @@ class PropertiesManager(CTkTabview):
 
             combo = CustomCTkComboBox(frame, width=150, values=vals["vals"], command=vals["callback"], state="readonly")
             combo.set(vals["default"])
+            combo.main = self.main
             combo.pack(side="right", padx=10, pady=10)
             head = CTkLabel(frame, text=header)
             head.pack(side="right", padx=(10, 0), pady=10)
@@ -789,6 +795,8 @@ class PropertiesManager(CTkTabview):
             combo = CustomCTkComboBox(frame, width=150, values=fonts, state="readonly", command=vals["callback"])
             combo.set(vals["default"])
             combo.pack(side="right", padx=10, pady=10)
+            combo.main = self.main
+
             #combo.configure()
             head = CTkLabel(frame, text=header)
             head.pack(side="right", padx=(10, 0), pady=10)
