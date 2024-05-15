@@ -49,7 +49,7 @@ class Root(CTk):
         self.FRAME20_copy.pack(pady=[10, 10], anchor="center", expand=1, fill="both", ipadx=0, ipady=0, padx=[10, 10])
 
     def open_project_in_editor(self, dir_, name):
-        print(dir_, name)
+        #print(dir_, name)
 
         self.withdraw()
         set_default_color_theme(resource_path(os.path.join("Themes", "ctktheme.json")))

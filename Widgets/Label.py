@@ -73,7 +73,7 @@ class Label(CTkLabel, PackArgs, BaseWidgetClass):
 
 
     def on_drag_start(self, event):
-        print(self.cget("bg_color"))
+        #print(self.cget("bg_color"))
 
         #self._drag_start_x = event.x
         #self._drag_start_y = event.y

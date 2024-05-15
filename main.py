@@ -703,7 +703,7 @@ for x in {x.get_name()}._buttons_dict.values():
                     #file_name = os.path.basename(path)
                     file_name = path
                     img = tempify(os.path.join("temp", file_name))
-                    print(img)
+                    #print(img)
                     i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
                     d[x]["parameters"]["image"] = i
 

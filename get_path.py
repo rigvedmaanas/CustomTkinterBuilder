@@ -21,7 +21,6 @@ def tempify(path):
         base_path = os.path.dirname(base_path)
         base_path = os.path.dirname(base_path)
         base_path = os.path.dirname(base_path)
-        print("MEIPASS")
 
     except Exception:
         base_path = os.path.abspath(".")

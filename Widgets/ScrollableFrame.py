@@ -239,7 +239,7 @@ class ScrollableFrame(ScrollFrame, PackArgs, BaseWidgetClass):
         BaseWidgetClass.__init__(self)
         self.type = "SCROLLABLEFRAME"
         self.properties = properties
-        print(self.properties)
+        #print(self.properties)
         self.pack_options = {}
         self.self_configure(bg_color="transparent")
         #self.pack_propagate(False)
