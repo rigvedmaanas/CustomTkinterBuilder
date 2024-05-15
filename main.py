@@ -1938,8 +1938,7 @@ class App(CTkToplevel):
                                           on_drag=lambda x, y, widget: self.main.add_widget(Frame, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_frame_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_button_btn = WidgetButton(master=self.widget_panel_core, text="Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Button, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_button_btn.pack(padx=10, pady=(10, 0), fill="x")
+
 
         self.add_vert_scrl_frame_btn = WidgetButton(master=self.widget_panel_core, text="Vertical Scrollable Frame", height=50, on_drag=lambda x, y, widget: self.main.add_widget(ScrollableFrame, properties={"properties":self.properties_panel, "orientation": "vertical"}, x=x, y=y, widget=widget))
         self.add_vert_scrl_frame_btn.pack(padx=10, pady=(10, 0), fill="x")
@@ -1956,6 +1955,9 @@ class App(CTkToplevel):
         self.add_label_btn = WidgetButton(master=self.widget_panel_core, text="Label", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Label, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_label_btn.pack(padx=10, pady=(10, 0), fill="x")
 
+        self.add_button_btn = WidgetButton(master=self.widget_panel_core, text="Button", height=50, on_drag=lambda x, y, widget: self.main.add_widget(Button, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_button_btn.pack(padx=10, pady=(10, 0), fill="x")
+
         self.add_entry_btn = WidgetButton(master=self.widget_panel_core, text="Entry", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(Entry, properties={"properties":self.properties_panel}, x=x, y=y, widget=widget))
         self.add_entry_btn.pack(padx=10, pady=(10, 0), fill="x")
@@ -1965,47 +1967,6 @@ class App(CTkToplevel):
                                               "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_switch_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_textbox_btn = WidgetButton(master=self.widget_panel_core, text="TextBox", height=50,
-                                          on_drag=lambda x, y, widget: self.main.add_widget(TextBox, properties={
-                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_textbox_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_progressbar_btn = WidgetButton(master=self.widget_panel_core, text="Progress Bar", height=50,
-                                          on_drag=lambda x, y, widget: self.main.add_widget(ProgressBar, properties={
-                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
-        self.add_progressbar_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_segmentedbutton_btn = WidgetButton(master=self.widget_panel_core, text="Segmented Button", height=50,
-                                               on_drag=lambda x, y, widget: self.main.add_widget(SegmentedButton,
-                                                                                                 properties={
-                                                                                                     "properties": self.properties_panel},
-                                                                                                 x=x, y=y,
-                                                                                                 widget=widget))
-        self.add_segmentedbutton_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_horizontalslider_btn = WidgetButton(master=self.widget_panel_core, text="Horizontal Slider", height=50,
-                                               on_drag=lambda x, y, widget: self.main.add_widget(Slider,
-                                                                                                 properties={
-                                                                                                     "properties": self.properties_panel, "orientation": "horizontal"},
-                                                                                                 x=x, y=y,
-                                                                                                 widget=widget))
-        self.add_horizontalslider_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_verticalslider_btn = WidgetButton(master=self.widget_panel_core, text="Vertical Slider", height=50,
-                                           on_drag=lambda x, y, widget: self.main.add_widget(Slider,
-                                                                                             properties={
-                                                                                                 "properties": self.properties_panel, "orientation": "vertical"},
-                                                                                             x=x, y=y,
-                                                                                             widget=widget))
-        self.add_verticalslider_btn.pack(padx=10, pady=(10, 0), fill="x")
-
-        self.add_optionmenu_btn = WidgetButton(master=self.widget_panel_core, text="Option Menu", height=50,
-                                               on_drag=lambda x, y, widget: self.main.add_widget(OptionMenu,
-                                                                                                 properties={
-                                                                                                     "properties": self.properties_panel},
-                                                                                                 x=x, y=y,
-                                                                                                 widget=widget))
-        self.add_optionmenu_btn.pack(padx=10, pady=(10, 0), fill="x")
 
         self.add_checkbox_btn = WidgetButton(master=self.widget_panel_core, text="Check Box", height=50,
                                                on_drag=lambda x, y, widget: self.main.add_widget(CheckBox,
@@ -2023,6 +1984,58 @@ class App(CTkToplevel):
                                                                                                widget=widget))
         self.add_radiobutton_btn.pack(padx=10, pady=(10, 0), fill="x")
 
+
+
+
+        self.add_horizontalslider_btn = WidgetButton(master=self.widget_panel_core, text="Horizontal Slider", height=50,
+                                               on_drag=lambda x, y, widget: self.main.add_widget(Slider,
+                                                                                                 properties={
+                                                                                                     "properties": self.properties_panel, "orientation": "horizontal"},
+                                                                                                 x=x, y=y,
+                                                                                                 widget=widget))
+        self.add_horizontalslider_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_verticalslider_btn = WidgetButton(master=self.widget_panel_core, text="Vertical Slider", height=50,
+                                           on_drag=lambda x, y, widget: self.main.add_widget(Slider,
+                                                                                             properties={
+                                                                                                 "properties": self.properties_panel, "orientation": "vertical"},
+                                                                                             x=x, y=y,
+                                                                                             widget=widget))
+        self.add_verticalslider_btn.pack(padx=10, pady=(10, 0), fill="x")
+        self.add_combobox_btn = WidgetButton(master=self.widget_panel_core, text="Combo Box", height=50,
+                                                      on_drag=lambda x, y, widget: self.main.add_widget(ComboBox,
+                                                                                                        properties={
+                                                                                                            "properties": self.properties_panel},
+                                                                                                        x=x, y=y,
+                                                                                                        widget=widget))
+        self.add_combobox_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_optionmenu_btn = WidgetButton(master=self.widget_panel_core, text="Option Menu", height=50,
+                                               on_drag=lambda x, y, widget: self.main.add_widget(OptionMenu,
+                                                                                                 properties={
+                                                                                                     "properties": self.properties_panel},
+                                                                                                 x=x, y=y,
+                                                                                                 widget=widget))
+        self.add_optionmenu_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_progressbar_btn = WidgetButton(master=self.widget_panel_core, text="Progress Bar", height=50,
+                                          on_drag=lambda x, y, widget: self.main.add_widget(ProgressBar, properties={
+                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_progressbar_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_segmentedbutton_btn = WidgetButton(master=self.widget_panel_core, text="Segmented Button", height=50,
+                                                    on_drag=lambda x, y, widget: self.main.add_widget(SegmentedButton,
+                                                                                                      properties={
+                                                                                                          "properties": self.properties_panel},
+                                                                                                      x=x, y=y,
+                                                                                                      widget=widget))
+        self.add_segmentedbutton_btn.pack(padx=10, pady=(10, 0), fill="x")
+
+        self.add_textbox_btn = WidgetButton(master=self.widget_panel_core, text="TextBox", height=50,
+                                          on_drag=lambda x, y, widget: self.main.add_widget(TextBox, properties={
+                                              "properties": self.properties_panel}, x=x, y=y, widget=widget))
+        self.add_textbox_btn.pack(padx=10, pady=(10, 0), fill="x")
+
         self.add_horizontalscrollbar_btn = WidgetButton(master=self.widget_panel_core, text="Horizontal Scrollbar", height=50,
                                                 on_drag=lambda x, y, widget: self.main.add_widget(Scrollbar,
                                                                                                   properties={
@@ -2039,13 +2052,6 @@ class App(CTkToplevel):
                                                                                                 widget=widget))
         self.add_verticalscrollbar_btn.pack(padx=10, pady=(10, 0), fill="x")
 
-        self.add_combobox_btn = WidgetButton(master=self.widget_panel_core, text="Combo Box", height=50,
-                                                      on_drag=lambda x, y, widget: self.main.add_widget(ComboBox,
-                                                                                                        properties={
-                                                                                                            "properties": self.properties_panel},
-                                                                                                        x=x, y=y,
-                                                                                                        widget=widget))
-        self.add_combobox_btn.pack(padx=10, pady=(10, 0), fill="x")
 
 
 
