@@ -59,15 +59,19 @@ class Root(CTk):
 
         def on_closing(command=None):
             msg = messagebox.askyesno("Quit", "Save changes before closing?")
-
+            print(app.main.widgets)
             if msg:
                 app.main.save_file()
+                app.main.loop_clear_image(app.main.widgets)
+
                 if command != None:
                     command()
                 else:
                     app.destroy()
             else:
                 if command != None:
+                    app.main.loop_clear_image(app.main.widgets)
+
                     command()
                 else:
                     app.destroy()
@@ -83,11 +87,6 @@ class Root(CTk):
         # Tkinter way to find the screen resolution
         screen_width = toplevel.winfo_screenwidth()
         screen_height = toplevel.winfo_screenheight()
-
-        # PyQt way to find the screen resolution
-        # app = QtGui.QApplication([])
-        # screen_width = app.desktop().screenGeometry().width()
-        # screen_height = app.desktop().screenGeometry().height()
 
         size = tuple(int(_) for _ in toplevel.geometry().split('+')[0].split('x'))
         x = screen_width / 2 - size[0] / 2

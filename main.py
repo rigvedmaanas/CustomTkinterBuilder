@@ -5,6 +5,7 @@ import sys
 import threading
 import tkinter.messagebox
 import uuid
+from pathlib import Path
 from tkinter import messagebox
 from tkinter.colorchooser import askcolor
 
@@ -36,9 +37,10 @@ from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image
-from get_path import resource_path, tempify, joinpath
+from get_path import resource_path, tempify, joinpath, rawify
 
-ic.disable()
+
+#ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
 #blockPrint()
@@ -375,9 +377,13 @@ root.mainloop()
                         if not run:
                             ic("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))
                             ic(joinpath("Assets", os.path.basename(x.props["image"].cget("dark_image").filename)))
-                            p += f'image=CTkImage(Image.open("{joinpath("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                            p += f'image=CTkImage(Image.open(r"{joinpath("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                         else:
-                            p += f'image=CTkImage(Image.open("{x.props["image"].cget("dark_image").filename}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                            val = x.props["image"].cget("dark_image").filename
+
+                            ic(val)
+                            ic(fr'image=CTkImage(Image.open(r"{val}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), ')
+                            p += fr'image=CTkImage(Image.open(r"{val}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key == "hover_image":
                         if not run:
                             p += f'hover_image=CTkImage(Image.open("{joinpath("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
@@ -785,6 +791,7 @@ for x in {x.get_name()}._buttons_dict.values():
                     new_widget.image = os.path.join("Assets", d_copy["image"]["image"])
                     img = d[x]["parameters"]["image"]
                     d_copy["image"] = img
+                    new_widget.img = d[x]["parameters"]["image"]
                     new_widget.size = (d[x]["parameters"]["image"].cget("size")[0], d[x]["parameters"]["image"].cget("size")[1])
                     ##print(d_copy)
 
@@ -1009,7 +1016,7 @@ for x in {x.get_name()}._buttons_dict.values():
                 for key in list(x.props.keys()):
                     if key == "image" and x.props["image"] != None:
 
-                        p += f'image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                        p += f'image=CTkImage(Image.open(r"{os.path.join("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
                     elif key == "hover_image":
                         p += f'hover_image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
                     elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
@@ -1415,7 +1422,19 @@ for x in {x.get_name()}._buttons_dict.values():
         except Exception as e:
             pass
 
+    def loop_clear_image(self, d):
+        # I could destroy every child in self.r but could not add new widgets after destroying the children.
 
+        for x in list(d.keys()):
+            try:
+                x.img.cget("light_image").close()
+                x.img.cget("dark_image").close()
+
+            except Exception as e:
+                pass
+
+            if d[x] != {}:
+                self.loop_clear_image(d[x])
 
 
 class WidgetButton(CTkButton):
@@ -1450,6 +1469,8 @@ class Hierarchy(CTkScrollableFrame):
         self.btns = []
 
     def set_current_selection(self, x):
+        self.main.draw_box(x)
+        #self.main.r.winfo_toplevel().update_idletasks()
         if x != self.main.r:
             for b in self.btns:
                 b.configure(state="normal")
@@ -1469,7 +1490,6 @@ class Hierarchy(CTkScrollableFrame):
                 self.current_selection = child
                 child.configure(fg_color="#CF245E")
 
-        self.main.draw_box(x)
 
     def update_text(self, old_name, new_text):
 
@@ -1884,8 +1904,8 @@ class App(CTkToplevel):
         self.after(20, self.lift)
         self.after(25, self.focus_get)
 
-        shutil.rmtree(tempify("temp"))
-        os.mkdir(tempify("temp"))
+        self.after(100, lambda: (shutil.rmtree(tempify("temp")), os.mkdir(tempify("temp"))))
+
         self.tool_bar = CTkFrame(self, height=40)
         self.tool_bar.pack(side="top", fill="x", padx=10, pady=(10, 0))
 
@@ -2263,8 +2283,6 @@ class App(CTkToplevel):
         self.main.apply_theme_to_widget(self.main_window)
 
 if __name__ == "__main__":
-    # Need to create a custom theme with corner_radius - 3 (Will look more elegant and professional)
-
     set_default_color_theme("blue")
     app = App()
     app.mainloop()

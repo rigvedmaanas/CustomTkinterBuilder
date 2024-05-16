@@ -143,7 +143,6 @@ class ImageChooser(Toplevel):
 
             self.image = tempify(os.path.join("temp", os.path.basename(file)))
             #self.image.save(f"{tempify(os.path.join('temp', f'{n}_{name}_{self.image.color_type}_{size}_{density}.png'))}")
-
             self.callback(self.image)
             #print(self.image)
             self.destroy()
@@ -242,6 +241,8 @@ class ImageChooser(Toplevel):
             self.image.url = url
             self.image.save(f"{tempify(os.path.join('temp', f'{n}_{name}_{self.image.color_type}_{size}_{density}.png'))}")
             self.image = f"{tempify(os.path.join('temp', f'{n}_{name}_{self.image.color_type}_{size}_{density}.png'))}"
+            print(self.image)
+
             display.configure(image=CTkImage(light_image=image, dark_image=image, size=(image.size[0], image.size[1])))
 
             self.use_btn.configure(state="normal")
@@ -294,14 +295,14 @@ class Spinbox(CTkFrame):
         self.entry.configure(state="normal")
         self.entry.insert(0, "0")
         self.entry.configure(state="disabled")
-        self.entry.bind("<FocusOut>", lambda e: (self.command(self.entry.get()), self.entry.configure(state="disabled"), self.main.r.winfo_toplevel().update(),self.main.draw_box(self.main.hierarchy.widget)))
+        self.entry.bind("<FocusOut>", lambda e: (self.command(self.entry.get()), self.entry.configure(state="disabled"), self.main.r.winfo_toplevel().update_idletasks(),self.main.draw_box(self.main.hierarchy.widget)))
 
     def return_set(self, e):
 
         self.command(self.get())
         self.entry.configure(state="disabled")
         self.entry.unbind("<Return>")
-        self.main.r.winfo_toplevel().update()
+        self.main.r.winfo_toplevel().update_idletasks()
         self.main.draw_box(self.main.hierarchy.widget)
 
 
@@ -677,7 +678,7 @@ class PropertiesManager(CTkTabview):
 
 
             sv = StringVar()
-            sv.trace_add("write", lambda e1, e2, e3: (vals["callback"](sv.get()), self.main.r.winfo_toplevel().update(), self.main.draw_box(self.main.hierarchy.widget)))
+            sv.trace_add("write", lambda e1, e2, e3: (vals["callback"](sv.get()), self.main.r.winfo_toplevel().update_idletasks(), self.main.draw_box(self.main.hierarchy.widget)))
             entry = TextExtension(frame, width=150, height=100, textvariable=sv)
             entry.pack(side="right", padx=10, pady=10)
             head = CTkLabel(frame, text=header)
@@ -685,6 +686,7 @@ class PropertiesManager(CTkTabview):
 
             sv.set(vals["val"])
             self.options[key] = [head, entry]
+
 
         elif TYPE == "SINGLELINE_TEXT":
             frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
