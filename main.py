@@ -38,7 +38,7 @@ from PIL import Image, ImageTk
 from get_path import resource_path, tempify, joinpath
 
 
-#ic.disable()
+ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
 #blockPrint()
@@ -271,7 +271,7 @@ root.after(20, root.lift)
     def export(self, code):
         filename = asksaveasfilename(filetypes=[(".py", "py")])
         if filename != "":
-            with open(filename, "w") as f:
+            with open(filename, "w", encoding="utf-8") as f:
                 f.write(code)
 
 
@@ -544,14 +544,18 @@ for x in {x.get_name()}._buttons_dict.values():
         self.current_widget_count.trace("w", self.changed_value)
         self.widgetnumber = IntVar(value=1)
         self.get_number_of_widgets(json.loads(json.dumps(d)))
+
         t1 = self.launch_thread_with_message(target=self.loop_open, args=(d, self.r))
 
         #self.loop_open(d, self.r)
     def changed_value(self, a, b, c):
-        if (self.widgetnumber.get()-1) == self.current_widget_count.get():
-            self.edit_lbl.configure(text="Updating Hierarchy....")
-        self.lbl2.configure(text=f"{self.current_widget_count.get()}/{self.widgetnumber.get()}")
-        self.progressbar.step()
+        try:
+            if (self.widgetnumber.get()-1) == self.current_widget_count.get():
+                self.edit_lbl.configure(text="Updating Hierarchy....")
+            self.lbl2.configure(text=f"{self.current_widget_count.get()}/{self.widgetnumber.get()}")
+            self.progressbar.step()
+        except Exception:
+            pass
     def center(self, toplevel):
         toplevel.update_idletasks()
 
@@ -598,7 +602,7 @@ for x in {x.get_name()}._buttons_dict.values():
     def launch_thread_with_message(self, target, args=(), kwargs={}):
         def target_with_msg(*args, **kwargs):
             target(*args, **kwargs)
-            self.hierarchy.delete_children()
+            #self.hierarchy.delete_children()
             self.hierarchy.update_list(self.widgets, 5)
             self.destroy_loading()
 
@@ -658,7 +662,9 @@ for x in {x.get_name()}._buttons_dict.values():
             self.current_widget_count.trace("w", self.changed_value)
             self.widgetnumber = IntVar(value=1)
             self.get_number_of_widgets(json.loads(json.dumps(d)))
+
             t2 = self.launch_thread_with_message(target=self.loop_open, args=(d, self.r))
+
             #self.loop_open(d, self.r)
 
     def loop_open(self, d, parent, copy=False):
@@ -1577,25 +1583,28 @@ class Hierarchy(CTkScrollableFrame):
             ##print(self.main.widgets)
 
     def update_list(self, d, pad):
-        self.current_selection = None
-        self.main.destroy_box()
+        try:
+            self.current_selection = None
 
-        self.widget = None
-        for x in list(d.keys()):
-            if d[x] != {}:
-                btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
-                #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
-                btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
-                btn.widget = x
-                btn.pack(fill="x", padx=(pad, 5), pady=2.5)
-                self.update_list(d[x], pad+20)
-            else:
+            self.widget = None
+            for x in list(d.keys()):
+                if d[x] != {}:
+                    btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
+                    #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
+                    btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
+                    btn.widget = x
+                    btn.pack(fill="x", padx=(pad, 5), pady=2.5)
+                    self.update_list(d[x], pad+20)
+                else:
 
-                btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
-                #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
-                btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
-                btn.widget = x
-                btn.pack(fill="x", padx=(pad, 5), pady=2.5)
+                    btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
+                    #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
+                    btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
+                    btn.widget = x
+                    btn.pack(fill="x", padx=(pad, 5), pady=2.5)
+            self.main.destroy_box()
+        except tkinter.TclError as e:
+            pass
 
     def _change_parent(self, widget, new_parent):
 
@@ -2284,8 +2293,8 @@ class App(CTkToplevel):
         self.saveas_btn.configure(command=self.main.saveas_file)
 
         self.open_btn.configure(command=self.main.open_file)
-        self.hierarchy.delete_children()
-        self.hierarchy.update_list(self.main.widgets, 5)
+        #self.hierarchy.delete_children()
+        #self.hierarchy.update_list(self.main.widgets, 5)
         self.home_btn.configure(command=lambda : self.on_closing(command=lambda: (self.master.deiconify(), self.destroy())))
         self.main.apply_theme_to_widget(self.main_window)
         self.wm_iconbitmap()

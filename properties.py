@@ -717,14 +717,14 @@ class PropertiesManager(CTkTabview):
             temp.pack(side="right", fill="x", pady=10)
 
             num_spinbox_1 = Spinbox(temp, width=150, positive=True, command=lambda val: (
-            vals["callback"](int(val), num_spinbox_2.get())))
+            vals["callback"](int(val), int(num_spinbox_2.get()))))
             num_spinbox_1.pack(padx=(10, 10))
             num_spinbox_1.set(vals["val1"])
             num_spinbox_1.main = self.main
 
 
             num_spinbox_2 = Spinbox(temp, width=150, positive=True, command=lambda val: (
-            vals["callback"](num_spinbox_1.get(), int(val))))
+            vals["callback"](int(num_spinbox_1.get()), int(val))))
             num_spinbox_2.pack(padx=(10, 10), pady=(10, 0))
 
             num_spinbox_2.set(vals["val2"])
