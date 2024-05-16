@@ -1,6 +1,6 @@
 # Welcome To Custom Tkinter Builder
 
-This is a Free and Open Source Software (FOSS) [RAD](https://en.wikipedia.org/wiki/Rapid_application_development) tool for [Custom Tkinter](https://github.com/TomSchimansky/CustomTkinter). This software allows you to create complex UI faster than ever⚡
+This is a Free and Open Source [RAD](https://en.wikipedia.org/wiki/Rapid_application_development) tool for [Custom Tkinter](https://github.com/TomSchimansky/CustomTkinter). This software allows you to create complex UI faster than ever⚡
 
 ![Software](https://github.com/rigvedmaanas/CustomTkinterBuilder/assets/77579661/77efd633-461e-4d30-be27-3d5d61045aa6)
 
