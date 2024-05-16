@@ -18,9 +18,14 @@ def tempify(path):
 
         # From - '/Users/######/Build/CustomTkinterBuilder Release/Custom Tkinter Builder.app/Contents'
         # To - ''/Users/######/Build/CustomTkinterBuilder Release/'
-        base_path = os.path.dirname(base_path)
-        base_path = os.path.dirname(base_path)
-        base_path = os.path.dirname(base_path)
+        if sys.platform == "darwin":
+            base_path = os.path.dirname(base_path)
+            base_path = os.path.dirname(base_path)
+            base_path = os.path.dirname(base_path)
+        elif sys.platform.startswith("win"):
+            print(base_path)
+            base_path = os.path.dirname(base_path)
+
 
     except Exception:
         base_path = os.path.abspath(".")

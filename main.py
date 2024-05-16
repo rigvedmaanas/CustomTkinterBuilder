@@ -668,9 +668,6 @@ for x in {x.get_name()}._buttons_dict.values():
             #self.loop_open(d, self.r)
 
     def loop_open(self, d, parent, copy=False):
-        # I could destroy every child in self.r but could not add new widgets after destroying the children.
-
-
         for x in list(d.keys()):
             y = d[x]["TYPE"]
             if y == "FRAME":
@@ -713,15 +710,20 @@ for x in {x.get_name()}._buttons_dict.values():
             i = None
             family = False
             d_copy = dict(d[x]["parameters"])
+            img_path = None
+            img_size = None
             for p in dict(d[x]["parameters"]):
                 if p == "image":
                     path = d[x]["parameters"]["image"]["image"]
                     #file_name = os.path.basename(path)
                     file_name = path
                     img = tempify(os.path.join("temp", file_name))
+                    img_path = img
+                    img_size = d[x]["parameters"]["image"]["size"]
                     #print(img)
-                    i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
-                    d[x]["parameters"]["image"] = i
+                    #i = CTkImage(light_image=Image.open(img), dark_image=Image.open(img), size=(d[x]["parameters"]["image"]["size"][0], d[x]["parameters"]["image"]["size"][1]))
+                    #d[x]["parameters"]["image"] = img
+                    d[x]["parameters"].pop("image")
 
                 elif p == "font_family":
                     ##print(d[x], p)
@@ -797,12 +799,17 @@ for x in {x.get_name()}._buttons_dict.values():
                 try:
                     ##print(d_copy)
                     #img = tempify(os.path.join("temp", file_name))
+                    #print(d_copy['image']['image'])
+                    #new_widget.image = os.path.join("temp", d_copy["image"]["image"])
+                    #img = d[x]["parameters"]["image"]
+                    #print(img)
+                    #new_widget.img = d[x]["parameters"]["image"]
+                    #new_widget.size = (d[x]["parameters"]["image"].cget("size")[0], d[x]["parameters"]["image"].cget("size")[1])
+                    #print(new_widget.img, new_widget.size)
+                    if img_path != None and img_size != None:
+                        new_widget.set_image(img_path, img_size)
+                        d_copy["image"] = new_widget.img
 
-                    new_widget.image = os.path.join("Assets", d_copy["image"]["image"])
-                    img = d[x]["parameters"]["image"]
-                    d_copy["image"] = img
-                    new_widget.img = d[x]["parameters"]["image"]
-                    new_widget.size = (d[x]["parameters"]["image"].cget("size")[0], d[x]["parameters"]["image"].cget("size")[1])
                     ##print(d_copy)
 
                 except KeyError as e:
@@ -1437,10 +1444,20 @@ for x in {x.get_name()}._buttons_dict.values():
 
         for x in list(d.keys()):
             try:
+                #x.cget("image").cget("light_image").close()
+                #x.cget("image").cget("dark_image").close()
+                #x.configure(image=None)
                 x.img.cget("light_image").close()
                 x.img.cget("dark_image").close()
+                #x.img.configure(light_image=None)
+                #x.img.configure(dark_image=None)
+
+                #x.img = None
+
+                #print("done")
 
             except Exception as e:
+                #print(e)
                 pass
 
             if d[x] != {}:
