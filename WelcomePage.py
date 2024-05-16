@@ -3,6 +3,7 @@ import json
 from tkinter import messagebox
 from tkinter.filedialog import askdirectory
 
+from PIL.ImageTk import PhotoImage
 from customtkinter import *
 from PIL import Image
 from main import SaveFileDialog, App
@@ -213,6 +214,10 @@ root.project_files = configure["project_files"]
 
 for project in root.project_files:
     root.show_project(project["Name"][0:2].upper(), project["Name"], project["Directory"])
+
+icon = PhotoImage(file=resource_path('Logo.ico'))
+root.wm_iconbitmap()
+root.iconphoto(True, icon)
 #root.center(root)
 root.mainloop()
             

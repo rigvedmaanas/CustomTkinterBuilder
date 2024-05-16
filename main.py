@@ -1,11 +1,9 @@
 import json
 import platform
 import shutil
-import sys
 import threading
 import tkinter.messagebox
 import uuid
-from pathlib import Path
 from tkinter import messagebox
 from tkinter.colorchooser import askcolor
 
@@ -36,8 +34,8 @@ from Widgets.ComboBox import ComboBox
 from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
-from PIL import Image
-from get_path import resource_path, tempify, joinpath, rawify
+from PIL import Image, ImageTk
+from get_path import resource_path, tempify, joinpath
 
 
 #ic.disable()
@@ -62,6 +60,9 @@ class SaveFileDialog(CTkToplevel):
         self.callback = callback
         self.after(20, self.lift)
         self.after(25, self.focus_get)
+        self.wm_iconbitmap()
+        self.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
+        self.after(100, lambda: self.iconphoto(False, self.iconpath))
 
         if theme:
             self.geometry("500x380+600+200")
@@ -317,6 +318,9 @@ root.mainloop()
         top.configure(fg_color=["gray95", "gray10"])
         top.after(20, top.lift)
         top.after(25, top.focus_get)
+        top.wm_iconbitmap()
+        top.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
+        top.after(100, lambda: top.iconphoto(False, top.iconpath))
 
 
         self.codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=oop_code.get_code(), language="python", theme="monokai", font=CTkFont(size=20))
@@ -1719,6 +1723,9 @@ class PaletteEditor(CTkToplevel):
         self.title("Palette Editor")
         self.after(20, self.lift)
         self.after(25, self.focus_get)
+        self.wm_iconbitmap()
+        self.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
+        self.after(100, lambda: self.iconphoto(False, self.iconpath))
 
         self.current_selection = [None, None]
         self.clickables = []
@@ -2281,6 +2288,9 @@ class App(CTkToplevel):
         self.hierarchy.update_list(self.main.widgets, 5)
         self.home_btn.configure(command=lambda : self.on_closing(command=lambda: (self.master.deiconify(), self.destroy())))
         self.main.apply_theme_to_widget(self.main_window)
+        self.wm_iconbitmap()
+        self.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
+        self.after(100, lambda: self.iconphoto(False, self.iconpath))
 
 if __name__ == "__main__":
     set_default_color_theme("blue")

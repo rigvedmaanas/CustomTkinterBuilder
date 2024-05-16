@@ -10,7 +10,7 @@ import math
 from customtkinter import *
 from typing import Union, Callable
 from tkinter import font, messagebox
-from PIL import Image
+from PIL import Image, ImageTk
 import requests
 from get_path import resource_path, tempify
 
@@ -28,6 +28,9 @@ class ImageChooser(Toplevel):
         self.protocol("WM_DELETE_WINDOW", self.kill)
         self.after(20, self.lift)
         self.after(25, self.focus_get)
+        self.wm_iconbitmap()
+        self.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
+        self.after(100, lambda: self.iconphoto(False, self.iconpath))
 
         #self.attributes('-topmost', True)
         self.title("Choose Image or Icon")
@@ -502,6 +505,9 @@ class ColorPicker(CTkToplevel):
         self.fr.pack(padx=10, pady=10, fill="x")
         self.after(20, self.lift)
         self.after(25, self.focus_get)
+        self.wm_iconbitmap()
+        self.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
+        self.after(100, lambda: self.iconphoto(False, self.iconpath))
 
 
         self.c = CTkButton(self.fr, width=100, height=100, text="", fg_color=self.color, hover=False, command=self.get_color)
