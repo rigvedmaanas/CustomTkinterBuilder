@@ -72,10 +72,10 @@ Detailed documentation of the project is available [here](https://github.com/rig
 
 # Upcoming Features
 
-- [ ] Support Place and Grid
+- [ ] Support for place and grid manager
 - [ ] Support other libraries (Video Player, GIF Player, Slide View, Graph, Code Viewer, etc)
 - [ ] Support for Tree View
-- [ ] Support for multiple Page
+- [ ] Support for Tab View
 
 # Licence
 
