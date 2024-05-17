@@ -41,7 +41,7 @@ This is a Free and Open Source [RAD](https://en.wikipedia.org/wiki/Rapid_applica
 
 
 # Download Now 👇
-<br> <p align='center'> [<img src="https://img.shields.io/badge/Get-Custom%20Tkinter%20Builder-informational?&logo=python&logoColor=yellow&color=green" width="350">](https://github.com/rigvedmaanas/CustomTkinterBuilder/releases/tag/v1.0.0)  </br>
+<br> <p align='center'> [<img src="https://img.shields.io/badge/Download-Custom%20Tkinter%20Builder-informational?&logo=python&logoColor=yellow&color=green" width="350">](https://github.com/rigvedmaanas/CustomTkinterBuilder/releases/tag/v1.0.0)  </br>
 
 # Available Widgets
 
