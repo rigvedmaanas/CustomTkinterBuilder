@@ -182,7 +182,7 @@ class Root(CTk):
 
 
         except Exception as e:
-            print(e)
+            messagebox.showerror("Error", e)
     def search(self, a, b, c):
         text = self.var.get()
         if text != "":

@@ -6,6 +6,8 @@ import tkinter.messagebox
 import uuid
 from tkinter import messagebox
 from tkinter.colorchooser import askcolor
+
+import pyperclip
 from jinja2 import Environment, FileSystemLoader
 import darkdetect
 import userpaths
@@ -340,12 +342,51 @@ root.mainloop()
         self.current = oop_code
 
         exp_btn = CTkButton(top, text="Export Code", command=lambda: self.export(self.codeviewer.get(1.0, "end")))
-        exp_btn.pack(side="right", padx=20, pady=(0, 20))
+        exp_btn.pack(side="right", padx=(20, 20), pady=(0, 20))
+
+        copy_btn = CTkButton(top, text="Copy Code", command=lambda: pyperclip.copy(self.codeviewer.get(1.0, "end")))
+        copy_btn.pack(side="right", padx=(20, 0), pady=(0, 20))
+
+        export_with_assets = CTkButton(top, text="Export code with Assets", command=self.export_with_assets)
+        export_with_assets.pack(side="right", padx=(20, 0), pady=(0, 20))
+
 
         self.oop_code = oop_code
         self.non_oop_code = code
 
+    def export_with_assets(self):
+        res = messagebox.askyesno("Note", "This saves the project before exporting. Do you want to continue?")
+        if res:
+            self.save_file(suppress_dialog=True)
 
+
+            filename = asksaveasfilename(filetypes=[(".py", "py")])
+            source_dir = os.path.join(self.file[0], self.file[1], "Assets")
+            dest_dir = os.path.join(os.path.dirname(filename), "Assets")
+            ic(filename, source_dir, dest_dir)
+            if filename != "":
+                self.copy_files(source_dir, dest_dir)
+                with open(filename, "w", encoding="utf-8") as f:
+                    f.write(self.codeviewer.get(1.0, "end"))
+
+    def copy_files(self, source_dir, dest_dir):
+        # Ensure source directory exists
+        if not os.path.isdir(source_dir):
+            raise ValueError(f"Source directory does not exist: {source_dir}")
+
+        # Create destination directory if it doesn't exist
+        os.makedirs(dest_dir, exist_ok=True)
+
+        for filename in os.listdir(source_dir):
+            source_file = os.path.join(source_dir, filename)
+            dest_file = os.path.join(dest_dir, filename)
+
+            # Only copy files (not directories) and skip if file already exists
+            if os.path.isfile(source_file) and not os.path.exists(dest_file):
+                shutil.copy2(source_file, dest_file)
+                ic(f"Copied: {filename}")
+            elif os.path.exists(dest_file):
+                ic(f"Skipped (already exists): {filename}")
 
     def change_oop(self):
         if self.oop_code_switch.get() == 0:
@@ -974,7 +1015,7 @@ for x in {x.get_name()}._buttons_dict.values():
         self.file = [dir_, name]
         self.save(dir_, name)
 
-    def save_file(self):
+    def save_file(self, suppress_dialog=False):
 
         if self.file == "":
             f = SaveFileDialog(callback=self.set_file)
@@ -992,7 +1033,8 @@ for x in {x.get_name()}._buttons_dict.values():
             json_object = json.dumps(self.s, indent=4)
             with open(os.path.join(os.path.join(self.file[0], self.file[1]), f"{self.file[1]}.json"), "w") as outfile:
                 outfile.write(json_object)
-            messagebox.showinfo("Saved", "Your file has been successfully saved")
+            if not suppress_dialog:
+                messagebox.showinfo("Saved", "Your file has been successfully saved")
 
 
     def saveas_file(self):

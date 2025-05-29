@@ -19,6 +19,10 @@
         {
             "Name": "Login-Demo",
             "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/Examples"
+        },
+        {
+            "Name": "Testv3",
+            "Directory": "/Users/rigvedmaanas/Downloads"
         }
     ]
 }
