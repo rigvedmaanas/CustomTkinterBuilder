@@ -1,4 +1,24 @@
 {
     "project_files": [
+        {
+            "Name": "CTkTest",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "Spotify-Demo",
+            "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/Examples"
+        },
+        {
+            "Name": "HelloWorld",
+            "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/Examples"
+        },
+        {
+            "Name": "Youtube-Demo",
+            "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/Examples"
+        },
+        {
+            "Name": "Login-Demo",
+            "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/Examples"
+        }
     ]
 }

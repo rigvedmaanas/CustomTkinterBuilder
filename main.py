@@ -6,7 +6,7 @@ import tkinter.messagebox
 import uuid
 from tkinter import messagebox
 from tkinter.colorchooser import askcolor
-
+from jinja2 import Environment, FileSystemLoader
 import darkdetect
 import userpaths
 from icecream import ic
@@ -36,9 +36,9 @@ from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image, ImageTk
 from get_path import resource_path, tempify, joinpath
+import autopep8
 
-
-ic.disable()
+#ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
 #blockPrint()
@@ -143,6 +143,8 @@ class MainWindow:
         self.vert_max_offset = 100
         self.current_selected_widget = None
         self.theme = self.theme_manager.get_theme_by_name()
+        self.template_env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
+
         self.widget_colors = {
             "CTk": ["fg_color"],
             "CTkToplevel": ["fg_color"],
@@ -302,7 +304,7 @@ class App(CTk):
 """)
         oop_code.indent()
         oop_code.indent()
-        self.loop_generate_oop(d=self.widgets[self.r], parent="self", code=oop_code)
+        self.loop_generate_oop(d=self.widgets[self.r], p="self", code=oop_code)
         oop_code.add_line(f"""
 set_default_color_theme("{self.theme_manager.name}")
 root = App()
@@ -323,7 +325,7 @@ root.mainloop()
         top.after(100, lambda: top.iconphoto(False, top.iconpath))
 
 
-        self.codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=oop_code.get_code(), language="python", theme="monokai", font=CTkFont(size=20))
+        self.codeviewer = CTkCodeViewer.CTkCodeViewer(top, code=oop_code.get_code(), language="python", theme="monokai", font=CTkFont(size=15))
         self.codeviewer.configure(wrap="none")
         self.codeviewer.pack(expand=True, fill="both", padx=20, pady=20)
 
@@ -331,28 +333,39 @@ root.mainloop()
         self.oop_code_switch.pack(side="left", padx=20, pady=(0, 20))
         self.oop_code_switch.select()
 
-        exp_btn = CTkButton(top, text="Export Code", command=lambda: self.export(self.current.get_code()))
-        exp_btn.pack(side="right", padx=20, pady=(0, 20))
+        self.pep8_switch = CTkSwitch(top, text="PEP8 Refactor", command=self.use_pep8)
+        self.pep8_switch.pack(side="left", padx=20, pady=(0, 20))
+        self.pep8_switch.select()
 
         self.current = oop_code
-        self.not_current = code
+
+        exp_btn = CTkButton(top, text="Export Code", command=lambda: self.export(self.codeviewer.get(1.0, "end")))
+        exp_btn.pack(side="right", padx=20, pady=(0, 20))
+
+        self.oop_code = oop_code
+        self.non_oop_code = code
+
 
 
     def change_oop(self):
-
         if self.oop_code_switch.get() == 0:
-            code = self.not_current
-            oop_code = self.current
-            self.current = code
-            self.not_current = oop_code
+            self.current = self.non_oop_code
 
         else:
-            oop_code = self.not_current
-            code = self.current
-            self.current = oop_code
-            self.not_current = code
+            self.current = self.oop_code
         self.codeviewer.delete(1.0, "end")
         self.codeviewer._add_code(self.current.get_code(), "python")
+
+    def use_pep8(self):
+        if self.pep8_switch.get() == 0:
+            self.codeviewer.delete(1.0, "end")
+            self.codeviewer._add_code(self.current.get_code(), "python")
+
+        else:
+            self.codeviewer.delete(1.0, "end")
+            self.codeviewer._add_code(autopep8.fix_code(self.current.get_code()), "python")
+
+
 
     def escape_special_chars(self, text):
         escape_table = {
@@ -1017,120 +1030,91 @@ for x in {x.get_name()}._buttons_dict.values():
 
         ##print(code)
 
-    def loop_generate_oop(self, d, parent, code):
+    def escape_chars(self, text):
+        if isinstance(text, str):
+            return self.escape_special_chars(text)
+        return text
 
-        for x in list(d.keys()):
-            if x.props == {}:
+    def _bool_change(self, value):
+        return value.lower() == 'true'
 
-                code.add_line(f"self.{x.get_name()} = {x.get_class()}(master={parent})")
-                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
-                    code.add_line(f"self.{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
+    def get_class_name(self, type_str):
+        return f"CTk{type_str.capitalize()}"
+
+    def format_pack_options(self, pack_options):
+        options = {}
+        default_pack_options = {"expand": False, "anchor": "center", "fill": "none", "padx": 0, "pady": 0,
+                                "side": "top", "ipadx": 0, "ipady": 0}
+        for key, value in pack_options.items():
+            if value != default_pack_options[key]:
+                if isinstance(value, str):
+                    options[key] = f'"{value}"'
+                elif isinstance(value, (tuple, list)):
+                    options[key] = f'({value[0]}, {value[1]})'
+                else:
+                    options[key] = repr(value)
+            ic(key, value)
+
+        return ", ".join(f"{k}={v}" for k, v in options.items())
+
+
+    def loop_generate_oop(self, d, p, code):
+        try:
+            widget_code = self.template_env.get_template("ctk_widget.py.j2")
+            widget_pack_propagate_code = self.template_env.get_template("ctk_widget_pack_propagate.py.j2")
+            widget_pack_code = self.template_env.get_template("ctk_widget_pack.py.j2")
+
+        except Exception as e:
+            print(f"Error loading Jinja2 template 'ctk_widget.py.j2': {e}")
+
+            return
+        for parent, children in d.items():
+            #ic(parent, children, type(parent))
+            widget_type = parent.type
+            widget_id = parent.get_name()
+            parameters = parent.props
+            pack_options = parent.pack_options
+            ic(parameters)
+            if parent.type == "Frame":
+                pack_propagate = parent.propagate_on_pack
             else:
+                pack_propagate = None
+            children = {k: v for k, v in children.items() if
+                        k not in ["TYPE", "parameters", "pack_options", "ID", "PACK_PROPAGATE"]}
+            widget_class = parent.get_class()
 
-                p = ""
-                font = "font=CTkFont("
-                f2 = "hover_font=CTkFont("
-                for key in list(x.props.keys()):
-                    if key == "image" and x.props["image"] != None:
+            rendered_code = widget_code.render(
+                widget_id=widget_id,
+                widget_class=widget_class,
+                parent=p,
+                parameters=parameters,
+                pack_options=pack_options,
+                pack_propagate=pack_propagate,
+                os=os,
+                platform=platform,
+                theme=self.theme,
+                escape_special_chars=self.escape_chars,
+                bool_change=self._bool_change,
+                widget_type=widget_type,
+                format_pack_options=self.format_pack_options,
+            )
+            code.add_line(rendered_code)
+            rendered_code = widget_pack_propagate_code.render(
+                widget_id=widget_id,
+                widget_type=widget_type,
+                pack_propagate=pack_propagate,
+            )
+            if rendered_code != "":
+                code.add_line(rendered_code)
 
-                        p += f'image=CTkImage(Image.open(r"{os.path.join("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
-                    elif key == "hover_image":
-                        p += f'hover_image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
-                    elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
-                                 "font_overstrike"]:
-                        if key == "font_family":
-                            current_os = platform.system()
-                            if current_os == "Darwin":
-                                current_os = "macOS"
-                            elif current_os == "Windows":
-                                current_os = "Windows"
-                            elif current_os == "Linux":
-                                current_os = "Linux"
-                            if x.props[key] == self.theme["CTkFont"][current_os]["family"]:
-                                pass
-                            else:
-                                if type(x.props[key]) == str:
-
-                                    font += f'{key[5::]}="{x.props[key]}", '
-                                else:
-                                    font += f'{key[5::]}={x.props[key]}, '
-                        else:
-                            if type(x.props[key]) == str:
-
-                                font += f'{key[5::]}="{x.props[key]}", '
-                            else:
-                                font += f'{key[5::]}={x.props[key]}, '
-                    elif key in ["hover_font_family", "hover_font_size", "hover_font_weight", "hover_font_slant",
-                                 "hover_font_underline",
-                                 "hover_font_overstrike"]:
-                        ic(key, x.props[key])
-                        if type(x.props[key]) == str:
-
-                            f2 += f'{key[11::]}="{x.props[key]}", '
-                        else:
-                            f2 += f'{key[11::]}={x.props[key]}, '
-                    else:
-                        if type(x.props[key]) == str:
-                            k = self.escape_special_chars(x.props[key])
-                            p += f'{key}="{k}", '
-                        elif type(x.props[key]) == tuple or type(x.props[key]) == list and len(x.props[key]) == 2:
-                            if type(x.props[key][0]) == str and type(x.props[key][1]) == str:
-                                p += f'{key}=("{x.props[key][0]}", "{x.props[key][1]}"), '
-                            else:
-                                p += f"{key}=({x.props[key][0]}, {x.props[key][1]}), "
-                        else:
-                            p += f"{key}={x.props[key]}, "
-
-                font = font[0:-2]  # Delete ', ' at last part
-                f2 = f2[0:-2]
-                f2 += ")"
-                font += ")"
-                ic(f2)
-                if font != "font=CTkFon)":  # Which means there is no change in font
-                    p += font
-                    p += ", "
-                if f2 != "hover_font=CTkFon)":  # Which means there is no change in font
-                    p += f2
-                    p += ", "
-
-                p = p[0:-2]
-                code.add_line(f"self.{x.get_name()} = {x.get_class()}(master={parent}, {p})")
-                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
-                    code.add_line(f"self.{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
-
-                    #code.add_line(f"self.{x.get_name()}.pack_propagate(False)")
-            if x.pack_options == {}:
-
-                code.add_line(f"self.{x.get_name()}.pack()")
-            else:
-                p = ""
-                default_pack_options = {"expand": False, "anchor": "center", "fill": "none", "padx": 0, "pady": 0, "side": "top", "ipadx": 0, "ipady": 0}
-                modified_pack_options = x.pack_options
-                for i in list(modified_pack_options.keys()):
-                    if modified_pack_options[i] == default_pack_options[i]:
-                        modified_pack_options.pop(i)
-                ic(modified_pack_options)
-                for key in list(modified_pack_options.keys()):
-                    if type(modified_pack_options[key]) == str:
-                        p += f'{key}="{modified_pack_options[key]}", '
-                    elif type(modified_pack_options[key]) == tuple or type(modified_pack_options[key]) == list:
-                        """if type(modified_pack_options[key][0]) == str and type(x.pack_options[key][1]) == str:
-                            p += f'{key}=("{x.pack_options[key][0]}", "{x.pack_options[key][1]}"), '
-                        else:"""
-                        p += f"{key}=({int(modified_pack_options[key][0])}, {int(modified_pack_options[key][1])}), "
-                    else:
-                        p += f"{key}={modified_pack_options[key]}, "
-
-                p = p[0:-2]  # Delete ', ' at last part
-                code.add_line(f"self.{x.get_name()}.pack({p})")
-
-
-            if d[x] != {}:
-                #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
-
-                self.loop_generate_oop(d=d[x], parent="self." + x.get_name(), code=code)
-
-
+            rendered_code = widget_pack_code.render(
+                widget_id=widget_id,
+                pack_options=pack_options,
+                format_pack_options=self.format_pack_options
+            )
+            code.add_line(rendered_code)
+            if children != {}:
+                self.loop_generate_oop(children, f"self.{parent.get_name()}", code)
     def get_parents(self, widget):
         if widget == self.r:
             self._parents.reverse()
