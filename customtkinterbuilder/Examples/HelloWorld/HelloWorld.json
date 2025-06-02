@@ -1,0 +1,41 @@
+{
+    "MAIN-1": {
+        "TYPE": "MAIN",
+        "parameters": {
+            "title": "Window"
+        },
+        "pack_options": {},
+        "ID": "73f7f315-91ce-4ace-9f9b-0c71ed23f4ab",
+        "FRAME0": {
+            "TYPE": "FRAME",
+            "parameters": {
+                "fg_color": "transparent"
+            },
+            "pack_options": {
+                "expand": true
+            },
+            "ID": "153c524d-73d8-4f35-a255-d98e21c51d92",
+            "PACK_PROPAGATE": "True",
+            "LABEL1": {
+                "TYPE": "LABEL",
+                "parameters": {
+                    "text": "Hello World",
+                    "font_size": 30
+                },
+                "pack_options": {},
+                "ID": "2be300e2-3d5b-4729-a9c6-33160175fc2e"
+            },
+            "BUTTON2": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Click Me"
+                },
+                "pack_options": {},
+                "ID": "940ed8c7-b549-4906-9329-a434b0ad19ec"
+            }
+        },
+        "theme": "blue",
+        "palette_on_change": {},
+        "palette": {}
+    }
+}

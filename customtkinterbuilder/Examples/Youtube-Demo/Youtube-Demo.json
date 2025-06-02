@@ -1,0 +1,2032 @@
+{
+    "MAIN-1": {
+        "TYPE": "MAIN",
+        "parameters": {
+            "title": "Custom Tkinter Builder - Youtube Demo",
+            "width": 1300,
+            "height": 730
+        },
+        "pack_options": {},
+        "ID": "40d8171e-194c-48bf-9f2b-97c44d771284",
+        "top_bar": {
+            "TYPE": "FRAME",
+            "parameters": {
+                "height": 75
+            },
+            "pack_options": {
+                "pady": [
+                    "5",
+                    5
+                ],
+                "fill": "x",
+                "padx": 5
+            },
+            "ID": "fb2ce85d-8cce-47a5-af35-64453aea40eb",
+            "PACK_PROPAGATE": "False",
+            "LABEL4": {
+                "TYPE": "LABEL",
+                "parameters": {
+                    "text": "Youtube",
+                    "font_size": 24
+                },
+                "pack_options": {
+                    "padx": [
+                        10,
+                        "0"
+                    ],
+                    "side": "left"
+                },
+                "ID": "52ae1605-df3d-4c38-8340-630b60b58ae0"
+            },
+            "FRAME5": {
+                "TYPE": "FRAME",
+                "parameters": {
+                    "fg_color": "transparent"
+                },
+                "pack_options": {
+                    "padx": [
+                        "0",
+                        5
+                    ],
+                    "side": "right"
+                },
+                "ID": "381fe786-60a7-489a-825b-c1db203f388a",
+                "PACK_PROPAGATE": "True",
+                "profile": {
+                    "TYPE": "BUTTON",
+                    "parameters": {
+                        "text": "",
+                        "image": {
+                            "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                            "size": [
+                                24,
+                                24
+                            ]
+                        },
+                        "width": 45,
+                        "fg_color": [
+                            "#202020",
+                            "#202020"
+                        ],
+                        "hover": false
+                    },
+                    "pack_options": {
+                        "side": "right"
+                    },
+                    "ID": "fa774402-7a49-4172-8ddc-6f3a34b057c4"
+                },
+                "BUTTON8_copy": {
+                    "TYPE": "BUTTON",
+                    "parameters": {
+                        "text": "",
+                        "image": {
+                            "image": "outline_notifications_(255, 255, 255)_24dp_1x.png",
+                            "size": [
+                                24,
+                                24
+                            ]
+                        },
+                        "width": 45,
+                        "fg_color": [
+                            "#202020",
+                            "#202020"
+                        ],
+                        "hover": false
+                    },
+                    "pack_options": {
+                        "side": "right"
+                    },
+                    "ID": "8e2d241d-806f-426c-9756-b7e55cd8711f"
+                },
+                "BUTTON9_copy": {
+                    "TYPE": "BUTTON",
+                    "parameters": {
+                        "text": "",
+                        "image": {
+                            "image": "outline_videocam_(255, 255, 255)_24dp_1x.png",
+                            "size": [
+                                24,
+                                24
+                            ]
+                        },
+                        "width": 45,
+                        "fg_color": [
+                            "#202020",
+                            "#202020"
+                        ],
+                        "hover": false
+                    },
+                    "pack_options": {
+                        "side": "right"
+                    },
+                    "ID": "eeb828a4-cc36-42d2-82ba-50b2833310dc"
+                }
+            },
+            "FRAME7": {
+                "TYPE": "FRAME",
+                "parameters": {
+                    "width": 400,
+                    "fg_color": "transparent"
+                },
+                "pack_options": {
+                    "expand": true
+                },
+                "ID": "4b036619-e964-454e-8928-35f51ae127df",
+                "PACK_PROPAGATE": "True",
+                "FRAME8": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "width": 300,
+                        "fg_color": [
+                            "gray90",
+                            "#454545"
+                        ]
+                    },
+                    "pack_options": {
+                        "side": "left",
+                        "expand": 1
+                    },
+                    "ID": "9bd9e0a6-6ac7-49a8-892c-892406a62868",
+                    "PACK_PROPAGATE": "True",
+                    "entry": {
+                        "TYPE": "ENTRY",
+                        "parameters": {
+                            "placeholder_text": "Search",
+                            "corner_radius": 0,
+                            "border_width": 0,
+                            "width": 500,
+                            "fg_color": [
+                                "#e5e5e5",
+                                "#454545"
+                            ]
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "expand": 1,
+                            "fill": "both",
+                            "padx": [
+                                5,
+                                0
+                            ],
+                            "side": "left"
+                        },
+                        "ID": "bd80b41e-2202-4d47-b5cd-4381f10e28db"
+                    },
+                    "search": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "",
+                            "image": {
+                                "image": "outline_search_(255, 255, 255)_24dp_1x.png",
+                                "size": [
+                                    24,
+                                    24
+                                ]
+                            },
+                            "width": 15,
+                            "fg_color": [
+                                "#000000",
+                                "#454545"
+                            ],
+                            "hover_color": [
+                                "#353535",
+                                "#2e2e2e"
+                            ]
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "expand": 1,
+                            "fill": "both",
+                            "padx": [
+                                0,
+                                5
+                            ],
+                            "side": "left"
+                        },
+                        "ID": "b739b099-ae31-4f71-a606-25474076ee31"
+                    }
+                },
+                "BUTTON12_copy": {
+                    "TYPE": "BUTTON",
+                    "parameters": {
+                        "text": "",
+                        "image": {
+                            "image": "outline_mic_(255, 255, 255)_24dp_1x.png",
+                            "size": [
+                                24,
+                                24
+                            ]
+                        },
+                        "width": 45,
+                        "fg_color": [
+                            "#202020",
+                            "#202020"
+                        ],
+                        "hover": false
+                    },
+                    "pack_options": {
+                        "side": "right"
+                    },
+                    "ID": "e5610ce1-44e0-43ed-a2fc-6094e4fa8aa6"
+                }
+            }
+        },
+        "SCROLLABLEFRAME12": {
+            "TYPE": "SCROLLABLEFRAME",
+            "parameters": {
+                "orientation": "vertical",
+                "width": 250,
+                "fg_color": [
+                    "gray90",
+                    "#242424"
+                ]
+            },
+            "pack_options": {
+                "padx": [
+                    "5",
+                    5
+                ],
+                "fill": "y",
+                "pady": [
+                    0,
+                    5
+                ],
+                "side": "left"
+            },
+            "ID": "666cd6e8-1fe9-41a5-b783-8fe787604f9f",
+            "BUTTON13": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Home",
+                    "height": 40,
+                    "image": {
+                        "image": "baseline_home_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": [
+                        "#3a7ebf",
+                        "#404040"
+                    ],
+                    "hover_color": [
+                        "#325882",
+                        "#5f5f5f"
+                    ]
+                },
+                "pack_options": {
+                    "fill": "x"
+                },
+                "ID": "9e99b145-03d3-41a0-b37b-1d02c1f818d6"
+            },
+            "BUTTON15_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Shorts",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_recent_actors_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "dff69cd8-6668-4971-85d5-d4ab2a3d45cd"
+            },
+            "BUTTON16_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Subscriptions",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_video_library_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "dbaf0100-d2e4-4e6f-93a1-afd9a478b554"
+            },
+            "FRAME15": {
+                "TYPE": "FRAME",
+                "parameters": {
+                    "fg_color": [
+                        "#a8a8a8",
+                        "#a7a7a7"
+                    ],
+                    "corner_radius": 0,
+                    "height": 1
+                },
+                "pack_options": {
+                    "pady": [
+                        "5",
+                        5
+                    ],
+                    "fill": "x"
+                },
+                "ID": "7f95b43f-1476-4cdb-893e-efeaae178076",
+                "PACK_PROPAGATE": "False"
+            },
+            "BUTTON17_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "You",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_chevron_right_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "right",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ],
+                    "font_size": 18
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "3fd2e6d5-b5a8-4fca-be55-46f89deeef42"
+            },
+            "BUTTON18_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Your channel",
+                    "height": 40,
+                    "image": {
+                        "image": "baseline_live_tv_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "cd5ce48c-2283-4d14-a0b2-5648002c7ff3"
+            },
+            "BUTTON19_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "History",
+                    "height": 40,
+                    "image": {
+                        "image": "baseline_history_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "5a248c3a-0410-4175-8e8b-2e702e317203"
+            },
+            "BUTTON20_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Playlists",
+                    "height": 40,
+                    "image": {
+                        "image": "baseline_playlist_play_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "29fb2a31-d630-47fc-bfa4-e8970342dea3"
+            },
+            "BUTTON21_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Your videos",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_smart_display_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "3a7a3df5-4a03-4767-88a5-888c71dc4345"
+            },
+            "BUTTON22_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Watch later",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_schedule_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "c88cfff8-de88-435d-af0f-be9d69def99d"
+            },
+            "BUTTON23_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Liked videos",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_thumb_up_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "1d5706c1-6314-408b-8fcd-06e27406ffaa"
+            },
+            "FRAME36_copy": {
+                "TYPE": "FRAME",
+                "parameters": {
+                    "fg_color": [
+                        "#a8a8a8",
+                        "#a7a7a7"
+                    ],
+                    "corner_radius": 0,
+                    "height": 1
+                },
+                "pack_options": {
+                    "pady": [
+                        "5",
+                        5
+                    ],
+                    "fill": "x"
+                },
+                "ID": "cdd80532-9e19-4abe-8e36-fd0c46abf55f",
+                "PACK_PROPAGATE": "False"
+            },
+            "LABEL36": {
+                "TYPE": "LABEL",
+                "parameters": {
+                    "text": "Subscriptions",
+                    "font_size": 18,
+                    "anchor": "w",
+                    "fg_color": "transparent"
+                },
+                "pack_options": {
+                    "pady": [
+                        "5",
+                        5
+                    ],
+                    "fill": "x",
+                    "padx": [
+                        10,
+                        0
+                    ]
+                },
+                "ID": "55a43203-d0ef-4e7b-b506-be1bcce0f352"
+            },
+            "BUTTON38_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Channel 1",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "66f4c49d-2bcd-411e-9a62-91b62ef6c0cf"
+            },
+            "BUTTON39_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Channel 2",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "57cd7be3-a80b-46d7-ac9e-92f165610fe8"
+            },
+            "BUTTON40_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Channel 3",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "2a4c1d1f-9e94-4c14-a1d8-8fd8a153a391"
+            },
+            "BUTTON41_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Channel 4",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "34954665-ab0e-4d12-a4f6-a1d2e94dd583"
+            },
+            "BUTTON42_copy": {
+                "TYPE": "BUTTON",
+                "parameters": {
+                    "text": "Channel 5",
+                    "height": 40,
+                    "image": {
+                        "image": "outline_account_circle_(255, 255, 255)_24dp_1x.png",
+                        "size": [
+                            24,
+                            24
+                        ]
+                    },
+                    "anchor": "w",
+                    "compound": "left",
+                    "fg_color": "transparent",
+                    "hover_color": [
+                        "#325882",
+                        "#404040"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "0"
+                    ],
+                    "fill": "x"
+                },
+                "ID": "11a3f2ea-08f6-45f0-8777-09183e0a736b"
+            }
+        },
+        "FRAME99": {
+            "TYPE": "FRAME",
+            "parameters": {},
+            "pack_options": {
+                "expand": true,
+                "fill": "both"
+            },
+            "ID": "f9121356-3f3b-4267-9b78-5f31d57e7aff",
+            "PACK_PROPAGATE": "False",
+            "SEGMENTEDBUTTON167": {
+                "TYPE": "SEGMENTEDBUTTON",
+                "parameters": {
+                    "values": [
+                        "All",
+                        "New",
+                        "Programming",
+                        "Music",
+                        "Python GUI",
+                        "Custom Tkinter",
+                        "Movies",
+                        "Mixes",
+                        "Algorithms",
+                        "New To You"
+                    ],
+                    "selected_color": [
+                        "#3a7ebf",
+                        "#242424"
+                    ],
+                    "selected_hover_color": [
+                        "#325882",
+                        "#3f3f3f"
+                    ]
+                },
+                "pack_options": {
+                    "padx": [
+                        "10",
+                        10
+                    ],
+                    "fill": "x"
+                },
+                "ID": "f3af5ed4-c708-4531-9aa0-a1b1c18b8b72"
+            },
+            "SCROLLABLEFRAME42": {
+                "TYPE": "SCROLLABLEFRAME",
+                "parameters": {
+                    "orientation": "vertical",
+                    "fg_color": [
+                        "gray90",
+                        "#242424"
+                    ]
+                },
+                "pack_options": {
+                    "pady": [
+                        "0",
+                        5
+                    ],
+                    "expand": 1,
+                    "fill": "both",
+                    "padx": 5
+                },
+                "ID": "a9223fb9-58d8-4a06-840f-bedeca67bf8f",
+                "video_panel1": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "height": 296,
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "fill": "x",
+                        "padx": 5,
+                        "pady": [
+                            5,
+                            0
+                        ]
+                    },
+                    "ID": "2828a895-1138-40ae-94ca-5a419c9222dc",
+                    "PACK_PROPAGATE": "True",
+                    "video_card": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "width": 311,
+                            "height": 268,
+                            "corner_radius": 6
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "padx": 5,
+                            "side": "left"
+                        },
+                        "ID": "2ea83f4d-3bbc-4086-84eb-7f9f35c93e45",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL45": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 311,
+                                "height": 175,
+                                "image": {
+                                    "image": "16-311x175.jpg",
+                                    "size": [
+                                        311,
+                                        175
+                                    ]
+                                },
+                                "corner_radius": 0
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "28f605fd-af28-4022-ad9d-e3ba891092c3"
+                        },
+                        "FRAME35": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "width": 220,
+                                "fg_color": "transparent"
+                            },
+                            "pack_options": {
+                                "expand": true,
+                                "fill": "x",
+                                "side": "right"
+                            },
+                            "ID": "24421734-07c2-487f-ba9f-25f5324d9391",
+                            "PACK_PROPAGATE": "True",
+                            "LABEL38_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Unboxing a Deep Sea Mystery ",
+                                    "anchor": "w",
+                                    "font_weight": "bold",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left"
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "970c6552-994e-4919-a222-0f1e451907d1"
+                            },
+                            "LABEL36": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Ocean Odyssey",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "image": {
+                                        "image": "baseline_verified_(120, 174, 255)_18dp_1x.png",
+                                        "size": [
+                                            18,
+                                            18
+                                        ]
+                                    },
+                                    "compound": "right",
+                                    "height": 16
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "9d6bf865-2f1c-4125-a0a6-259eee632157"
+                            },
+                            "LABEL39_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "12M \u2022 1 week ago",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 0
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "e253cc4a-fdf3-4554-85d9-7548b04efe47"
+                            }
+                        },
+                        "LABEL34": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "image": {
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "size": [
+                                        48,
+                                        48
+                                    ]
+                                }
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "5b16c2d6-28c8-486d-a7a4-0edaafaab467"
+                        }
+                    },
+                    "FRAME47_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "width": 311,
+                            "height": 268
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "padx": 5,
+                            "side": "left"
+                        },
+                        "ID": "2be452d9-1d43-4ea1-b21b-ebea2aeab4e1",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL48_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 311,
+                                "height": 175,
+                                "image": {
+                                    "image": "160-311x175.jpg",
+                                    "size": [
+                                        311,
+                                        175
+                                    ]
+                                },
+                                "corner_radius": 0
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "8efc9680-f0e5-4e22-8d77-c46d3fd38958"
+                        },
+                        "FRAME49_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "width": 220,
+                                "fg_color": "transparent"
+                            },
+                            "pack_options": {
+                                "expand": true,
+                                "fill": "x",
+                                "side": "right"
+                            },
+                            "ID": "5e33fb48-0160-4350-bd17-063b5c94ee39",
+                            "PACK_PROPAGATE": "True",
+                            "LABEL50_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Is This the End of Online Privacy?",
+                                    "anchor": "w",
+                                    "font_weight": "bold",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left"
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "23c55bb5-85fe-4936-94ef-df530710361d"
+                            },
+                            "LABEL51_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "The Privacy Paradox",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "image": {
+                                        "image": "baseline_verified_(120, 174, 255)_18dp_1x.png",
+                                        "size": [
+                                            18,
+                                            18
+                                        ]
+                                    },
+                                    "compound": "right",
+                                    "height": 16
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "c1fe0bdb-4656-4bf3-9979-06d48fe95b9f"
+                            },
+                            "LABEL52_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "27M \u2022 2 months ago",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 0
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "a1746ffe-4433-434f-8d9e-e73f4a0b206c"
+                            }
+                        },
+                        "LABEL53_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "image": {
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "size": [
+                                        48,
+                                        48
+                                    ]
+                                }
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "f88e59cb-b38d-4e4a-a581-ba3ee3d695db"
+                        }
+                    },
+                    "FRAME54_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "width": 311,
+                            "height": 268
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "padx": 5,
+                            "side": "left"
+                        },
+                        "ID": "eb6dc754-f148-4a0f-9ef1-68d134195d93",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL55_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 311,
+                                "height": 175,
+                                "image": {
+                                    "image": "464-311x175.jpg",
+                                    "size": [
+                                        311,
+                                        175
+                                    ]
+                                },
+                                "corner_radius": 0
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "30a5c358-660d-4dba-b674-dbaf40b183fa"
+                        },
+                        "FRAME56_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "width": 220,
+                                "fg_color": "transparent"
+                            },
+                            "pack_options": {
+                                "expand": true,
+                                "fill": "x",
+                                "side": "right"
+                            },
+                            "ID": "145dbe29-57c1-4b53-8fbd-ea9f2aa4fbde",
+                            "PACK_PROPAGATE": "True",
+                            "LABEL57_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Lost Languages: Can We Crack the Code?",
+                                    "anchor": "w",
+                                    "font_weight": "bold",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left"
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "a54ad1c5-7f1c-48a0-af6c-eacc6af04224"
+                            },
+                            "LABEL58_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Linguistics Lab",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 16
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "8f5ae447-0538-4cc7-944f-900a156e6725"
+                            },
+                            "LABEL59_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "102K \u2022 1 month ago",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 0
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "5d446f0e-3b7b-4c0c-818d-ebeab915fdcd"
+                            }
+                        },
+                        "LABEL60_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "image": {
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "size": [
+                                        48,
+                                        48
+                                    ]
+                                }
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "a4b8c95a-dfef-4259-a4a7-58a4c97e54b3"
+                        }
+                    }
+                },
+                "FRAME55_copy": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "height": 296,
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "fill": "x",
+                        "padx": 5,
+                        "pady": [
+                            5,
+                            0
+                        ]
+                    },
+                    "ID": "05f6b7e0-68da-40c3-b6ac-b863ca3c8ba9",
+                    "PACK_PROPAGATE": "True",
+                    "FRAME56_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "width": 311,
+                            "height": 268
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "padx": 5,
+                            "side": "left"
+                        },
+                        "ID": "1fb1f067-5eb4-4959-8e82-7d0b66038577",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL57_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 311,
+                                "height": 175,
+                                "image": {
+                                    "image": "957-311x175.jpg",
+                                    "size": [
+                                        311,
+                                        175
+                                    ]
+                                },
+                                "corner_radius": 0
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "dcfa847d-07f8-47d5-8e45-8ea3113f8cb0"
+                        },
+                        "FRAME58_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "width": 220,
+                                "fg_color": "transparent"
+                            },
+                            "pack_options": {
+                                "expand": true,
+                                "fill": "x",
+                                "side": "right"
+                            },
+                            "ID": "570d6fc2-640d-499a-93ba-ae2fbeb50b26",
+                            "PACK_PROPAGATE": "True",
+                            "LABEL59_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Climate Change: The Next 10 Years",
+                                    "anchor": "w",
+                                    "font_weight": "bold",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left"
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "54ca72cf-1b53-44d9-a438-bb6b2bff31fb"
+                            },
+                            "LABEL60_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Earth Speak",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "image": {
+                                        "image": "baseline_verified_(120, 174, 255)_18dp_1x.png",
+                                        "size": [
+                                            18,
+                                            18
+                                        ]
+                                    },
+                                    "compound": "right",
+                                    "height": 16
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "9cec0f6e-7b7e-459a-9a16-896a0cb0a1a1"
+                            },
+                            "LABEL61_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "1M \u2022 6 months ago",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 0
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "cd7a0b48-9ff3-43a4-8cf0-d18bf7998124"
+                            }
+                        },
+                        "LABEL62_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "image": {
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "size": [
+                                        48,
+                                        48
+                                    ]
+                                }
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "3181776a-1d81-483d-97f1-a11bf73512c7"
+                        }
+                    },
+                    "FRAME63_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "width": 311,
+                            "height": 268
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "padx": 5,
+                            "side": "left"
+                        },
+                        "ID": "5dc291c2-9b54-4b79-ad41-8d819df18847",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL64_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 311,
+                                "height": 175,
+                                "image": {
+                                    "image": "974-311x175.jpg",
+                                    "size": [
+                                        311,
+                                        175
+                                    ]
+                                },
+                                "corner_radius": 0
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "123d7cac-80de-4fac-99d6-177d0efcbd41"
+                        },
+                        "FRAME65_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "width": 220,
+                                "fg_color": "transparent"
+                            },
+                            "pack_options": {
+                                "expand": true,
+                                "fill": "x",
+                                "side": "right"
+                            },
+                            "ID": "66c62af7-eb69-4d2c-b24f-3bead38e863a",
+                            "PACK_PROPAGATE": "True",
+                            "LABEL66_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "The Ethics of Artificial Intelligence",
+                                    "anchor": "w",
+                                    "font_weight": "bold",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left"
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "8f48d90f-ae34-4038-87d9-78bebbc5a36a"
+                            },
+                            "LABEL67_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Future Lens",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 16
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "564ec25c-028c-4a0c-88f8-66a9722b4ee3"
+                            },
+                            "LABEL68_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "100 views \u2022 1 month ago",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 0
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "f04588e8-523e-4a45-8ad5-d3cc867c4071"
+                            }
+                        },
+                        "LABEL69_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "image": {
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "size": [
+                                        48,
+                                        48
+                                    ]
+                                }
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "99787e2a-5efd-42d2-9c3b-27e5b68cb4d8"
+                        }
+                    },
+                    "FRAME70_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "width": 311,
+                            "height": 268
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "padx": 5,
+                            "side": "left"
+                        },
+                        "ID": "381cd424-6cae-40fb-a4e9-46516274c5fc",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL71_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 311,
+                                "height": 175,
+                                "image": {
+                                    "image": "6-311x175.jpg",
+                                    "size": [
+                                        311,
+                                        175
+                                    ]
+                                },
+                                "corner_radius": 0
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "dadb9710-119f-43f8-823c-38c69ff3703a"
+                        },
+                        "FRAME72_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "width": 220,
+                                "fg_color": "transparent"
+                            },
+                            "pack_options": {
+                                "expand": true,
+                                "fill": "x",
+                                "side": "right"
+                            },
+                            "ID": "f508a0b6-0a3b-4f2a-8254-ef5b992f1847",
+                            "PACK_PROPAGATE": "True",
+                            "LABEL73_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "The Psychology of Addiction: Breaking Free",
+                                    "anchor": "w",
+                                    "font_weight": "bold",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left"
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "9b9f2c6d-e2c7-425d-b16f-4179bcfe94bf"
+                            },
+                            "LABEL74_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Balanced Mind",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 16
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "c2bfb1ce-8d73-4e80-ae5e-600e224fad23"
+                            },
+                            "LABEL75_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "10K \u2022 2 years ago",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 0
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "78ce17c4-3551-40be-9ccd-96386cb58df6"
+                            }
+                        },
+                        "LABEL76_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "image": {
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "size": [
+                                        48,
+                                        48
+                                    ]
+                                }
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "b17487cd-778e-4937-81f1-d1b9b8ad6079"
+                        }
+                    }
+                },
+                "FRAME77_copy": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "height": 296,
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "fill": "x",
+                        "padx": 5,
+                        "pady": [
+                            5,
+                            0
+                        ]
+                    },
+                    "ID": "94aa4fcf-466c-47c4-9bac-9457c08a7536",
+                    "PACK_PROPAGATE": "True",
+                    "FRAME78_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "width": 311,
+                            "height": 268
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "padx": 5,
+                            "side": "left"
+                        },
+                        "ID": "1758a78a-8ceb-48ba-b09b-eccf4694c283",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL79_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 311,
+                                "height": 175,
+                                "image": {
+                                    "image": "385-311x175.jpg",
+                                    "size": [
+                                        311,
+                                        175
+                                    ]
+                                },
+                                "corner_radius": 0
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "5c6f58f2-7c24-4953-a5b0-91412636aff3"
+                        },
+                        "FRAME80_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "width": 220,
+                                "fg_color": "transparent"
+                            },
+                            "pack_options": {
+                                "expand": true,
+                                "fill": "x",
+                                "side": "right"
+                            },
+                            "ID": "2b4d8fe1-e7ea-429d-916d-eda8603171b2",
+                            "PACK_PROPAGATE": "True",
+                            "LABEL81_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "The Search for Extraterrestrial Life: Update 2024",
+                                    "anchor": "w",
+                                    "font_weight": "bold",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left"
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "01f83914-80d2-4d35-b392-d48e78fde1bf"
+                            },
+                            "LABEL82_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Aliens",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "image": {
+                                        "image": "baseline_verified_(120, 174, 255)_18dp_1x.png",
+                                        "size": [
+                                            18,
+                                            18
+                                        ]
+                                    },
+                                    "compound": "right",
+                                    "height": 16
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "d21cb83e-6a75-4b60-b3a7-64e5511d0bbd"
+                            },
+                            "LABEL83_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "30M \u2022 1 day ago",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 0
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "ef5835c2-52a0-445b-97de-8c84db1805ed"
+                            }
+                        },
+                        "LABEL84_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "image": {
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "size": [
+                                        48,
+                                        48
+                                    ]
+                                }
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "3cb39b82-c799-43fb-8260-34c140efb7c6"
+                        }
+                    },
+                    "FRAME85_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "width": 311,
+                            "height": 268
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "padx": 5,
+                            "side": "left"
+                        },
+                        "ID": "a60e01c7-f9e0-42b5-a744-a6ff4f6dabde",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL86_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 311,
+                                "height": 175,
+                                "image": {
+                                    "image": "492-311x175.jpg",
+                                    "size": [
+                                        311,
+                                        175
+                                    ]
+                                },
+                                "corner_radius": 0
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "7e98bef1-4f1a-4f6f-a9db-e9735f972f71"
+                        },
+                        "FRAME87_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "width": 220,
+                                "fg_color": "transparent"
+                            },
+                            "pack_options": {
+                                "expand": true,
+                                "fill": "x",
+                                "side": "right"
+                            },
+                            "ID": "4f2e8a47-86f1-4252-a9dc-f3d58ca92972",
+                            "PACK_PROPAGATE": "True",
+                            "LABEL88_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "The Future of Food: Sustainable Solutions ",
+                                    "anchor": "w",
+                                    "font_weight": "bold",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left"
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "166b913e-d6d6-4190-999d-486f9daccee5"
+                            },
+                            "LABEL89_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Food Revolution",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 16
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "b12fe2f2-dfb9-419f-99f2-b6ca688ff776"
+                            },
+                            "LABEL90_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "1K \u2022 3 months ago",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 0
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "d387a27a-4d0d-438e-8a05-d6880b4ed111"
+                            }
+                        },
+                        "LABEL91_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "image": {
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "size": [
+                                        48,
+                                        48
+                                    ]
+                                }
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "9ac6c87c-94f5-4495-a02e-7bc47c7612ec"
+                        }
+                    },
+                    "FRAME92_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "width": 311,
+                            "height": 268
+                        },
+                        "pack_options": {
+                            "pady": [
+                                "5",
+                                5
+                            ],
+                            "padx": 5,
+                            "side": "left"
+                        },
+                        "ID": "37bf2246-339a-4a2c-91bd-e511f5b3eaa6",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL93_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 311,
+                                "height": 175,
+                                "image": {
+                                    "image": "128-311x175.jpg",
+                                    "size": [
+                                        311,
+                                        175
+                                    ]
+                                },
+                                "corner_radius": 0
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "85996f72-f7db-4a3c-85ad-ddb3798bec76"
+                        },
+                        "FRAME94_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "width": 220,
+                                "fg_color": "transparent"
+                            },
+                            "pack_options": {
+                                "expand": true,
+                                "fill": "x",
+                                "side": "right"
+                            },
+                            "ID": "09d9aa92-502f-4740-8ad6-48bfe0e49b91",
+                            "PACK_PROPAGATE": "True",
+                            "LABEL95_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Universal Basic Income: A Viable Solution?",
+                                    "anchor": "w",
+                                    "font_weight": "bold",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left"
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "971f85a0-d633-4669-b133-0f0d69d41671"
+                            },
+                            "LABEL96_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "The Policy Post",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 16
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "eddd63ba-09ab-4ffd-b1b7-baeae87e52fe"
+                            },
+                            "LABEL97_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "10K \u2022 5 months ago",
+                                    "anchor": "w",
+                                    "font_weight": "normal",
+                                    "font_size": 15,
+                                    "wraplength": 254,
+                                    "justify": "left",
+                                    "compound": "right",
+                                    "height": 0
+                                },
+                                "pack_options": {
+                                    "fill": "x"
+                                },
+                                "ID": "f34c3fe2-fc72-44dd-b45f-730f17e2b77d"
+                            }
+                        },
+                        "LABEL98_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "image": {
+                                    "image": "outline_account_circle_(255, 255, 255)_24dp_2x.png",
+                                    "size": [
+                                        48,
+                                        48
+                                    ]
+                                }
+                            },
+                            "pack_options": {
+                                "pady": [
+                                    5,
+                                    "0"
+                                ],
+                                "padx": 5
+                            },
+                            "ID": "3db537b3-7859-466b-bd6a-14803a73faca"
+                        }
+                    }
+                }
+            }
+        },
+        "theme": "dark-blue",
+        "palette_on_change": {},
+        "palette": {}
+    }
+}

@@ -1,0 +1,4024 @@
+{
+    "MAIN-1": {
+        "TYPE": "MAIN",
+        "parameters": {
+            "title": "Custom Tkinter Builder- Spotify Demo",
+            "width": 1365,
+            "height": 770
+        },
+        "pack_options": {},
+        "ID": "0e8e4ec7-5d9a-40e5-a4a5-e967e5a6f808",
+        "top_panel": {
+            "TYPE": "FRAME",
+            "parameters": {},
+            "pack_options": {
+                "pady": [
+                    "0",
+                    0
+                ],
+                "expand": 1,
+                "fill": "both"
+            },
+            "ID": "c996bce8-bb1d-412f-8c0c-3d72e9a398da",
+            "PACK_PROPAGATE": "False",
+            "FRAME23": {
+                "TYPE": "FRAME",
+                "parameters": {
+                    "width": 250,
+                    "corner_radius": 0,
+                    "fg_color": [
+                        "#ababab",
+                        "gray20"
+                    ]
+                },
+                "pack_options": {
+                    "fill": "y",
+                    "side": "left"
+                },
+                "ID": "6c76ca33-cef0-47ff-aa2f-b8700d005175",
+                "PACK_PROPAGATE": "False",
+                "FRAME25": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            30,
+                            "0"
+                        ],
+                        "fill": "x",
+                        "padx": 10
+                    },
+                    "ID": "7fba9f9c-03b6-4187-9621-0b16ca819abe",
+                    "PACK_PROPAGATE": "True",
+                    "BUTTON26": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "Home",
+                            "corner_radius": 3,
+                            "height": 40,
+                            "image": {
+                                "image": "baseline_home_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "anchor": "w",
+                            "compound": "left",
+                            "font_size": 15,
+                            "fg_color": [
+                                "#cf245e",
+                                "#cf245e"
+                            ],
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "text_color": [
+                                "gray98",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "pady": [
+                                10,
+                                "0"
+                            ],
+                            "fill": "x"
+                        },
+                        "ID": "dc22f84b-7c55-4521-89e2-c7ef54f0c390"
+                    },
+                    "BUTTON28_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "Search",
+                            "corner_radius": 3,
+                            "height": 40,
+                            "image": {
+                                "image": "baseline_search_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "anchor": "w",
+                            "compound": "left",
+                            "font_size": 15,
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "text_color": [
+                                "gray98",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "pady": [
+                                10,
+                                "0"
+                            ],
+                            "fill": "x"
+                        },
+                        "ID": "c1b76e39-27f2-4236-935c-487155ac02a9"
+                    },
+                    "BUTTON29_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "Your Library",
+                            "corner_radius": 3,
+                            "height": 40,
+                            "image": {
+                                "image": "baseline_library_music_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "anchor": "w",
+                            "compound": "left",
+                            "font_size": 15,
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "text_color": [
+                                "gray98",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "pady": [
+                                10,
+                                "0"
+                            ],
+                            "fill": "x"
+                        },
+                        "ID": "1629db91-a1a4-4b0a-ac49-24bc53e34d87"
+                    }
+                },
+                "FRAME31_copy": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            30,
+                            "0"
+                        ],
+                        "fill": "x",
+                        "padx": 10
+                    },
+                    "ID": "f402610f-468b-4938-8e49-9503f0da6417",
+                    "PACK_PROPAGATE": "True",
+                    "LABEL35": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "Playlists",
+                            "text_color": [
+                                "#ffffff",
+                                "#ffffff"
+                            ],
+                            "anchor": "w",
+                            "padx": 7,
+                            "font_size": 15
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "95b24c88-352c-4aef-a2f5-e4913bc11ab6"
+                    },
+                    "BUTTON33_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "Create Playlist",
+                            "corner_radius": 3,
+                            "height": 40,
+                            "image": {
+                                "image": "baseline_add_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "anchor": "w",
+                            "compound": "left",
+                            "font_size": 15,
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "text_color": [
+                                "gray98",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "pady": [
+                                10,
+                                "0"
+                            ],
+                            "fill": "x"
+                        },
+                        "ID": "4ac54a26-3a40-479d-9bd6-275844996cd2"
+                    },
+                    "BUTTON34_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "Liked Songs",
+                            "corner_radius": 3,
+                            "height": 40,
+                            "image": {
+                                "image": "baseline_favorite_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "anchor": "w",
+                            "compound": "left",
+                            "font_size": 15,
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "text_color": [
+                                "gray98",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "pady": [
+                                10,
+                                "0"
+                            ],
+                            "fill": "x"
+                        },
+                        "ID": "2ea5940c-3a6a-4688-80f6-7299e8f261cb"
+                    }
+                },
+                "separator": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "corner_radius": 0,
+                        "height": 1,
+                        "fg_color": [
+                            "gray86",
+                            "#6e6e6e"
+                        ]
+                    },
+                    "pack_options": {
+                        "pady": [
+                            5,
+                            "5"
+                        ],
+                        "fill": "x",
+                        "padx": 10
+                    },
+                    "ID": "b2cbb3ac-2cfd-4202-b42f-b6e43a0628d6",
+                    "PACK_PROPAGATE": "False"
+                },
+                "FRAME34": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            10,
+                            "0"
+                        ],
+                        "fill": "x",
+                        "padx": 10
+                    },
+                    "ID": "802a9eef-eb47-4078-8479-f59cc64346e4",
+                    "PACK_PROPAGATE": "True",
+                    "BUTTON35": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "2024 Greatest Hits",
+                            "anchor": "w",
+                            "font_size": 15,
+                            "height": 20,
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "corner_radius": 3,
+                            "text_color": [
+                                "gray98",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "7e6727ad-9834-4d11-b110-dabcb2af610b"
+                    },
+                    "BUTTON37_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "At Work",
+                            "anchor": "w",
+                            "font_size": 15,
+                            "height": 20,
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "corner_radius": 3,
+                            "text_color": [
+                                "gray98",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "529b5c2f-416d-4a09-8040-6be2b0add52b"
+                    },
+                    "BUTTON38_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "Playlist #2",
+                            "anchor": "w",
+                            "font_size": 15,
+                            "height": 20,
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "corner_radius": 3,
+                            "text_color": [
+                                "gray98",
+                                "#ffffff"
+                            ],
+                            "border_width": 0
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "89d012cc-179e-45ca-9023-9e3fea66b1ce"
+                    },
+                    "BUTTON39_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "Playlist #4",
+                            "anchor": "w",
+                            "font_size": 15,
+                            "height": 20,
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "corner_radius": 3,
+                            "text_color": [
+                                "gray98",
+                                "#ffffff"
+                            ],
+                            "state": "normal",
+                            "border_width": 0
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "f5c2149f-5db9-4331-8aa8-5b26dd83176b"
+                    }
+                }
+            },
+            "SCROLLABLEFRAME24": {
+                "TYPE": "SCROLLABLEFRAME",
+                "parameters": {
+                    "orientation": "vertical",
+                    "fg_color": [
+                        "gray86",
+                        "#2c2c2c"
+                    ]
+                },
+                "pack_options": {
+                    "expand": true,
+                    "fill": "both"
+                },
+                "ID": "cde1748a-99d4-42d2-b089-46d5c9c3e2cf",
+                "LABEL39": {
+                    "TYPE": "LABEL",
+                    "parameters": {
+                        "text": "Good Morning",
+                        "font_size": 30,
+                        "anchor": "w",
+                        "text_color": [
+                            "gray10",
+                            "#ffffff"
+                        ]
+                    },
+                    "pack_options": {
+                        "pady": [
+                            20,
+                            "0"
+                        ],
+                        "fill": "x",
+                        "padx": [
+                            20,
+                            0
+                        ]
+                    },
+                    "ID": "cbca6887-55e0-4412-bd1d-07fc133476c8"
+                },
+                "FRAME40": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            10,
+                            "0"
+                        ],
+                        "fill": "x",
+                        "padx": 20
+                    },
+                    "ID": "3ae6f2b4-4f31-4a45-9578-e9b8c9a892a8",
+                    "PACK_PROPAGATE": "True",
+                    "FRAME41": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "fg_color": [
+                                "#c0c0c0",
+                                "#3a3a3a"
+                            ],
+                            "corner_radius": 3,
+                            "height": 70
+                        },
+                        "pack_options": {
+                            "side": "left",
+                            "expand": 1,
+                            "fill": "x",
+                            "padx": [
+                                0,
+                                20
+                            ]
+                        },
+                        "ID": "43ce5f44-503b-4005-aaab-74bef10ce638",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL42": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 70,
+                                "height": 70,
+                                "fg_color": [
+                                    "#CF245E",
+                                    "#cf245e"
+                                ],
+                                "corner_radius": 3
+                            },
+                            "pack_options": {
+                                "side": "left"
+                            },
+                            "ID": "ec614593-0d9a-4c72-9f03-1b528bba86e7"
+                        },
+                        "LABEL43": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "Daily Mix 1",
+                                "anchor": "w",
+                                "font_size": 15,
+                                "text_color": [
+                                    "gray10",
+                                    "#ffffff"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "10",
+                                    1
+                                ],
+                                "expand": 1,
+                                "fill": "x",
+                                "side": "left"
+                            },
+                            "ID": "2e0ce356-b0b4-40f3-b52f-764d652ee4ee"
+                        }
+                    },
+                    "FRAME45_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "fg_color": [
+                                "#c0c0c0",
+                                "#3a3a3a"
+                            ],
+                            "corner_radius": 3,
+                            "height": 70
+                        },
+                        "pack_options": {
+                            "side": "left",
+                            "expand": 1,
+                            "fill": "x",
+                            "padx": [
+                                0,
+                                20
+                            ]
+                        },
+                        "ID": "792cbb9c-cbbc-4b6a-b958-753780cdeed8",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL46_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 70,
+                                "height": 70,
+                                "fg_color": [
+                                    "#CF245E",
+                                    "#cf245e"
+                                ],
+                                "corner_radius": 3
+                            },
+                            "pack_options": {
+                                "side": "left"
+                            },
+                            "ID": "e0476379-1d98-4de4-854d-1b3696879991"
+                        },
+                        "LABEL47_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "Daily Mix 2",
+                                "anchor": "w",
+                                "font_size": 15,
+                                "text_color": [
+                                    "gray10",
+                                    "#ffffff"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "10",
+                                    1
+                                ],
+                                "expand": 1,
+                                "fill": "x",
+                                "side": "left"
+                            },
+                            "ID": "6c763c7a-658b-4a9a-b3a7-6cf3b62b98fa"
+                        }
+                    },
+                    "FRAME48_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "fg_color": [
+                                "#c0c0c0",
+                                "#3a3a3a"
+                            ],
+                            "corner_radius": 3,
+                            "height": 70
+                        },
+                        "pack_options": {
+                            "padx": [
+                                "0",
+                                0
+                            ],
+                            "expand": 1,
+                            "fill": "x",
+                            "side": "left"
+                        },
+                        "ID": "e5fe5b17-f419-4198-826e-8e7258c9ab29",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL49_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 70,
+                                "height": 70,
+                                "fg_color": [
+                                    "#CF245E",
+                                    "#cf245e"
+                                ],
+                                "corner_radius": 3
+                            },
+                            "pack_options": {
+                                "side": "left"
+                            },
+                            "ID": "5890e336-876c-49eb-91e3-b92b46a21572"
+                        },
+                        "LABEL50_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "Daily Mix 3",
+                                "anchor": "w",
+                                "font_size": 15,
+                                "text_color": [
+                                    "gray10",
+                                    "#ffffff"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "10",
+                                    1
+                                ],
+                                "expand": 1,
+                                "fill": "x",
+                                "side": "left"
+                            },
+                            "ID": "17006fe2-bb19-41cc-a905-3baffcb2fc10"
+                        }
+                    }
+                },
+                "FRAME51_copy": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            20,
+                            "0"
+                        ],
+                        "fill": "x",
+                        "padx": 20
+                    },
+                    "ID": "adc106a0-ade2-481e-8bf0-de05da620bcd",
+                    "PACK_PROPAGATE": "True",
+                    "FRAME52_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "fg_color": [
+                                "#c0c0c0",
+                                "#3a3a3a"
+                            ],
+                            "corner_radius": 3,
+                            "height": 70
+                        },
+                        "pack_options": {
+                            "side": "left",
+                            "expand": 1,
+                            "fill": "x",
+                            "padx": [
+                                0,
+                                20
+                            ]
+                        },
+                        "ID": "9d2fc213-d423-4fc9-8e8e-7b898a50774e",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL53_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 70,
+                                "height": 70,
+                                "fg_color": [
+                                    "#CF245E",
+                                    "#cf245e"
+                                ],
+                                "corner_radius": 3
+                            },
+                            "pack_options": {
+                                "side": "left"
+                            },
+                            "ID": "0ccc4862-6afa-413c-bb26-2a7f205905a0"
+                        },
+                        "LABEL54_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "Daily Mix 4",
+                                "anchor": "w",
+                                "font_size": 15,
+                                "text_color": [
+                                    "gray10",
+                                    "#ffffff"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "10",
+                                    1
+                                ],
+                                "expand": 1,
+                                "fill": "x",
+                                "side": "left"
+                            },
+                            "ID": "d9456aa1-f91a-4326-872a-af1972807d6b"
+                        }
+                    },
+                    "FRAME55_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "fg_color": [
+                                "#c0c0c0",
+                                "#3a3a3a"
+                            ],
+                            "corner_radius": 3,
+                            "height": 70
+                        },
+                        "pack_options": {
+                            "side": "left",
+                            "expand": 1,
+                            "fill": "x",
+                            "padx": [
+                                0,
+                                20
+                            ]
+                        },
+                        "ID": "b72328da-a99d-492b-baca-3e2551e98aa5",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL56_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 70,
+                                "height": 70,
+                                "fg_color": [
+                                    "#CF245E",
+                                    "#cf245e"
+                                ],
+                                "corner_radius": 3
+                            },
+                            "pack_options": {
+                                "side": "left"
+                            },
+                            "ID": "0750de97-4976-4950-9a42-a022f8e8318b"
+                        },
+                        "LABEL57_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "Daily Mix 5",
+                                "anchor": "w",
+                                "font_size": 15,
+                                "text_color": [
+                                    "gray10",
+                                    "#ffffff"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "10",
+                                    1
+                                ],
+                                "expand": 1,
+                                "fill": "x",
+                                "side": "left"
+                            },
+                            "ID": "aa210337-f003-42d0-865f-60e15b737ed3"
+                        }
+                    },
+                    "FRAME58_copy": {
+                        "TYPE": "FRAME",
+                        "parameters": {
+                            "fg_color": [
+                                "#c0c0c0",
+                                "#3a3a3a"
+                            ],
+                            "corner_radius": 3,
+                            "height": 70
+                        },
+                        "pack_options": {
+                            "padx": [
+                                "0",
+                                0
+                            ],
+                            "expand": 1,
+                            "fill": "x",
+                            "side": "left"
+                        },
+                        "ID": "eb0aea35-8d60-4b2f-ba5b-a32adac638e0",
+                        "PACK_PROPAGATE": "False",
+                        "LABEL59_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "",
+                                "width": 70,
+                                "height": 70,
+                                "fg_color": [
+                                    "#CF245E",
+                                    "#cf245e"
+                                ],
+                                "corner_radius": 3
+                            },
+                            "pack_options": {
+                                "side": "left"
+                            },
+                            "ID": "9d36836c-c102-4845-ae6b-0a9083cc9138"
+                        },
+                        "LABEL60_copy": {
+                            "TYPE": "LABEL",
+                            "parameters": {
+                                "text": "Daily Mix 6",
+                                "anchor": "w",
+                                "font_size": 15,
+                                "text_color": [
+                                    "gray10",
+                                    "#ffffff"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "10",
+                                    1
+                                ],
+                                "expand": 1,
+                                "fill": "x",
+                                "side": "left"
+                            },
+                            "ID": "20156040-abcb-454d-904b-3f8dcfdbeee3"
+                        }
+                    }
+                },
+                "FRAME60": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "height": 356,
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            20,
+                            "0"
+                        ],
+                        "fill": "x",
+                        "padx": 20
+                    },
+                    "ID": "d1d2c0d5-3a0b-4acf-b9aa-bae2e3f8c2d0",
+                    "PACK_PROPAGATE": "True",
+                    "LABEL61": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "Your Frequent Plays",
+                            "font_size": 19,
+                            "text_color": [
+                                "gray10",
+                                "#ffffff"
+                            ],
+                            "anchor": "w",
+                            "height": 27
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "157f59bd-5198-4e7c-a2fa-3d9a4ce60bb9"
+                    },
+                    "SCROLLABLEFRAME62": {
+                        "TYPE": "SCROLLABLEFRAME",
+                        "parameters": {
+                            "orientation": "horizontal",
+                            "fg_color": [
+                                "#dfdfdf",
+                                "#313131"
+                            ],
+                            "height": 270
+                        },
+                        "pack_options": {
+                            "pady": [
+                                10,
+                                "0"
+                            ],
+                            "fill": "x"
+                        },
+                        "ID": "1889a2ec-83a9-473f-850e-31f7a270b881",
+                        "FRAME63": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "61c8ef61-f9d2-4fb5-bae7-b29a5a3417a6",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL64": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "4afad239-20e8-4d30-80d4-b49968d8b1db"
+                            },
+                            "LABEL65": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 1",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "a0a97925-e713-40b3-9318-eac942992f42"
+                            },
+                            "LABEL67_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "f0b9eacf-ab4b-45fb-834d-4128c90d7f36"
+                            }
+                        },
+                        "FRAME68_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "71276992-088b-4b5c-abd4-58f97c00d61b",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL69_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "a211cf5c-11ff-4616-abcc-b9665813f9da"
+                            },
+                            "LABEL70_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 2",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "71f49299-4fbb-4d4d-ab58-29ea0373bf90"
+                            },
+                            "LABEL71_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "4f82a3f8-7eec-42e6-8885-694b320136e2"
+                            }
+                        },
+                        "FRAME72_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "c7bfa8be-6084-4a26-989d-aea07d2c13ef",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL73_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "63b876f4-3f2b-4709-905b-f069ecb00e6f"
+                            },
+                            "LABEL74_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 3",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "a788bd0d-79d3-4faa-9058-62953584631d"
+                            },
+                            "LABEL75_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "2836536c-29b7-4878-be2e-c3ee86c38544"
+                            }
+                        },
+                        "FRAME76_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "733b7fcb-4f5f-4861-988f-2df08efc7c4b",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL77_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "8c4e1013-93e0-4e1a-bc8d-eaa51e13c058"
+                            },
+                            "LABEL78_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 4",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "7e0684e9-93d6-4110-82fd-a4ada5f495d4"
+                            },
+                            "LABEL79_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "5f8d4a7b-4650-4328-abce-f15d2ab51ed7"
+                            }
+                        },
+                        "FRAME80_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "ef7b02e6-3d3d-4c9a-9165-63420f8bdd3e",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL81_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "4ede7334-f441-49aa-92d2-7b861071e66d"
+                            },
+                            "LABEL82_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 5",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "14662923-c5ca-451b-93f0-326b659f59de"
+                            },
+                            "LABEL83_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "8a9e3150-e4a7-4546-8732-24859e9ef3f6"
+                            }
+                        },
+                        "FRAME84_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "04bcd0e3-6896-4b85-b6e0-e911f76e5985",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL85_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "7919d149-9a5a-4104-85e3-b95b9db5578e"
+                            },
+                            "LABEL86_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 6",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "6abf08b6-5d1a-449c-b3ad-c6f49f3e43f6"
+                            },
+                            "LABEL87_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "8653a537-a139-449a-8340-de9ff565e288"
+                            }
+                        },
+                        "FRAME88_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "38ce716b-fa52-4e83-90eb-c873de1aa2da",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL89_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "835f8c63-3ad2-4365-8385-e11049859931"
+                            },
+                            "LABEL90_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 7",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "d52db697-f635-49e0-8e04-3988441443b2"
+                            },
+                            "LABEL91_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "19cb47d6-fe65-47b1-86c5-fb93c6f9a7c9"
+                            }
+                        },
+                        "FRAME92_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "f20d339f-c472-4a78-8e4f-35af905640b7",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL93_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "39db12c4-bdd6-4bcb-805f-de634353ebbc"
+                            },
+                            "LABEL94_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 8",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "82f949a9-2b3f-40ab-857e-0ca97e1153b0"
+                            },
+                            "LABEL95_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "7269a0a0-b53b-418e-9125-548993b0eaf1"
+                            }
+                        },
+                        "FRAME96_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "aaf8b71d-9684-4908-bd11-2027a46c1597",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL97_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "6d0c4398-ca0f-4c86-af6c-823ff3d8498f"
+                            },
+                            "LABEL98_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 9",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "51d39f22-a5bd-428c-bbb3-4848607f10ef"
+                            },
+                            "LABEL99_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "cb4946a1-c1bf-41dd-a4eb-dc11f14ac023"
+                            }
+                        },
+                        "FRAME100_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "e008dc75-4dd5-47eb-bb75-ccee9941c7ae",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL101_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "28205120-468b-4a23-9b34-d9a9789614e1"
+                            },
+                            "LABEL102_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 10",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "5d957e8c-1563-44c9-81cc-ba198b1c4578"
+                            },
+                            "LABEL103_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "0ffe9f4c-2afd-4729-b998-7fc75a7a3db3"
+                            }
+                        }
+                    }
+                },
+                "FRAME104_copy": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "height": 356,
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            20,
+                            "0"
+                        ],
+                        "fill": "x",
+                        "padx": 20
+                    },
+                    "ID": "1a7958bc-7a2f-4c08-8f00-faf2075a4cf8",
+                    "PACK_PROPAGATE": "True",
+                    "LABEL105_copy": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "Top 10 International",
+                            "font_size": 19,
+                            "text_color": [
+                                "gray10",
+                                "#ffffff"
+                            ],
+                            "anchor": "w",
+                            "height": 27
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "a0fd7e11-6385-4a4c-8cc8-e273891f6f29"
+                    },
+                    "SCROLLABLEFRAME106_copy": {
+                        "TYPE": "SCROLLABLEFRAME",
+                        "parameters": {
+                            "orientation": "horizontal",
+                            "fg_color": [
+                                "#dfdfdf",
+                                "#313131"
+                            ],
+                            "height": 270
+                        },
+                        "pack_options": {
+                            "pady": [
+                                10,
+                                "0"
+                            ],
+                            "fill": "x"
+                        },
+                        "ID": "a983ee9d-0f7f-47b0-96bf-2e5a9cbd9cfa",
+                        "FRAME107_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "f1612a19-eebb-4362-bb8d-09f067187487",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL108_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "87bef2fa-3105-4353-93ce-c1d8236e04a7"
+                            },
+                            "LABEL109_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 1",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "0e44e78e-f27b-4650-a0f2-bce53de1d225"
+                            },
+                            "LABEL110_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "8a73c7ca-df9e-42f6-b015-e40a125729cd"
+                            }
+                        },
+                        "FRAME111_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "f7fc8562-5c29-4288-9a53-ab6ee44741ab",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL112_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "904e44c0-6278-41f8-841a-20aa3d9fe820"
+                            },
+                            "LABEL113_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 2",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "f6095b4e-8cee-4a15-b91f-b27db1bfa292"
+                            },
+                            "LABEL114_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "fe55e73d-f730-4cd1-9afc-b2e52dd0d70d"
+                            }
+                        },
+                        "FRAME115_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "68d3e4f4-1600-4572-950a-98d9073110d4",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL116_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "d8128b99-4225-45ab-b58e-c5b7424ee904"
+                            },
+                            "LABEL117_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 3",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "eae0d16c-c251-4ba0-b038-082e28518ceb"
+                            },
+                            "LABEL118_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "ccc0f950-d294-484d-826d-b60f1c3227c2"
+                            }
+                        },
+                        "FRAME119_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "4bfcdad9-51b3-4caf-893f-bfaf4e74bdf3",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL120_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "2eb2a92c-47f6-48ff-ab1e-7156810b1243"
+                            },
+                            "LABEL121_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 4",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "c2b74e96-6ff9-4284-ad4a-8297c7513384"
+                            },
+                            "LABEL122_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "1a636378-55d5-4bca-83fb-7e39a9814449"
+                            }
+                        },
+                        "FRAME123_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "7e874c86-a7b7-422c-bc44-27b23889e93b",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL124_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "4efdda13-44ee-4721-af1a-dbca52dae688"
+                            },
+                            "LABEL125_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 5",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "9ab1b9d3-c438-4ee1-9004-ae8be4e069b5"
+                            },
+                            "LABEL126_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "d3a5ac13-402d-46a6-82a7-c080b2680268"
+                            }
+                        },
+                        "FRAME127_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "54ab8a8c-5681-4c3d-84f3-73f316f8763a",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL128_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "497cdd24-ad61-4570-a2fc-785da707f533"
+                            },
+                            "LABEL129_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 6",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "da6ac782-e5d0-4a14-bf8d-1396fff7755b"
+                            },
+                            "LABEL130_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "b4fa847b-6d7d-4e7c-b2a2-816fbaf09bb9"
+                            }
+                        },
+                        "FRAME131_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "0fc4d747-c5ae-49b9-9d67-2f837de2d53d",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL132_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "d6ceca2a-1fae-4990-ab88-281ca5d38d64"
+                            },
+                            "LABEL133_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 7",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "7e6b6c38-0b6d-4e52-8300-0422fb10d37a"
+                            },
+                            "LABEL134_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "6d0b6d3e-39e9-48dc-ad08-3a2f2fa4d3ba"
+                            }
+                        },
+                        "FRAME135_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "6d1ef0dc-c05b-4a0e-adc8-aaef543b395a",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL136_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "9df3f8e3-1ac2-44a2-8ccb-5ec5dad19c10"
+                            },
+                            "LABEL137_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 8",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "0dc31f8e-d484-4801-9603-d510a244fa76"
+                            },
+                            "LABEL138_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "6d1383b5-3227-4549-933a-ee804284669e"
+                            }
+                        },
+                        "FRAME139_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "48be0729-591a-4696-a541-3681d6e71ace",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL140_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "ff5cf918-052d-48a6-aef7-37d67faa9c50"
+                            },
+                            "LABEL141_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 9",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "5d8f9820-8c3e-402c-94f2-66586b64164a"
+                            },
+                            "LABEL142_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "05b45319-5bb3-4a19-a212-c853dac1c4ae"
+                            }
+                        },
+                        "FRAME143_copy": {
+                            "TYPE": "FRAME",
+                            "parameters": {
+                                "fg_color": [
+                                    "#c0c0c0",
+                                    "#3a3a3a"
+                                ]
+                            },
+                            "pack_options": {
+                                "padx": [
+                                    "0",
+                                    20
+                                ],
+                                "expand": 1,
+                                "fill": "y",
+                                "pady": [
+                                    0,
+                                    10
+                                ],
+                                "side": "left"
+                            },
+                            "ID": "fe38e402-7f0b-47ff-8e41-de6ef9720565",
+                            "PACK_PROPAGATE": "False",
+                            "LABEL144_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "",
+                                    "width": 180,
+                                    "height": 180,
+                                    "fg_color": [
+                                        "#CF245E",
+                                        "#cf245e"
+                                    ],
+                                    "corner_radius": 4
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ]
+                                },
+                                "ID": "0fd805d8-145c-42d5-a2e1-f31cda782f26"
+                            },
+                            "LABEL145_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Music 10",
+                                    "font_size": 15,
+                                    "text_color": [
+                                        "gray10",
+                                        "#ffffff"
+                                    ],
+                                    "anchor": "w"
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        10,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "e0597e55-6bb3-48ad-b6a3-de52ee0be0a7"
+                            },
+                            "LABEL146_copy": {
+                                "TYPE": "LABEL",
+                                "parameters": {
+                                    "text": "Somebody",
+                                    "font_size": 13,
+                                    "text_color": [
+                                        "gray10",
+                                        "#a4a4a4"
+                                    ],
+                                    "anchor": "w",
+                                    "height": 14
+                                },
+                                "pack_options": {
+                                    "pady": [
+                                        0,
+                                        "0"
+                                    ],
+                                    "fill": "x",
+                                    "padx": [
+                                        10,
+                                        0
+                                    ]
+                                },
+                                "ID": "f111c0c1-a24a-4757-af6c-adb87c526a08"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "playbar": {
+            "TYPE": "FRAME",
+            "parameters": {
+                "height": 100,
+                "fg_color": [
+                    "#9f9f9f",
+                    "#161616"
+                ],
+                "corner_radius": 0
+            },
+            "pack_options": {
+                "fill": "x"
+            },
+            "ID": "21e65c38-3fd9-4692-ab10-a1a7431b8f0d",
+            "PACK_PROPAGATE": "False",
+            "FRAME2": {
+                "TYPE": "FRAME",
+                "parameters": {
+                    "width": 200,
+                    "height": 75,
+                    "fg_color": "transparent"
+                },
+                "pack_options": {
+                    "pady": [
+                        5,
+                        "5"
+                    ],
+                    "padx": 5,
+                    "side": "left"
+                },
+                "ID": "1d1841e4-a904-4e58-87a5-3d5cb1706b3c",
+                "PACK_PROPAGATE": "True",
+                "LABEL5": {
+                    "TYPE": "LABEL",
+                    "parameters": {
+                        "text": "",
+                        "width": 60,
+                        "fg_color": [
+                            "#CF245E",
+                            "#cf245e"
+                        ],
+                        "height": 60,
+                        "corner_radius": 3
+                    },
+                    "pack_options": {
+                        "padx": [
+                            5,
+                            "0"
+                        ],
+                        "side": "left"
+                    },
+                    "ID": "79232c69-9c85-4eed-9601-e58c12a17e94"
+                },
+                "FRAME6": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "height": 20,
+                        "width": 153,
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "padx": [
+                            15,
+                            "5"
+                        ],
+                        "expand": 1,
+                        "side": "left"
+                    },
+                    "ID": "b757c894-684c-4a8e-9721-f55502342fd8",
+                    "PACK_PROPAGATE": "True",
+                    "LABEL7": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "Music 1",
+                            "font_size": 15,
+                            "anchor": "w",
+                            "height": 2,
+                            "text_color": [
+                                "gray10",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "df5ce87d-bfe8-4eb3-8d0e-58ac805a9e97"
+                    },
+                    "LABEL9_copy": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "Somebody",
+                            "font_size": 11,
+                            "compound": "top",
+                            "anchor": "w",
+                            "height": 15,
+                            "text_color": [
+                                "gray10",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "059d9fe0-e526-4910-9231-1b8f5486dac0"
+                    }
+                },
+                "BUTTON9": {
+                    "TYPE": "BUTTON",
+                    "parameters": {
+                        "text": "",
+                        "width": 30,
+                        "height": 30,
+                        "image": {
+                            "image": "baseline_favorite_border_(255, 255, 255)_18dp_1x.png",
+                            "size": [
+                                18,
+                                18
+                            ]
+                        },
+                        "fg_color": "transparent",
+                        "hover": false
+                    },
+                    "pack_options": {
+                        "padx": [
+                            "0",
+                            10
+                        ],
+                        "side": "left"
+                    },
+                    "ID": "d65145b1-a609-4a29-b476-2852fb748a67"
+                }
+            },
+            "FRAME4_copy": {
+                "TYPE": "FRAME",
+                "parameters": {
+                    "width": 219,
+                    "height": 75,
+                    "fg_color": "transparent"
+                },
+                "pack_options": {
+                    "side": "right",
+                    "padx": 5,
+                    "pady": 5
+                },
+                "ID": "1faca0b7-64f1-4a99-832a-c2c40d09bb2f",
+                "PACK_PROPAGATE": "True",
+                "BUTTON20": {
+                    "TYPE": "BUTTON",
+                    "parameters": {
+                        "text": "",
+                        "width": 35,
+                        "height": 35,
+                        "image": {
+                            "image": "baseline_open_in_full_(255, 255, 255)_18dp_1x.png",
+                            "size": [
+                                18,
+                                18
+                            ]
+                        },
+                        "fg_color": "transparent",
+                        "hover_color": [
+                            "#ae1d4f",
+                            "#ae1d4f"
+                        ]
+                    },
+                    "pack_options": {
+                        "side": "right"
+                    },
+                    "ID": "208fb7b9-1ec6-43c0-a462-c89b5b01f5eb"
+                },
+                "SLIDER24_copy": {
+                    "TYPE": "SLIDER",
+                    "parameters": {
+                        "from_": 0,
+                        "to": 100,
+                        "number_of_steps": 100,
+                        "orientation": "horizontal",
+                        "button_length": 0,
+                        "button_corner_radius": 2,
+                        "button_color": [
+                            "#cf245e",
+                            "#cf245e"
+                        ],
+                        "button_hover_color": [
+                            "#ae1d4f",
+                            "#ae1d4f"
+                        ],
+                        "width": 100
+                    },
+                    "pack_options": {
+                        "side": "right",
+                        "expand": 1,
+                        "fill": "x"
+                    },
+                    "ID": "32b56ff3-11be-4943-9f00-94ffbd37175f"
+                },
+                "BUTTON25_copy": {
+                    "TYPE": "BUTTON",
+                    "parameters": {
+                        "text": "",
+                        "width": 35,
+                        "height": 35,
+                        "image": {
+                            "image": "baseline_volume_up_(255, 255, 255)_18dp_1x.png",
+                            "size": [
+                                18,
+                                18
+                            ]
+                        },
+                        "fg_color": "transparent",
+                        "hover_color": [
+                            "#ae1d4f",
+                            "#ae1d4f"
+                        ]
+                    },
+                    "pack_options": {
+                        "side": "right"
+                    },
+                    "ID": "b5de5ed9-6177-47a5-835b-8c47973e608b"
+                }
+            },
+            "FRAME5_copy": {
+                "TYPE": "FRAME",
+                "parameters": {
+                    "width": 200,
+                    "height": 100,
+                    "fg_color": "transparent",
+                    "bg_color": "transparent"
+                },
+                "pack_options": {
+                    "expand": true,
+                    "fill": "x",
+                    "padx": 5,
+                    "pady": 5,
+                    "side": "left"
+                },
+                "ID": "10bcd54e-9a83-4077-94e2-c3c7eb04870b",
+                "PACK_PROPAGATE": "False",
+                "scrubber_frame": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "width": 176,
+                        "height": 34,
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            "0",
+                            5
+                        ],
+                        "fill": "x",
+                        "padx": 10,
+                        "side": "bottom"
+                    },
+                    "ID": "68533e2f-5fda-4ef5-a4a2-1ff3b2e29032",
+                    "PACK_PROPAGATE": "False",
+                    "time_indicator": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "0:00",
+                            "text_color": [
+                                "gray10",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "side": "left"
+                        },
+                        "ID": "4d63a575-ff20-42a7-bdaf-0865d41b07aa"
+                    },
+                    "LABEL13_copy": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "3:38",
+                            "text_color": [
+                                "gray10",
+                                "#ffffff"
+                            ]
+                        },
+                        "pack_options": {
+                            "side": "right"
+                        },
+                        "ID": "6294dfc4-da64-4837-8fec-8f3ca597579b"
+                    },
+                    "SLIDER13": {
+                        "TYPE": "SLIDER",
+                        "parameters": {
+                            "from_": 0,
+                            "to": 202,
+                            "number_of_steps": 202,
+                            "orientation": "horizontal",
+                            "button_length": 0,
+                            "button_corner_radius": 2,
+                            "button_color": [
+                                "#cf245e",
+                                "#cf245e"
+                            ],
+                            "button_hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ]
+                        },
+                        "pack_options": {
+                            "expand": true,
+                            "fill": "x"
+                        },
+                        "ID": "8c4dcc70-0a17-4665-bbd7-13e7e287a95d"
+                    }
+                },
+                "FRAME14": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "expand": 1,
+                        "padx": 5,
+                        "pady": [
+                            5,
+                            0
+                        ]
+                    },
+                    "ID": "3dc161b8-25d2-4d3e-ba8d-9384830a9b45",
+                    "PACK_PROPAGATE": "True",
+                    "BUTTON15": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "",
+                            "width": 40,
+                            "height": 40,
+                            "corner_radius": 6,
+                            "image": {
+                                "image": "baseline_shuffle_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ]
+                        },
+                        "pack_options": {
+                            "side": "left"
+                        },
+                        "ID": "a4677641-cb08-4c51-9f1b-ad7c7ba818c3"
+                    },
+                    "BUTTON17_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "",
+                            "width": 40,
+                            "height": 40,
+                            "corner_radius": 6,
+                            "image": {
+                                "image": "baseline_skip_previous_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "border_width": 0
+                        },
+                        "pack_options": {
+                            "padx": [
+                                10,
+                                "0"
+                            ],
+                            "side": "left"
+                        },
+                        "ID": "e9c94067-4474-4a13-896f-aa26e6378ceb"
+                    },
+                    "BUTTON18_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "",
+                            "width": 40,
+                            "height": 40,
+                            "corner_radius": 6,
+                            "image": {
+                                "image": "baseline_play_arrow_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "fg_color": [
+                                "#cf245e",
+                                "#cf245e"
+                            ],
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "font_overstrike": false
+                        },
+                        "pack_options": {
+                            "padx": [
+                                10,
+                                "0"
+                            ],
+                            "side": "left"
+                        },
+                        "ID": "4187ebf9-1790-4bd1-a3d9-75b343b3e855"
+                    },
+                    "BUTTON19_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "",
+                            "width": 40,
+                            "height": 40,
+                            "corner_radius": 6,
+                            "image": {
+                                "image": "baseline_skip_next_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "font_overstrike": false
+                        },
+                        "pack_options": {
+                            "padx": [
+                                10,
+                                "0"
+                            ],
+                            "side": "left"
+                        },
+                        "ID": "43779970-a121-4bb1-9a26-d71e37c81e1b"
+                    },
+                    "BUTTON20_copy": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "",
+                            "width": 40,
+                            "height": 40,
+                            "corner_radius": 6,
+                            "image": {
+                                "image": "baseline_repeat_(255, 255, 255)_18dp_1x.png",
+                                "size": [
+                                    18,
+                                    18
+                                ]
+                            },
+                            "fg_color": "transparent",
+                            "hover_color": [
+                                "#ae1d4f",
+                                "#ae1d4f"
+                            ],
+                            "font_overstrike": false
+                        },
+                        "pack_options": {
+                            "padx": [
+                                10,
+                                "0"
+                            ],
+                            "side": "left"
+                        },
+                        "ID": "fcbd1c49-f80f-4e69-9f40-ed1a964e5782"
+                    }
+                }
+            }
+        },
+        "theme": "green",
+        "palette_on_change": {
+            "white": [
+                [
+                    "df5ce87d-bfe8-4eb3-8d0e-58ac805a9e97",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "059d9fe0-e526-4910-9231-1b8f5486dac0",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "4d63a575-ff20-42a7-bdaf-0865d41b07aa",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "6294dfc4-da64-4837-8fec-8f3ca597579b",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "95b24c88-352c-4aef-a2f5-e4913bc11ab6",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "4ac54a26-3a40-479d-9bd6-275844996cd2",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "2ea5940c-3a6a-4688-80f6-7299e8f261cb",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "dc22f84b-7c55-4521-89e2-c7ef54f0c390",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "c1b76e39-27f2-4236-935c-487155ac02a9",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "1629db91-a1a4-4b0a-ac49-24bc53e34d87",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "7e6727ad-9834-4d11-b110-dabcb2af610b",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "529b5c2f-416d-4a09-8040-6be2b0add52b",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "89d012cc-179e-45ca-9023-9e3fea66b1ce",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "f5c2149f-5db9-4331-8aa8-5b26dd83176b",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "2e0ce356-b0b4-40f3-b52f-764d652ee4ee",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "6c763c7a-658b-4a9a-b3a7-6cf3b62b98fa",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "17006fe2-bb19-41cc-a905-3baffcb2fc10",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "d9456aa1-f91a-4326-872a-af1972807d6b",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "aa210337-f003-42d0-865f-60e15b737ed3",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "20156040-abcb-454d-904b-3f8dcfdbeee3",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "cbca6887-55e0-4412-bd1d-07fc133476c8",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "157f59bd-5198-4e7c-a2fa-3d9a4ce60bb9",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "a0a97925-e713-40b3-9318-eac942992f42",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "71f49299-4fbb-4d4d-ab58-29ea0373bf90",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "a788bd0d-79d3-4faa-9058-62953584631d",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "7e0684e9-93d6-4110-82fd-a4ada5f495d4",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "14662923-c5ca-451b-93f0-326b659f59de",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "6abf08b6-5d1a-449c-b3ad-c6f49f3e43f6",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "d52db697-f635-49e0-8e04-3988441443b2",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "82f949a9-2b3f-40ab-857e-0ca97e1153b0",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "51d39f22-a5bd-428c-bbb3-4848607f10ef",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "5d957e8c-1563-44c9-81cc-ba198b1c4578",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "a0fd7e11-6385-4a4c-8cc8-e273891f6f29",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "0e44e78e-f27b-4650-a0f2-bce53de1d225",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "f6095b4e-8cee-4a15-b91f-b27db1bfa292",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "eae0d16c-c251-4ba0-b038-082e28518ceb",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "c2b74e96-6ff9-4284-ad4a-8297c7513384",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "9ab1b9d3-c438-4ee1-9004-ae8be4e069b5",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "da6ac782-e5d0-4a14-bf8d-1396fff7755b",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "7e6b6c38-0b6d-4e52-8300-0422fb10d37a",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "0dc31f8e-d484-4801-9603-d510a244fa76",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "5d8f9820-8c3e-402c-94f2-66586b64164a",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "e0597e55-6bb3-48ad-b6a3-de52ee0be0a7",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "95b24c88-352c-4aef-a2f5-e4913bc11ab6",
+                    "text_color",
+                    "light"
+                ]
+            ],
+            "primary": [
+                [
+                    "8c4dcc70-0a17-4665-bbd7-13e7e287a95d",
+                    "button_color",
+                    "dark"
+                ],
+                [
+                    "4187ebf9-1790-4bd1-a3d9-75b343b3e855",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "1c663055-f64d-4049-92f4-b1917ac4a1df",
+                    "button_color",
+                    "dark"
+                ],
+                [
+                    "32b56ff3-11be-4943-9f00-94ffbd37175f",
+                    "button_color",
+                    "dark"
+                ],
+                [
+                    "dc22f84b-7c55-4521-89e2-c7ef54f0c390",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "6a2e97df-84d5-4845-9e62-8b619c2c4570",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "ec614593-0d9a-4c72-9f03-1b528bba86e7",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "e0476379-1d98-4de4-854d-1b3696879991",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "5890e336-876c-49eb-91e3-b92b46a21572",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "9d36836c-c102-4845-ae6b-0a9083cc9138",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "0750de97-4976-4950-9a42-a022f8e8318b",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "0ccc4862-6afa-413c-bb26-2a7f205905a0",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "4afad239-20e8-4d30-80d4-b49968d8b1db",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "a211cf5c-11ff-4616-abcc-b9665813f9da",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "63b876f4-3f2b-4709-905b-f069ecb00e6f",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "8c4e1013-93e0-4e1a-bc8d-eaa51e13c058",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "4ede7334-f441-49aa-92d2-7b861071e66d",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "7919d149-9a5a-4104-85e3-b95b9db5578e",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "835f8c63-3ad2-4365-8385-e11049859931",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "39db12c4-bdd6-4bcb-805f-de634353ebbc",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "6d0c4398-ca0f-4c86-af6c-823ff3d8498f",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "28205120-468b-4a23-9b34-d9a9789614e1",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "87bef2fa-3105-4353-93ce-c1d8236e04a7",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "904e44c0-6278-41f8-841a-20aa3d9fe820",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "d8128b99-4225-45ab-b58e-c5b7424ee904",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "2eb2a92c-47f6-48ff-ab1e-7156810b1243",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "4efdda13-44ee-4721-af1a-dbca52dae688",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "497cdd24-ad61-4570-a2fc-785da707f533",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "d6ceca2a-1fae-4990-ab88-281ca5d38d64",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "9df3f8e3-1ac2-44a2-8ccb-5ec5dad19c10",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "ff5cf918-052d-48a6-aef7-37d67faa9c50",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "0fd805d8-145c-42d5-a2e1-f31cda782f26",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "79232c69-9c85-4eed-9601-e58c12a17e94",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "dc22f84b-7c55-4521-89e2-c7ef54f0c390",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "4187ebf9-1790-4bd1-a3d9-75b343b3e855",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "8c4dcc70-0a17-4665-bbd7-13e7e287a95d",
+                    "button_color",
+                    "light"
+                ],
+                [
+                    "32b56ff3-11be-4943-9f00-94ffbd37175f",
+                    "button_color",
+                    "light"
+                ]
+            ],
+            "black": [],
+            "primary-hover": [
+                [
+                    "8c4dcc70-0a17-4665-bbd7-13e7e287a95d",
+                    "button_hover_color",
+                    "dark"
+                ],
+                [
+                    "a4677641-cb08-4c51-9f1b-ad7c7ba818c3",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "e9c94067-4474-4a13-896f-aa26e6378ceb",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "4187ebf9-1790-4bd1-a3d9-75b343b3e855",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "43779970-a121-4bb1-9a26-d71e37c81e1b",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "fcbd1c49-f80f-4e69-9f40-ed1a964e5782",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "208fb7b9-1ec6-43c0-a462-c89b5b01f5eb",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "1c663055-f64d-4049-92f4-b1917ac4a1df",
+                    "button_hover_color",
+                    "dark"
+                ],
+                [
+                    "32b56ff3-11be-4943-9f00-94ffbd37175f",
+                    "button_hover_color",
+                    "dark"
+                ],
+                [
+                    "b5de5ed9-6177-47a5-835b-8c47973e608b",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "dc22f84b-7c55-4521-89e2-c7ef54f0c390",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "c1b76e39-27f2-4236-935c-487155ac02a9",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "1629db91-a1a4-4b0a-ac49-24bc53e34d87",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "6a2e97df-84d5-4845-9e62-8b619c2c4570",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "4ac54a26-3a40-479d-9bd6-275844996cd2",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "2ea5940c-3a6a-4688-80f6-7299e8f261cb",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "7e6727ad-9834-4d11-b110-dabcb2af610b",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "529b5c2f-416d-4a09-8040-6be2b0add52b",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "89d012cc-179e-45ca-9023-9e3fea66b1ce",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "f5c2149f-5db9-4331-8aa8-5b26dd83176b",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "dc22f84b-7c55-4521-89e2-c7ef54f0c390",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "c1b76e39-27f2-4236-935c-487155ac02a9",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "1629db91-a1a4-4b0a-ac49-24bc53e34d87",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "4ac54a26-3a40-479d-9bd6-275844996cd2",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "2ea5940c-3a6a-4688-80f6-7299e8f261cb",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "7e6727ad-9834-4d11-b110-dabcb2af610b",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "529b5c2f-416d-4a09-8040-6be2b0add52b",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "89d012cc-179e-45ca-9023-9e3fea66b1ce",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "f5c2149f-5db9-4331-8aa8-5b26dd83176b",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "4187ebf9-1790-4bd1-a3d9-75b343b3e855",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "8c4dcc70-0a17-4665-bbd7-13e7e287a95d",
+                    "button_hover_color",
+                    "light"
+                ],
+                [
+                    "e9c94067-4474-4a13-896f-aa26e6378ceb",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "a4677641-cb08-4c51-9f1b-ad7c7ba818c3",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "43779970-a121-4bb1-9a26-d71e37c81e1b",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "fcbd1c49-f80f-4e69-9f40-ed1a964e5782",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "b5de5ed9-6177-47a5-835b-8c47973e608b",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "32b56ff3-11be-4943-9f00-94ffbd37175f",
+                    "button_hover_color",
+                    "light"
+                ],
+                [
+                    "208fb7b9-1ec6-43c0-a462-c89b5b01f5eb",
+                    "hover_color",
+                    "light"
+                ]
+            ],
+            "fg_color_light": [
+                [
+                    "43ce5f44-503b-4005-aaab-74bef10ce638",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "9d2fc213-d423-4fc9-8e8e-7b898a50774e",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "792cbb9c-cbbc-4b6a-b958-753780cdeed8",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "b72328da-a99d-492b-baca-3e2551e98aa5",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "e5fe5b17-f419-4198-826e-8e7258c9ab29",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "eb0aea35-8d60-4b2f-ba5b-a32adac638e0",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "61c8ef61-f9d2-4fb5-bae7-b29a5a3417a6",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "71276992-088b-4b5c-abd4-58f97c00d61b",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "c7bfa8be-6084-4a26-989d-aea07d2c13ef",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "733b7fcb-4f5f-4861-988f-2df08efc7c4b",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "ef7b02e6-3d3d-4c9a-9165-63420f8bdd3e",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "04bcd0e3-6896-4b85-b6e0-e911f76e5985",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "38ce716b-fa52-4e83-90eb-c873de1aa2da",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "f20d339f-c472-4a78-8e4f-35af905640b7",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "aaf8b71d-9684-4908-bd11-2027a46c1597",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "e008dc75-4dd5-47eb-bb75-ccee9941c7ae",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "f1612a19-eebb-4362-bb8d-09f067187487",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "f7fc8562-5c29-4288-9a53-ab6ee44741ab",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "68d3e4f4-1600-4572-950a-98d9073110d4",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "4bfcdad9-51b3-4caf-893f-bfaf4e74bdf3",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "7e874c86-a7b7-422c-bc44-27b23889e93b",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "54ab8a8c-5681-4c3d-84f3-73f316f8763a",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "0fc4d747-c5ae-49b9-9d67-2f837de2d53d",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "6d1ef0dc-c05b-4a0e-adc8-aaef543b395a",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "48be0729-591a-4696-a541-3681d6e71ace",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "fe38e402-7f0b-47ff-8e41-de6ef9720565",
+                    "fg_color",
+                    "light"
+                ]
+            ]
+        },
+        "palette": {
+            "white": "#ffffff",
+            "primary": "#cf245e",
+            "black": "#000000",
+            "primary-hover": "#ae1d4f",
+            "fg_color_light": "#c0c0c0"
+        }
+    }
+}

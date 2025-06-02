@@ -1,0 +1,507 @@
+{
+    "MAIN-1": {
+        "TYPE": "MAIN",
+        "parameters": {
+            "title": "Custom Tkinter Builder - Login Demo",
+            "width": 1000,
+            "height": 600
+        },
+        "pack_options": {},
+        "ID": "16455f90-32f7-4f79-a62a-09077f915772",
+        "FRAME0": {
+            "TYPE": "FRAME",
+            "parameters": {
+                "fg_color": "transparent"
+            },
+            "pack_options": {
+                "pady": [
+                    "5",
+                    5
+                ],
+                "expand": 1,
+                "fill": "both",
+                "padx": [
+                    5,
+                    0
+                ],
+                "side": "left"
+            },
+            "ID": "33385efd-2be2-422e-bad7-c99193fdebdc",
+            "PACK_PROPAGATE": "False",
+            "LABEL19": {
+                "TYPE": "LABEL",
+                "parameters": {
+                    "text": "",
+                    "anchor": "w",
+                    "text_color": [
+                        "gray10",
+                        "#FFFFFF"
+                    ],
+                    "font_size": 15,
+                    "image": {
+                        "image": "baseline_logo_dev_(145, 91, 255)_24dp_2x.png",
+                        "size": [
+                            48,
+                            48
+                        ]
+                    }
+                },
+                "pack_options": {
+                    "pady": [
+                        20,
+                        "0"
+                    ],
+                    "fill": "x",
+                    "padx": [
+                        20,
+                        0
+                    ]
+                },
+                "ID": "e865417c-3f72-4a15-a458-cc9dc1aa4220"
+            },
+            "LABEL18": {
+                "TYPE": "LABEL",
+                "parameters": {
+                    "text": "Welcome\nBack !",
+                    "justify": "left",
+                    "anchor": "w",
+                    "font_size": 82,
+                    "text_color": [
+                        "gray10",
+                        "#FFFFFF"
+                    ]
+                },
+                "pack_options": {
+                    "padx": [
+                        30,
+                        "0"
+                    ],
+                    "expand": 1,
+                    "fill": "x"
+                },
+                "ID": "1488a1d1-e627-4ea9-970a-c7eb970d483b"
+            }
+        },
+        "FRAME2_copy": {
+            "TYPE": "FRAME",
+            "parameters": {},
+            "pack_options": {
+                "pady": [
+                    "20",
+                    20
+                ],
+                "expand": 1,
+                "fill": "both",
+                "padx": [
+                    5,
+                    20
+                ],
+                "side": "left"
+            },
+            "ID": "99ecedee-9ded-4cd5-9154-0c4b37260661",
+            "PACK_PROPAGATE": "False",
+            "FRAME2": {
+                "TYPE": "FRAME",
+                "parameters": {
+                    "width": 465,
+                    "height": 400,
+                    "fg_color": "transparent"
+                },
+                "pack_options": {
+                    "expand": 1,
+                    "padx": 50,
+                    "pady": 50
+                },
+                "ID": "5c486613-a43f-40b9-895b-cc2007505644",
+                "PACK_PROPAGATE": "True",
+                "LABEL3": {
+                    "TYPE": "LABEL",
+                    "parameters": {
+                        "text": "Login",
+                        "anchor": "w",
+                        "font_size": 39,
+                        "text_color": [
+                            "gray10",
+                            "#FFFFFF"
+                        ]
+                    },
+                    "pack_options": {
+                        "fill": "x"
+                    },
+                    "ID": "1291ac07-be64-41de-9d34-d7fccba5367f"
+                },
+                "LABEL5_copy": {
+                    "TYPE": "LABEL",
+                    "parameters": {
+                        "text": "Welcome Back! Please login to your account",
+                        "anchor": "w",
+                        "font_size": 14,
+                        "text_color": [
+                            "gray10",
+                            "#b4b4b4"
+                        ],
+                        "wraplength": 332,
+                        "justify": "left"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            "10",
+                            10
+                        ],
+                        "fill": "x"
+                    },
+                    "ID": "f2b45a01-08fd-4bb0-8ee2-f0b4fec45c8d"
+                },
+                "FRAME5": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            0,
+                            "0"
+                        ],
+                        "fill": "x"
+                    },
+                    "ID": "004af5ff-4c60-438f-a89d-d836c1dc9e5d",
+                    "PACK_PROPAGATE": "True",
+                    "LABEL8_copy": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "User Name",
+                            "anchor": "w",
+                            "font_size": 15,
+                            "text_color": [
+                                "gray10",
+                                "#FFFFFF"
+                            ]
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "56c0b56e-16cb-42d9-9422-7114178e6f97"
+                    },
+                    "ENTRY9": {
+                        "TYPE": "ENTRY",
+                        "parameters": {
+                            "placeholder_text": "example@gmail.com",
+                            "height": 35,
+                            "corner_radius": 3,
+                            "text_color": [
+                                "gray10",
+                                "#FFFFFF"
+                            ],
+                            "width": 222
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "ec3132c8-2950-44a4-bd7e-eeffbefae3ff"
+                    }
+                },
+                "FRAME11_copy": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            10,
+                            "0"
+                        ],
+                        "fill": "x"
+                    },
+                    "ID": "5fb5f79a-d5d6-41de-9d46-68f98cfce9e9",
+                    "PACK_PROPAGATE": "True",
+                    "LABEL12_copy": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "Password",
+                            "anchor": "w",
+                            "font_size": 15,
+                            "text_color": [
+                                "gray10",
+                                "#FFFFFF"
+                            ]
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "745cd0d1-33a8-4ef9-9c8d-1de91b34318b"
+                    },
+                    "ENTRY13_copy": {
+                        "TYPE": "ENTRY",
+                        "parameters": {
+                            "placeholder_text": "",
+                            "height": 35,
+                            "corner_radius": 3,
+                            "text_color": [
+                                "gray10",
+                                "#FFFFFF"
+                            ]
+                        },
+                        "pack_options": {
+                            "fill": "x"
+                        },
+                        "ID": "b79a2416-b67e-47ce-ba3a-d2d65eee5aca"
+                    }
+                },
+                "FRAME13": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            "20",
+                            20
+                        ],
+                        "fill": "x"
+                    },
+                    "ID": "57332694-fd0e-48e7-9eee-d561a7d69463",
+                    "PACK_PROPAGATE": "True",
+                    "CHECKBOX14": {
+                        "TYPE": "CHECKBOX",
+                        "parameters": {
+                            "text": "Remember Me",
+                            "fg_color": [
+                                "#8651ff",
+                                "#8651ff"
+                            ],
+                            "hover_color": [
+                                "#6940c9",
+                                "#6940c9"
+                            ],
+                            "text_color": [
+                                "gray10",
+                                "#FFFFFF"
+                            ],
+                            "state": "normal",
+                            "corner_radius": 3
+                        },
+                        "pack_options": {
+                            "side": "left"
+                        },
+                        "ID": "497cdca5-1f35-4790-9ed8-b4b98d257b9d"
+                    },
+                    "BUTTON15": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "Forgot Password?",
+                            "fg_color": "transparent",
+                            "hover": false,
+                            "text_color": [
+                                "#000000",
+                                "#FFFFFF"
+                            ]
+                        },
+                        "pack_options": {
+                            "side": "right"
+                        },
+                        "ID": "fe37203a-52ee-44ce-84fe-6c72087e0ab1"
+                    }
+                },
+                "BUTTON16": {
+                    "TYPE": "BUTTON",
+                    "parameters": {
+                        "text": "Login",
+                        "height": 35,
+                        "text_color": [
+                            "gray98",
+                            "#FFFFFF"
+                        ],
+                        "fg_color": [
+                            "#8651ff",
+                            "#8651ff"
+                        ],
+                        "hover_color": [
+                            "#6940c9",
+                            "#6940c9"
+                        ],
+                        "width": 500,
+                        "corner_radius": 3
+                    },
+                    "pack_options": {
+                        "fill": "x"
+                    },
+                    "ID": "f383977e-2202-4d49-ab17-565326b4e29f"
+                },
+                "FRAME17": {
+                    "TYPE": "FRAME",
+                    "parameters": {
+                        "fg_color": "transparent"
+                    },
+                    "pack_options": {
+                        "pady": [
+                            10,
+                            "0"
+                        ],
+                        "fill": "x"
+                    },
+                    "ID": "a74a64ac-64ac-4168-ac95-a440fa5e0786",
+                    "PACK_PROPAGATE": "True",
+                    "LABEL18": {
+                        "TYPE": "LABEL",
+                        "parameters": {
+                            "text": "New User?",
+                            "text_color": [
+                                "gray10",
+                                "#FFFFFF"
+                            ]
+                        },
+                        "pack_options": {
+                            "side": "left"
+                        },
+                        "ID": "ff77a7bf-d6ae-4687-b09c-c94df44c9dcb"
+                    },
+                    "BUTTON19": {
+                        "TYPE": "BUTTON",
+                        "parameters": {
+                            "text": "Sign Up",
+                            "width": 70,
+                            "fg_color": "transparent",
+                            "hover": false,
+                            "height": 0,
+                            "text_color": [
+                                "#000000",
+                                "#FFFFFF"
+                            ]
+                        },
+                        "pack_options": {
+                            "side": "left"
+                        },
+                        "ID": "f815badb-0ac3-4b0d-8542-1e5a0a734c84"
+                    }
+                }
+            }
+        },
+        "theme": "green",
+        "palette_on_change": {
+            "white": [
+                [
+                    "1291ac07-be64-41de-9d34-d7fccba5367f",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "56c0b56e-16cb-42d9-9422-7114178e6f97",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "745cd0d1-33a8-4ef9-9c8d-1de91b34318b",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "b79a2416-b67e-47ce-ba3a-d2d65eee5aca",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "ec3132c8-2950-44a4-bd7e-eeffbefae3ff",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "497cdca5-1f35-4790-9ed8-b4b98d257b9d",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "f383977e-2202-4d49-ab17-565326b4e29f",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "1488a1d1-e627-4ea9-970a-c7eb970d483b",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "e865417c-3f72-4a15-a458-cc9dc1aa4220",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "fe37203a-52ee-44ce-84fe-6c72087e0ab1",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "f815badb-0ac3-4b0d-8542-1e5a0a734c84",
+                    "text_color",
+                    "dark"
+                ],
+                [
+                    "ff77a7bf-d6ae-4687-b09c-c94df44c9dcb",
+                    "text_color",
+                    "dark"
+                ]
+            ],
+            "black": [
+                [
+                    "fe37203a-52ee-44ce-84fe-6c72087e0ab1",
+                    "text_color",
+                    "light"
+                ],
+                [
+                    "f815badb-0ac3-4b0d-8542-1e5a0a734c84",
+                    "text_color",
+                    "light"
+                ]
+            ],
+            "primary": [
+                [
+                    "497cdca5-1f35-4790-9ed8-b4b98d257b9d",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "f383977e-2202-4d49-ab17-565326b4e29f",
+                    "fg_color",
+                    "dark"
+                ],
+                [
+                    "497cdca5-1f35-4790-9ed8-b4b98d257b9d",
+                    "fg_color",
+                    "light"
+                ],
+                [
+                    "f383977e-2202-4d49-ab17-565326b4e29f",
+                    "fg_color",
+                    "light"
+                ]
+            ],
+            "primary-hover": [
+                [
+                    "497cdca5-1f35-4790-9ed8-b4b98d257b9d",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "f383977e-2202-4d49-ab17-565326b4e29f",
+                    "hover_color",
+                    "dark"
+                ],
+                [
+                    "497cdca5-1f35-4790-9ed8-b4b98d257b9d",
+                    "hover_color",
+                    "light"
+                ],
+                [
+                    "f383977e-2202-4d49-ab17-565326b4e29f",
+                    "hover_color",
+                    "light"
+                ]
+            ]
+        },
+        "palette": {
+            "white": "#FFFFFF",
+            "black": "#000000",
+            "primary": "#8651ff",
+            "primary-hover": "#6940c9"
+        }
+    }
+}
