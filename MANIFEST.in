@@ -1,0 +1,26 @@
+# Essential files
+include README.md
+include LICENSE
+include setup.py
+include requirements.txt
+
+# Root-level file types
+include *.json
+include *.ico
+include *.png
+include *.py
+include *.j2
+
+# Recursively include all package data (themes, widgets, etc.)
+recursive-include customtkinterbuilder *.py
+recursive-include customtkinterbuilder *.json
+recursive-include customtkinterbuilder *.ico
+recursive-include customtkinterbuilder *.png
+recursive-include customtkinterbuilder *.j2
+recursive-include customtkinterbuilder/Widgets *
+recursive-include customtkinterbuilder/Assets *
+recursive-include customtkinterbuilder/Examples *
+recursive-include customtkinterbuilder/Icons *
+recursive-include customtkinterbuilder/ThemeAssets *
+recursive-include customtkinterbuilder/Themes *
+recursive-include customtkinterbuilder/temp *

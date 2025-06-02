@@ -1,0 +1,2 @@
+[console_scripts]
+CustomTkinterBuilder = customtkinterbuilder.__main__:main

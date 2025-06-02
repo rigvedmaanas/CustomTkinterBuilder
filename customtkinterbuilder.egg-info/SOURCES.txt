@@ -1,0 +1,130 @@
+LICENSE
+MANIFEST.in
+README.md
+requirements.txt
+setup.py
+customtkinterbuilder/CodeGenerator.py
+customtkinterbuilder/Logo-WelcomePage.png
+customtkinterbuilder/Logo.ico
+customtkinterbuilder/Logo.png
+customtkinterbuilder/PackArgs.py
+customtkinterbuilder/WelcomePage.py
+customtkinterbuilder/__init__.py
+customtkinterbuilder/__main__.py
+customtkinterbuilder/config.json
+customtkinterbuilder/ctk_widget.py.j2
+customtkinterbuilder/ctk_widget_pack.py.j2
+customtkinterbuilder/ctk_widget_pack_propagate.py.j2
+customtkinterbuilder/dragndrop.py
+customtkinterbuilder/get_path.py
+customtkinterbuilder/hook-tkinterdnd2.py
+customtkinterbuilder/main.py
+customtkinterbuilder/properties.py
+customtkinterbuilder/widgets.py
+customtkinterbuilder.egg-info/PKG-INFO
+customtkinterbuilder.egg-info/SOURCES.txt
+customtkinterbuilder.egg-info/dependency_links.txt
+customtkinterbuilder.egg-info/entry_points.txt
+customtkinterbuilder.egg-info/requires.txt
+customtkinterbuilder.egg-info/top_level.txt
+customtkinterbuilder/Assets/baseline_arrow_forward_white_18dp_1x.png
+customtkinterbuilder/Assets/baseline_home_white_18dp_1x.png
+customtkinterbuilder/Assets/baseline_logo_dev_white_48dp_2x.png
+customtkinterbuilder/Assets/baseline_people_black_18dp_1x.png
+customtkinterbuilder/Assets/baseline_people_white_18dp_1x.png
+customtkinterbuilder/Assets/baseline_search_white_24dp_1x.png
+customtkinterbuilder/Examples/HelloWorld/HelloWorld.json
+customtkinterbuilder/Examples/Login-Demo/Login-Demo.json
+customtkinterbuilder/Examples/Login-Demo/LoginDemo.py
+customtkinterbuilder/Examples/Login-Demo/Assets/baseline_logo_dev_(145, 91, 255)_24dp_2x.png
+customtkinterbuilder/Examples/Spotify-Demo/Spotify-Demo.json
+customtkinterbuilder/Examples/Spotify-Demo/Spotify-Demo.py
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_add_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_favorite_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_favorite_border_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_home_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_library_music_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_open_in_full_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_play_arrow_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_repeat_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_search_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_shuffle_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_skip_next_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_skip_previous_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Spotify-Demo/Assets/baseline_volume_up_(255, 255, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Youtube-Demo.json
+customtkinterbuilder/Examples/Youtube-Demo/Youtube-Demo.py
+customtkinterbuilder/Examples/Youtube-Demo/Assets/128-311x175.jpg
+customtkinterbuilder/Examples/Youtube-Demo/Assets/16-311x175.jpg
+customtkinterbuilder/Examples/Youtube-Demo/Assets/160-311x175.jpg
+customtkinterbuilder/Examples/Youtube-Demo/Assets/385-311x175.jpg
+customtkinterbuilder/Examples/Youtube-Demo/Assets/464-311x175.jpg
+customtkinterbuilder/Examples/Youtube-Demo/Assets/492-311x175.jpg
+customtkinterbuilder/Examples/Youtube-Demo/Assets/6-311x175.jpg
+customtkinterbuilder/Examples/Youtube-Demo/Assets/957-311x175.jpg
+customtkinterbuilder/Examples/Youtube-Demo/Assets/974-311x175.jpg
+customtkinterbuilder/Examples/Youtube-Demo/Assets/baseline_history_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/baseline_home_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/baseline_live_tv_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/baseline_playlist_play_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/baseline_verified_(120, 174, 255)_18dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_account_circle_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_account_circle_(255, 255, 255)_24dp_2x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_chevron_right_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_mic_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_notifications_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_recent_actors_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_schedule_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_search_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_smart_display_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_thumb_up_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_video_library_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Examples/Youtube-Demo/Assets/outline_videocam_(255, 255, 255)_24dp_1x.png
+customtkinterbuilder/Icons/duplicate.png
+customtkinterbuilder/Icons/waste.png
+customtkinterbuilder/ThemeAssets/ThemedButton/Button_2/baseline_arrow_forward_white_18dp_1x.png
+customtkinterbuilder/ThemeAssets/ThemedButton/Icon_Black/baseline_people_black_18dp_1x.png
+customtkinterbuilder/ThemeAssets/ThemedButton/Icon_White/baseline_people_white_18dp_1x.png
+customtkinterbuilder/Themes/blue.json
+customtkinterbuilder/Themes/ctktheme.json
+customtkinterbuilder/Themes/dark-blue.json
+customtkinterbuilder/Themes/green.json
+customtkinterbuilder/Widgets/Button.py
+customtkinterbuilder/Widgets/CheckBox.py
+customtkinterbuilder/Widgets/ComboBox.py
+customtkinterbuilder/Widgets/Entry.py
+customtkinterbuilder/Widgets/Frame.py
+customtkinterbuilder/Widgets/Label.py
+customtkinterbuilder/Widgets/Main.py
+customtkinterbuilder/Widgets/OptionMenu.py
+customtkinterbuilder/Widgets/ProgressBar.py
+customtkinterbuilder/Widgets/RadioButton.py
+customtkinterbuilder/Widgets/ScrollableFrame.py
+customtkinterbuilder/Widgets/Scrollbar.py
+customtkinterbuilder/Widgets/SegmentedButton.py
+customtkinterbuilder/Widgets/Slider.py
+customtkinterbuilder/Widgets/Switch.py
+customtkinterbuilder/Widgets/TextBox.py
+customtkinterbuilder/Widgets/ThemedButton.py
+customtkinterbuilder/Widgets/ThemedText.py
+customtkinterbuilder/Widgets/__init__.py
+customtkinterbuilder/Widgets/__pycache__/Button.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/CheckBox.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/ComboBox.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/Entry.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/Frame.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/Label.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/Main.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/OptionMenu.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/ProgressBar.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/RadioButton.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/ScrollableFrame.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/Scrollbar.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/SegmentedButton.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/Slider.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/Switch.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/TextBox.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/ThemedButton.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/ThemedText.cpython-39.pyc
+customtkinterbuilder/Widgets/__pycache__/__init__.cpython-39.pyc
+customtkinterbuilder/temp/baseline_logo_dev_(145, 91, 255)_24dp_2x.png
