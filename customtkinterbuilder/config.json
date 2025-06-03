@@ -1,3 +1,16 @@
 {
-    "project_files": []
+    "project_files": [
+        {
+            "Name": "CTkTest",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "ThemeTest",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        },
+        {
+            "Name": "ThemeTest2",
+            "Directory": "/Users/rigvedmaanas/Downloads"
+        }
+    ]
 }

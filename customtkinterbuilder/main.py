@@ -39,14 +39,22 @@ from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image, ImageTk
 from .get_path import resource_path, tempify, joinpath
 import autopep8
+from customtkinterthemes import theme_manager
 
 ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
 #blockPrint()
 class ThemeUtl:
-    def __init__(self, theme_dir, theme_name):
-        path = resource_path(os.path.join(theme_dir, f"{theme_name}.json"))
+    def __init__(self, theme_dir, theme_name: str):
+        path = theme_manager.get(theme_name)
+        with open(path, "r") as f:
+            self.theme = json.load(f)
+        self.path = path
+        self.name = theme_name
+
+    def change_theme(self, theme_name):
+        path = theme_manager.get(theme_name)
         with open(path, "r") as f:
             self.theme = json.load(f)
         self.path = path
@@ -103,8 +111,9 @@ class SaveFileDialog(CTkToplevel):
             self.theme_lbl = CTkLabel(self.f, text="Theme", anchor="w", padx=5, font=CTkFont(size=20))
             self.theme_lbl.pack(pady=(20, 10), padx=20, fill="x")
 
-            self.theme_entry = CTkOptionMenu(self.f, values=["green", "blue", "dark-blue"])
+            self.theme_entry = CTkOptionMenu(self.f, values=theme_manager.get_all_themes())
             self.theme_entry.pack(padx=20, pady=(0, 20), fill="x", side="left", expand=True)
+            self.theme_entry.set("blue")
 
             self.save_btn = CTkButton(self, text="Save", height=35, command=lambda: (
             self.callback(dir_=self.dir_entry.get(), name=self.project_name_entry.get(), theme=self.theme_entry.get()), self.destroy()))
@@ -184,6 +193,7 @@ class MainWindow:
         #for widget in wgts:
         #    widget._set_appearance_mode(mode)
 
+
     def loop_change_appearance(self, mode, d):
         for x in list(d.keys()):
 
@@ -261,7 +271,7 @@ root.title("{self.escape_special_chars(self.title)}")
 root.geometry("{self.r.cget('width')}x{self.r.cget('height')}")
 root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("{resource_path(os.path.join('Themes', 'ctktheme.json'))}"), root.destroy()))
 root.configure(fg_color="{self.r.cget("fg_color")[self.appearance.get()]}")
-set_default_color_theme("{self.theme_manager.name}")
+set_default_color_theme(theme_manager.get("{self.theme_manager.name}"))
 root.after(20, root.lift)
 
 """)
@@ -284,8 +294,9 @@ root.after(20, root.lift)
         code.add_line(f"""
 from customtkinter import *
 from PIL import Image
+from customtkinterthemes import theme_manager
 
-set_default_color_theme("{self.theme_manager.name}")
+set_default_color_theme(theme_manager.get("{self.theme_manager.name}"))
 
 root = CTk()
 root.title("{self.escape_special_chars(self.title)}")
@@ -299,6 +310,7 @@ root.configure(fg_color={self.r.cget("fg_color")})
         oop_code.add_line("""
 from customtkinter import *
 from PIL import Image
+from customtkinterthemes import theme_manager
 
 class App(CTk):
     def __init__(self, *args, **kwargs):
@@ -308,7 +320,7 @@ class App(CTk):
         oop_code.indent()
         self.loop_generate_oop(d=self.widgets[self.r], p="self", code=oop_code)
         oop_code.add_line(f"""
-set_default_color_theme("{self.theme_manager.name}")
+set_default_color_theme(theme_manager.get("{self.theme_manager.name}"))
 root = App()
 root.geometry("{self.r.cget("width")}x{self.r.cget("height")}")
 root.title("{self.escape_special_chars(self.title)}")
@@ -960,6 +972,7 @@ for x in {x.get_name()}._buttons_dict.values():
         # I could destroy every child in self.r but could not add new widgets after destroying the children.
 
         for x in list(d.keys()):
+
             y = d[x]["TYPE"]
             if y == "FRAME":
                 d[x].pop("PACK_PROPAGATE")
@@ -1385,6 +1398,7 @@ for x in {x.get_name()}._buttons_dict.values():
         self.r.winfo_toplevel().update()
         if self.current_selected_widget != None:
             self.draw_box(self.current_selected_widget)
+
 
     def on_vert_mouse(self, e):
         y = self.vert_scrl.get()
@@ -1996,7 +2010,7 @@ class App(CTkToplevel):
         self.appearance_mode_switch.pack(side="left", padx=5, pady=5)
         if darkdetect.isDark():
             self.appearance_mode_switch.toggle()
-        self.appearance_mode_switch.configure(command=lambda: self.main.change_appearance_mode(self.appearance_mode_switch.get()))
+
 
         self.widget_panel = CTkTabview(self, width=350)
         self.widget_panel.pack(side=LEFT, padx=10, pady=(0, 10), fill="y")
@@ -2342,6 +2356,9 @@ class App(CTkToplevel):
         self.saveas_btn.configure(command=self.main.saveas_file)
 
         self.open_btn.configure(command=self.main.open_file)
+
+        self.appearance_mode_switch.configure(command=lambda: self.main.change_appearance_mode(self.appearance_mode_switch.get()))
+
         #self.hierarchy.delete_children()
         #self.hierarchy.update_list(self.main.widgets, 5)
         self.home_btn.configure(command=lambda : self.on_closing(command=lambda: (self.master.deiconify(), self.destroy())))
@@ -2349,6 +2366,9 @@ class App(CTkToplevel):
         self.wm_iconbitmap()
         self.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
         self.after(100, lambda: self.iconphoto(False, self.iconpath))
+
+
+
 
 if __name__ == "__main__":
     set_default_color_theme("blue")
