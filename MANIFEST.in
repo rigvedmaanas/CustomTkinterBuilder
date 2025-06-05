@@ -24,3 +24,4 @@ recursive-include customtkinterbuilder/Icons *
 recursive-include customtkinterbuilder/ThemeAssets *
 recursive-include customtkinterbuilder/Themes *
 recursive-include customtkinterbuilder/temp *
+recursive-include customtkinterbuilder/CustomWidgets *

@@ -6,7 +6,7 @@ import tkinter.messagebox
 import uuid
 from tkinter import messagebox
 from tkinter.colorchooser import askcolor
-
+from .properties import Spinbox
 import pyperclip
 from jinja2 import Environment, FileSystemLoader
 import darkdetect
@@ -40,6 +40,9 @@ from PIL import Image, ImageTk
 from .get_path import resource_path, tempify, joinpath
 import autopep8
 from customtkinterthemes import theme_manager
+from .utils import *
+from .CustomWidgets.ToolBar import ToolBar
+from .CustomWidgets.AppearanceButton import AppearanceButton
 
 ic.disable()
 def blockPrint():
@@ -155,6 +158,7 @@ class MainWindow:
         self.current_selected_widget = None
         self.theme = self.theme_manager.get_theme_by_name()
         self.template_env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
+        self.scale = 1
 
         self.widget_colors = {
             "CTk": ["fg_color"],
@@ -188,7 +192,7 @@ class MainWindow:
         self.r._set_appearance_mode(mode)
         self.r.winfo_toplevel().main_window_panel._set_appearance_mode(mode)
         self.r.winfo_toplevel().temp._set_appearance_mode(mode)
-
+        self.r.winfo_toplevel().toolbar._set_appearance_mode(mode)
         self.loop_change_appearance(mode, self.widgets[self.r])
         #for widget in wgts:
         #    widget._set_appearance_mode(mode)
@@ -198,11 +202,26 @@ class MainWindow:
         for x in list(d.keys()):
 
             if d[x] != {}:
-                #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
                 x._set_appearance_mode(mode)
                 self.loop_change_appearance(mode, d[x])
             else:
                 x._set_appearance_mode(mode)
+
+    def loop_change_scale(self, scale, d):
+        self.scale = scale
+        for x in list(d.keys()):
+            if d[x] != {}:
+                x._set_scaling(scale, scale)
+
+                self.loop_change_scale(scale, d[x])
+            else:
+                x._set_scaling(scale, scale)
+
+    def change_scale(self, scale):
+        wgts = list(self.id_mapped_widgets.values())
+        self.loop_change_scale(scale, self.widgets)
+
+
 
     def apply_theme_to_widget(self, widget):
         if self.appearance.get() == 0:
@@ -211,7 +230,7 @@ class MainWindow:
             mode = "dark"
 
         widget._set_appearance_mode(mode)
-
+        widget._set_scaling(self.scale, self.scale)
         if widget.get_class() == "CTkScrollableFrame":
             x = self.theme["CTkFrame"]
 
@@ -1405,15 +1424,22 @@ for x in {x.get_name()}._buttons_dict.values():
         y += e.delta
         y = max(-100, min(y, 100))
         self.vert_scrl.set(y)
-        y = self.map_range(y, -100, 100, -self.vert_max_offset, self.vert_max_offset)
+        y = self.map_range(y, -100, 100, -self.vert_max_offset-100, self.vert_max_offset+100)
         self.r.place(y=y)
+        self.r.winfo_toplevel().update()
+        if self.current_selected_widget != None:
+            self.draw_box(self.current_selected_widget)
+
+    def move_delta(self, x, y):
+        #print(x, y)
+        self.r.place(x=x, y=y, anchor="center")
         self.r.winfo_toplevel().update()
         if self.current_selected_widget != None:
             self.draw_box(self.current_selected_widget)
 
     def on_horiz_scrl(self, e):
 
-        x = self.map_range(e, -100, 100, -self.horiz_max_offset, self.horiz_max_offset)
+        x = self.map_range(e, -100, 100, -self.horiz_max_offset-100, self.horiz_max_offset+100)
         self.r.place(x=x)
         self.r.winfo_toplevel().update()
         if self.current_selected_widget != None:
@@ -1510,7 +1536,7 @@ class WidgetButton(CTkButton):
         self.on_drag = on_drag
 
         super().__init__(**kwargs)
-        self.configure(fg_color=("#0d0c1d", "#0d0c1d"), border_width=1, border_color=["#CF245E", "#CF245E"], height=40)
+        self.configure(height=40)
 
     def pack(self, **kwargs):
         try:
@@ -2006,8 +2032,10 @@ class App(CTkToplevel):
         self.palette_btn = CTkButton(self.tool_bar, text="Edit Palette", fg_color="transparent", width=50)
         self.palette_btn.pack(side="left", padx=5, pady=5)
 
-        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode", border_color=("#CF245E", "#CF245E"), text_color="white")
+        self.appearance_mode_switch = AppearanceButton(self.tool_bar)
         self.appearance_mode_switch.pack(side="left", padx=5, pady=5)
+
+
         if darkdetect.isDark():
             self.appearance_mode_switch.toggle()
 
@@ -2154,7 +2182,7 @@ class App(CTkToplevel):
         self.temp_panel = CTkFrame(self, fg_color="transparent")
         self.temp_panel.pack(side="left", pady=10, fill="both", expand=True)
 
-        self.main_window_panel = CTkFrame(self.temp_panel, fg_color=("grey10", "grey80"))
+        self.main_window_panel = CTkFrame(self.temp_panel, fg_color=("#1D1D1D", "#EEEEEE"))
         self.main_window_panel.pack(fill="both", expand=True, padx=5, pady=5)
 
         self.horiz_scrlbar = CTkSlider(master=self.temp_panel, from_=100, to=-100, number_of_steps=200, orientation="horizontal",
@@ -2253,6 +2281,11 @@ class App(CTkToplevel):
 
         self.temp = CTkFrame(self.main_window_panel, fg_color=self.main_window_panel.cget("fg_color"))
         self.temp.pack(fill="both", expand=True, pady=10, padx=10)
+        self.drag_frame = CTkFrame(self.temp, fg_color="transparent")
+        #self.drag_frame.place(x=0, y=0, relwidth=1, relheight=1)
+
+
+        #self.temp.bind("<Button-1>", lambda e: self.temp.focus_set())
 
         self.main_window = Main(self.temp, properties=None, width=500, height=500, bg_color=("grey10", "grey80"))
         self.main_window.pack_propagate(False)
@@ -2260,10 +2293,10 @@ class App(CTkToplevel):
         self.main_window.type = "MAIN"
         self.main_window.num = -1
         self.main_window.name = self.main_window.type + str(self.main_window.num)
-
         self.drag_manager = DragManager(self.widget_panel.dragndrop_list, self.main_window, self)
 
         self.main = MainWindow(self.main_window, self.canvas_theme)
+        self.main.drag_frame = self.drag_frame
         self.main.drag_manager = self.drag_manager
         self.main_window.configure(fg_color=self.main.theme["CTk"]["fg_color"], bg_color=self.main_window.master.cget("fg_color")[1])
 
@@ -2358,11 +2391,15 @@ class App(CTkToplevel):
         self.open_btn.configure(command=self.main.open_file)
 
         self.appearance_mode_switch.configure(command=lambda: self.main.change_appearance_mode(self.appearance_mode_switch.get()))
-
         #self.hierarchy.delete_children()
         #self.hierarchy.update_list(self.main.widgets, 5)
         self.home_btn.configure(command=lambda : self.on_closing(command=lambda: (self.master.deiconify(), self.destroy())))
         self.main.apply_theme_to_widget(self.main_window)
+
+        self.toolbar = ToolBar(self, mainwindow=self.main, height=50, bg_color=self.main_window_panel.cget("fg_color"))
+        self.toolbar.place(relx=0.5, rely=1, y=-50, anchor="s")
+        self.main.change_appearance_mode(self.appearance_mode_switch.get())
+
         self.wm_iconbitmap()
         self.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
         self.after(100, lambda: self.iconphoto(False, self.iconpath))

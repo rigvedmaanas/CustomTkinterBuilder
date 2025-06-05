@@ -1,0 +1,7 @@
+primary_color = "#0099FF"
+dark_canvas_color = "#1D1D1D"
+light_canvas_color = "#EEEEEE"
+dark_color = "#111111"
+light_color = "#FFFFFF"
+dark_button_color = "#1D1D1D"
+light_button_color = "#F3F3F3"
