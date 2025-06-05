@@ -43,6 +43,7 @@ from customtkinterthemes import theme_manager
 from .utils import *
 from .CustomWidgets.ToolBar import ToolBar
 from .CustomWidgets.AppearanceButton import AppearanceButton
+from .CustomWidgets.MessageBox import MessageBox
 
 ic.disable()
 def blockPrint():
@@ -159,6 +160,8 @@ class MainWindow:
         self.theme = self.theme_manager.get_theme_by_name()
         self.template_env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
         self.scale = 1
+
+        self.windows_open = []
 
         self.widget_colors = {
             "CTk": ["fg_color"],
@@ -281,7 +284,13 @@ class MainWindow:
             if key == "title":
                 self.title = kwargs[key]
 
+    def clear_toplevels(self):
+        for x in self.windows_open:
+            x.destroy()
+
     def run_code(self):
+        self.clear_toplevels()
+
 
         code = CodeGenerator(indentation="\t")
         code.add_line(f"""
@@ -292,7 +301,7 @@ root.protocol("WM_DELETE_WINDOW", lambda root=root: (set_default_color_theme("{r
 root.configure(fg_color="{self.r.cget("fg_color")[self.appearance.get()]}")
 set_default_color_theme(theme_manager.get("{self.theme_manager.name}"))
 root.after(20, root.lift)
-
+self.windows_open.append(root)
 """)
 
 
@@ -346,13 +355,14 @@ root.title("{self.escape_special_chars(self.title)}")
 root.configure(fg_color={self.r.cget("fg_color")})
 root.mainloop()
             """)
-
+        self.clear_toplevels()
         top = CTkToplevel()
         top.geometry("1000x800+500+100")
         top.title("Export Code")
         top.configure(fg_color=["gray95", "gray10"])
         top.after(20, top.lift)
         top.after(25, top.focus_get)
+        self.windows_open.append(top)
         top.wm_iconbitmap()
         top.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
         top.after(100, lambda: top.iconphoto(False, top.iconpath))
@@ -1066,7 +1076,8 @@ for x in {x.get_name()}._buttons_dict.values():
             with open(os.path.join(os.path.join(self.file[0], self.file[1]), f"{self.file[1]}.json"), "w") as outfile:
                 outfile.write(json_object)
             if not suppress_dialog:
-                messagebox.showinfo("Saved", "Your file has been successfully saved")
+                self.message_box.show("File Saved")
+                #messagebox.showinfo("Saved", "Your file has been successfully saved")
 
 
     def saveas_file(self):
@@ -1356,7 +1367,9 @@ for x in {x.get_name()}._buttons_dict.values():
             current_dict[key_list[-1]].pop(value)
     def show_palette(self, properties):
         #print(self.id_mapped_widgets, properties.color_manager.on_change_list)
+        self.clear_toplevels()
         palette = PaletteEditor(color_manager=properties)
+        self.windows_open.append(palette)
 
     def get_scrollbar_position(self, content_height, viewport_height, scrollbar_height):
         """
@@ -1579,10 +1592,10 @@ class Hierarchy(CTkScrollableFrame):
         for child in self.winfo_children():
 
             if child.cget("text") != self.widget.get_name():
-                child.configure(fg_color="#87163D")
+                child.configure(fg_color="#2B2B2B")
             else:
                 self.current_selection = child
-                child.configure(fg_color="#CF245E")
+                child.configure(fg_color="#0084ff")
 
 
     def update_text(self, old_name, new_text):
@@ -1673,7 +1686,7 @@ class Hierarchy(CTkScrollableFrame):
             self.widget = None
             for x in list(d.keys()):
                 if d[x] != {}:
-                    btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
+                    btn = CTkButton(self, text=x.get_name(), fg_color="#2B2B2B")
                     #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                     btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                     btn.widget = x
@@ -1681,7 +1694,7 @@ class Hierarchy(CTkScrollableFrame):
                     self.update_list(d[x], pad+20)
                 else:
 
-                    btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
+                    btn = CTkButton(self, text=x.get_name(), fg_color="#2B2B2B")
                     #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                     btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                     btn.widget = x
@@ -1759,7 +1772,7 @@ class Hierarchy(CTkScrollableFrame):
 
         arr = self.get_frames_scrollbar_only()
         for x in arr:
-            btn = CTkButton(self.scrl, text=x[2].get_name(), fg_color="#87163D")
+            btn = CTkButton(self.scrl, text=x[2].get_name(), fg_color="#2B2B2B")
             # x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
             btn.configure(command=lambda x=x[2], btn=btn: (self.set_change_parent_selection(x, btn)))
             btn.widget = x[2]
@@ -2023,18 +2036,24 @@ class App(CTkToplevel):
         self.open_btn = CTkButton(self.tool_bar, text="Open", fg_color="transparent", width=50)
         #self.open_btn.pack(side="left", padx=5, pady=5)
 
-        self.run_code_btn = CTkButton(self.tool_bar, text="Run Code", fg_color="transparent", width=50)
-        self.run_code_btn.pack(side="left", padx=5, pady=5)
 
-        self.export_code_btn = CTkButton(self.tool_bar, text="Export Code", fg_color="transparent", width=50)
-        self.export_code_btn.pack(side="left", padx=5, pady=5)
+
+
 
         self.palette_btn = CTkButton(self.tool_bar, text="Edit Palette", fg_color="transparent", width=50)
         self.palette_btn.pack(side="left", padx=5, pady=5)
 
-        self.appearance_mode_switch = AppearanceButton(self.tool_bar)
-        self.appearance_mode_switch.pack(side="left", padx=5, pady=5)
 
+
+        self.run_code_btn = CTkButton(self.tool_bar, text="Run Code", fg_color="#0084ff", width=50, hover=False)
+        self.run_code_btn.pack(side="right", padx=5, pady=5)
+
+
+        self.export_code_btn = CTkButton(self.tool_bar, text="Export Code", fg_color="transparent", width=50)
+        self.export_code_btn.pack(side="right", padx=5, pady=5)
+
+        self.appearance_mode_switch = AppearanceButton(self.tool_bar)
+        self.appearance_mode_switch.pack(side="right", padx=5, pady=5)
 
         if darkdetect.isDark():
             self.appearance_mode_switch.toggle()
@@ -2186,12 +2205,12 @@ class App(CTkToplevel):
         self.main_window_panel.pack(fill="both", expand=True, padx=5, pady=5)
 
         self.horiz_scrlbar = CTkSlider(master=self.temp_panel, from_=100, to=-100, number_of_steps=200, orientation="horizontal",
-                                       button_length=33, width=13, border_width=12)
+                                       button_length=33, width=13)
         self.horiz_scrlbar.configure(progress_color=self.horiz_scrlbar.master.cget("bg_color"),
                                      fg_color=self.horiz_scrlbar.master.cget("bg_color"))
         self.horiz_scrlbar.pack(fill="x", padx=10)
 
-        self.vert_scrlbar = CTkSlider(master=self, from_=-100, to=100, number_of_steps=200, orientation="vertical", button_length=33, width=13, border_width=12)
+        self.vert_scrlbar = CTkSlider(master=self, from_=-100, to=100, number_of_steps=200, orientation="vertical", button_length=33, width=13)
         self.vert_scrlbar.configure(progress_color=self.vert_scrlbar.cget("bg_color"), fg_color=self.vert_scrlbar.cget("bg_color"))
         self.vert_scrlbar.pack(side="left", fill="y", padx=(10, 0), pady=10)
 
@@ -2281,6 +2300,10 @@ class App(CTkToplevel):
 
         self.temp = CTkFrame(self.main_window_panel, fg_color=self.main_window_panel.cget("fg_color"))
         self.temp.pack(fill="both", expand=True, pady=10, padx=10)
+
+        self.message_box = MessageBox(self.temp)
+        self.message_box.place(relx=1, rely=1, x=-10, y=-10, anchor="se")
+
         self.drag_frame = CTkFrame(self.temp, fg_color="transparent")
         #self.drag_frame.place(x=0, y=0, relwidth=1, relheight=1)
 
@@ -2297,6 +2320,7 @@ class App(CTkToplevel):
 
         self.main = MainWindow(self.main_window, self.canvas_theme)
         self.main.drag_frame = self.drag_frame
+        self.main.message_box = self.message_box
         self.main.drag_manager = self.drag_manager
         self.main_window.configure(fg_color=self.main.theme["CTk"]["fg_color"], bg_color=self.main_window.master.cget("fg_color")[1])
 
@@ -2382,6 +2406,10 @@ class App(CTkToplevel):
         self.main_window.properties = self.properties_panel
         self.main_window.bind("<Button-1>", lambda e, nw=self.main_window: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
         self.run_code_btn.configure(command=self.main.run_code)
+        self.winfo_toplevel().bind_all('<KeyPress>', self.hotkey_manager)
+        self.winfo_toplevel().bind("<Control-r>", lambda e: self.main.run_code)
+        self.winfo_toplevel().bind('<Control-s>', lambda e: self.main.save_file)
+
         self.export_code_btn.configure(command=self.main.export_code)
         self.palette_btn.configure(command=lambda: self.main.show_palette(self.properties_panel))
 
@@ -2404,7 +2432,26 @@ class App(CTkToplevel):
         self.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
         self.after(100, lambda: self.iconphoto(False, self.iconpath))
 
+    def hotkey_manager(self, event):
+        key = event.keysym
 
+        control = event.state & 0x4
+        command = event.state & 0x8
+
+        meta = control or command
+        #print(key)
+        if meta and key == 'r':
+            self.main.run_code()
+        elif meta and key == "s":
+            self.main.save_file(suppress_dialog=True)
+            self.message_box.show("File Saved")
+        elif meta and key == "equal": # For +
+            self.toolbar.zoomin()
+
+        elif meta and key == "minus":
+            self.toolbar.zoomout()
+        elif meta and key == "0":
+            self.toolbar.reset()
 
 
 if __name__ == "__main__":

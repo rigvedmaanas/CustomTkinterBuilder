@@ -14,6 +14,7 @@ class ToolBar(CTkFrame):
         self.current_tool = "select"
         self.time_interval = 0.01
         self.prev_time = 0
+        self.flip = True
 
         image_path = "customtkinterbuilder/Assets/select_tool.png"
         self.select_tool_image = CTkImage(
@@ -49,11 +50,11 @@ class ToolBar(CTkFrame):
 
         if self.current_tool == "select":
             self.move_tool.configure(fg_color="transparent")
-            self.select_tool.configure(fg_color="#1D1D1D")
+            self.select_tool.configure(fg_color="#2B2B2B")
 
-        #self.main.drag_frame.bind('<ButtonPress-1>', self.click, add=True)
-        #self.main.drag_frame.bind('<ButtonRelease-1>', self.release, add=True)
-        #self.main.drag_frame.bind("<B1-Motion>", self.drag, add=True)
+        #self.winfo_toplevel().bind('<ButtonPress-1>', self.click, add=True)
+        #self.winfo_toplevel().bind('<ButtonRelease-1>', self.release, add=True)
+        #self.winfo_toplevel().bind("<B1-Motion>", self.drag, add=True)
 
     def click(self, e):
         if self.current_tool == "move":
@@ -63,6 +64,7 @@ class ToolBar(CTkFrame):
             self.x_original = self.main.r.winfo_x()
             self.y_original = self.main.r.winfo_y()
             print("Called")
+            self.flip = True
 
 
 
@@ -76,7 +78,8 @@ class ToolBar(CTkFrame):
     def drag(self, e):
         if self.current_tool == "move" and self.x is not None and self.y is not None:
             # Setting up a debouncer so that it doesn't crash due to recursive function calling
-            if time.time() - self.prev_time > self.time_interval:
+            if self.flip:
+                self.flip = not self.flip
                 # 0, 0 is center. How????????????????????????????
 
                 #self.prev_time = time.time()
@@ -85,7 +88,7 @@ class ToolBar(CTkFrame):
                 self.main.move_delta((e.x_root - self.x ), (e.y_root - self.y))
                 self.update_idletasks()
             else:
-                self.click()
+                self.flip = not self.flip
 
 
     def change_current_tool(self):
@@ -102,7 +105,12 @@ class ToolBar(CTkFrame):
         new_zoom_value = self.zoom.get()
         self.zoom_tool.configure(text=f"{new_zoom_value}%")
         self.main.change_scale(new_zoom_value / 100)
-
+    def zoomin(self):
+        self.zoom.set(self.zoom.get() + self.zoom_amt)
+    def zoomout(self):
+        self.zoom.set(self.zoom.get() - self.zoom_amt)
+    def reset(self):
+        self.zoom.set(100)
     def show_zoom_properties(self):
         if self.zoom_properties_toggled:
             return
@@ -117,17 +125,17 @@ class ToolBar(CTkFrame):
         self.zoom_properties.place_forget()
 
         self.zoom_in = CTkButton(self.zoom_properties, text="Zoom In",
-                                 command=lambda : self.zoom.set(self.zoom.get() + self.zoom_amt),
+                                 command=self.zoomin,
                                  fg_color="transparent", anchor="w")
         self.zoom_in.pack(fill="x", pady=(5, 0), padx=5)
 
         self.zoom_out = CTkButton(self.zoom_properties, text="Zoom Out",
-                                  command=lambda : self.zoom.set(self.zoom.get() - self.zoom_amt),
+                                  command=self.zoomout,
                                   fg_color="transparent", anchor="w")
         self.zoom_out.pack(fill="x", pady=(5, 0), padx=5)
 
         self.zoom_100 = CTkButton(self.zoom_properties, text="Zoom 100%",
-                                  command=lambda : self.zoom.set(100),
+                                  command=self.reset,
                                   fg_color="transparent", anchor="w")
         self.zoom_100.pack(fill="x", pady=5, padx=5)
 

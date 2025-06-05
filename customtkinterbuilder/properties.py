@@ -279,7 +279,7 @@ class Spinbox(CTkFrame):
         self.grid_columnconfigure(1, weight=1)  # entry expands
 
         self.subtract_button = CTkButton(self, text="-", width=height-6, height=height-6,
-                                                       command=self.subtract_button_callback)
+                                                       command=self.subtract_button_callback, fg_color="transparent")
         self.subtract_button.grid(row=0, column=0, padx=(3, 0), pady=3)
         self.subtract_button.bind("<Button-1>", lambda e: self.set_long_press(True, "SUB"))
         self.subtract_button.bind("<ButtonRelease>", lambda e: self.set_long_press(False, "SUB"))
@@ -290,7 +290,7 @@ class Spinbox(CTkFrame):
 
 
         self.add_button = CTkButton(self, text="+", width=height-6, height=height-6,
-                                                  command=self.add_button_callback)
+                                                  command=self.add_button_callback, fg_color="transparent")
         self.add_button.grid(row=0, column=2, padx=(0, 3), pady=3)
         self.add_button.bind("<Button-1>", lambda e: self.set_long_press(True, "ADD"))
         self.add_button.bind("<ButtonRelease>", lambda e: self.set_long_press(False, "ADD"))
@@ -543,7 +543,7 @@ class ColorPicker(CTkToplevel):
         c = CTkFrame(self.scrl, height=100)
         c.pack(fill="x", pady=10)
 
-        clr = CTkFrame(c, width=75, height=75, fg_color=val)
+        clr = CTkFrame(c, width=75, fg_color=val)
         clr.pack(side="left", padx=10)
 
         fr = CTkFrame(c)
@@ -653,8 +653,8 @@ class PropertiesManager(CTkTabview):
 
 
     def add_seperator(self, s, head):
-        frame = CTkFrame(s, height=75)
-        frame.pack(padx=10, pady=(10, 0), fill="x")
+        frame = CTkFrame(s)
+        frame.pack(padx=5, pady=0, fill="x")
 
         txt = CTkLabel(frame, text=head)
         txt.pack(fill="x")
@@ -664,8 +664,8 @@ class PropertiesManager(CTkTabview):
         self.ctab = category
 
         if TYPE == "SPINBOX":
-            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
-            frame.pack(padx=10, pady=(10, 0), fill="x")
+            frame = CTkFrame(self.ctab, fg_color=self.master.master.cget("fg_color"))
+            frame.pack(padx=5, pady=0, fill="x")
 
             num_spinbox = Spinbox(frame, width=150, command=lambda val: vals["callback"](val))
             num_spinbox.pack(side="right", padx=(10, 10), pady=10)
@@ -674,13 +674,13 @@ class PropertiesManager(CTkTabview):
 
 
             head = CTkLabel(frame, text=header)
-            head.pack(side="right", padx=(10, 0), pady=10)
+            head.pack(side="left", padx=(10, 0), pady=10)
 
             self.options[key] = [head, num_spinbox]
 
         elif TYPE == "TEXT":
-            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
-            frame.pack(padx=10, pady=(10, 0), fill="x")
+            frame = CTkFrame(self.ctab, fg_color=self.master.master.cget("fg_color"))
+            frame.pack(padx=5, pady=0, fill="x")
 
 
             sv = StringVar()
@@ -688,15 +688,15 @@ class PropertiesManager(CTkTabview):
             entry = TextExtension(frame, width=150, height=100, textvariable=sv)
             entry.pack(side="right", padx=10, pady=10)
             head = CTkLabel(frame, text=header)
-            head.pack(side="right", padx=(10, 0), pady=10)
+            head.pack(side="left", padx=(10, 0), pady=10)
 
             sv.set(vals["val"])
             self.options[key] = [head, entry]
 
 
         elif TYPE == "SINGLELINE_TEXT":
-            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
-            frame.pack(padx=10, pady=(10, 0), fill="x")
+            frame = CTkFrame(self.ctab, fg_color=self.master.master.cget("fg_color"))
+            frame.pack(padx=5, pady=0, fill="x")
 
 
             sv = StringVar()
@@ -704,14 +704,14 @@ class PropertiesManager(CTkTabview):
             entry = CTkEntry(frame, width=150, textvariable=sv, border_width=1)
             entry.pack(side="right", padx=10, pady=10)
             head = CTkLabel(frame, text=header)
-            head.pack(side="right", padx=(10, 0), pady=10)
+            head.pack(side="left", padx=(10, 0), pady=10)
 
             sv.set(vals["val"])
             self.options[key] = [head, entry]
 
         elif TYPE == "TUPLE":
-            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
-            frame.pack(padx=10, pady=(10, 0), fill="x")
+            frame = CTkFrame(self.ctab, fg_color=self.master.master.cget("fg_color"))
+            frame.pack(padx=5, pady=0, fill="x")
 
             temp = CTkFrame(frame, height=60, fg_color=frame.cget("fg_color"))
             temp.pack(side="right", fill="x", pady=10)
@@ -732,27 +732,27 @@ class PropertiesManager(CTkTabview):
 
 
             head = CTkLabel(frame, text=header)
-            head.pack(side="right", padx=(10, 0), pady=10)
+            head.pack(side="left", padx=(10, 0), pady=10)
 
 
 
             self.options[key] = [head, num_spinbox_1, num_spinbox_2]
 
         elif TYPE == "COMBO":
-            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
-            frame.pack(padx=10, pady=(10, 0), fill="x")
+            frame = CTkFrame(self.ctab, fg_color=self.master.master.cget("fg_color"))
+            frame.pack(padx=5, pady=0, fill="x")
 
             combo = CustomCTkComboBox(frame, width=150, values=vals["vals"], command=vals["callback"], state="readonly")
             combo.set(vals["default"])
             combo.main = self.main
             combo.pack(side="right", padx=10, pady=10)
             head = CTkLabel(frame, text=header)
-            head.pack(side="right", padx=(10, 0), pady=10)
+            head.pack(side="left", padx=(10, 0), pady=10)
             self.options[key] = [head, combo]
 
         elif TYPE == "COLOR_COMBO":
-            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
-            frame.pack(padx=10, pady=(10, 0), fill="x")
+            frame = CTkFrame(self.ctab, fg_color=self.master.master.cget("fg_color"))
+            frame.pack(padx=5, pady=0, fill="x")
 
             temp = CTkFrame(frame, height=60, fg_color="transparent")
             temp.pack(side="right", fill="x", pady=10)
@@ -768,11 +768,11 @@ class PropertiesManager(CTkTabview):
 
             if vals["transparent"]:
                 head = CTkCheckBox(frame, text=header)
-                head.pack(side="right", padx=(10, 0), pady=10)
+                head.pack(side="left", padx=(10, 0), pady=10)
                 head.configure(command=lambda: self.update_color_and_call_callback(head, clr_1, clr_2, vals))
             else:
                 head = CTkLabel(frame, text=header)
-                head.pack(side="right", padx=(10, 10), pady=10)
+                head.pack(side="left", padx=(10, 10), pady=10)
 
             if vals["color"] != "transparent":
                 #print(vals["color"])
@@ -796,8 +796,8 @@ class PropertiesManager(CTkTabview):
             self.options[key] = [head, clr_1, clr_1]
 
         elif TYPE == "FONT_FAMILY":
-            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
-            frame.pack(padx=10, pady=(10, 0), fill="x")
+            frame = CTkFrame(self.ctab, fg_color=self.master.master.cget("fg_color"))
+            frame.pack(padx=5, pady=0, fill="x")
             fonts = list(font.families())
             fonts.sort()
             combo = CustomCTkComboBox(frame, width=150, values=fonts, state="readonly", command=vals["callback"])
@@ -807,7 +807,7 @@ class PropertiesManager(CTkTabview):
 
             #combo.configure()
             head = CTkLabel(frame, text=header)
-            head.pack(side="right", padx=(10, 0), pady=10)
+            head.pack(side="left", padx=(10, 0), pady=10)
             # Added this because sometimes the font family changes randomly. Probably a bug in customtkinter.
             frame.after(200, lambda: (vals["callback"](vals["default"]), combo.set(vals["default"])))
 
@@ -815,7 +815,7 @@ class PropertiesManager(CTkTabview):
 
         elif TYPE == "LISTBOX":
             frame = CTkFrame(self.ctab, height=250, fg_color=self.master.master.cget("fg_color"))
-            frame.pack(padx=10, pady=(10, 0), fill="x")
+            frame.pack(padx=5, pady=0, fill="x")
 
             scrl_box = CTkScrollableFrame(frame, label_text=header, label_fg_color="transparent")
             scrl_box.pack(padx=5, pady=5, fill="x")
@@ -835,8 +835,8 @@ class PropertiesManager(CTkTabview):
             btn.pack(side="right", padx=(3, 0))
 
         elif TYPE == "IMAGE":
-            frame = CTkFrame(self.ctab, height=75, fg_color=self.master.master.cget("fg_color"))
-            frame.pack(padx=10, pady=(10, 0), fill="x")
+            frame = CTkFrame(self.ctab, fg_color=self.master.master.cget("fg_color"))
+            frame.pack(padx=5, pady=0, fill="x")
 
             temp = CTkFrame(frame, height=60, fg_color="transparent")
             temp.pack(padx=10, fill="x", pady=(15, 5))
@@ -849,12 +849,12 @@ class PropertiesManager(CTkTabview):
 
 
             head = CTkLabel(temp, text=header)
-            head.pack(side="right", padx=(10, 0))
+            head.pack(side="left", padx=(0, 0))
 
             img_lbl = CTkLabel(frame, width=150, text="", font=CTkFont(size=1), height=1)
             img_lbl.pack(fill="x", padx=10, pady=(0, 10))
 
-            frame1 = CTkFrame(frame, height=75, fg_color="transparent")
+            frame1 = CTkFrame(frame, fg_color="transparent")
             frame1.pack(padx=10, pady=(0, 10), fill="x")
 
             num_spinbox = Spinbox(frame1, width=150)
@@ -864,9 +864,9 @@ class PropertiesManager(CTkTabview):
             frame1.pack_forget()
 
             head = CTkLabel(frame1, text="Width")
-            head.pack(side="right", padx=(10, 0), pady=10)
+            head.pack(side="left", padx=(10, 0), pady=10)
 
-            frame2 = CTkFrame(frame, height=75, fg_color="transparent")
+            frame2 = CTkFrame(frame, fg_color="transparent")
             frame2.pack(padx=10, pady=(0, 10), fill="x")
 
             num_spinbox2 = Spinbox(frame2, width=150)
