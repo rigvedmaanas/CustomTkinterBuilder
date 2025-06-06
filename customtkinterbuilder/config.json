@@ -17,12 +17,16 @@
             "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/customtkinterbuilder/Examples"
         },
         {
+            "Name": "Login-Demo",
+            "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/customtkinterbuilder/Examples"
+        },
+        {
             "Name": "Untitled356",
             "Directory": "/Users/rigvedmaanas/Downloads"
         },
         {
-            "Name": "Login-Demo",
-            "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/customtkinterbuilder/Examples"
+            "Name": "Components",
+            "Directory": "/Users/rigvedmaanas"
         }
     ]
 }

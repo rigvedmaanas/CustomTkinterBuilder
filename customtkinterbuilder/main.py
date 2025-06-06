@@ -934,7 +934,6 @@ for x in {x.get_name()}._buttons_dict.values():
             self.get_parents(new_widget)
             #ic(self.widgets, self._parents, new_widget)
             if family:
-                #pass
                 new_widget.family = new_widget.cget("font").cget("family")
 
             self.add_to_dict(self.widgets, self._parents, new_widget)
