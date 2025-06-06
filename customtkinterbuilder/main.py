@@ -2452,6 +2452,8 @@ class App(CTkToplevel):
             self.toolbar.zoomout()
         elif meta and key == "0":
             self.toolbar.reset()
+        elif meta and key == "e":
+            self.main.export_code()
 
 
 if __name__ == "__main__":

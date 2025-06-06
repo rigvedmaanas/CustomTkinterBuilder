@@ -14,24 +14,24 @@ class Root(CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.FRAME0 = CTkFrame(master=self, width=300, fg_color=['#f1f0ea', '#0d0c1d'])
+        self.FRAME0 = CTkFrame(master=self, width=300)
         self.FRAME0.pack_propagate(False)
         self.FRAME0.pack(fill="y", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="left")
         self.LABEL3 = CTkLabel(master=self.FRAME0, text="Custom Tkinter\nBuilder", compound="left", justify="left", image=CTkImage(Image.open(resource_path(
             "Logo-WelcomePage.png")), size=(96, 96)), text_color=['#0d0c1d', '#f1f0ea'], font=CTkFont(family="SF Display", size=25))
         self.LABEL3.pack(pady=['20', 30], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, side="top")
-        self.BUTTON4 = CTkButton(master=self.FRAME0, text="     Projects", height=40, anchor="w", corner_radius=0, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['#f1f0ea', '#f1f0ea'], font=CTkFont(family="SF Display", size=20))
+        self.BUTTON4 = CTkButton(master=self.FRAME0, text="     Projects", height=40, anchor="w", corner_radius=0, font=CTkFont(family="SF Display", size=20))
         self.BUTTON4.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.BUTTON6_copy = CTkButton(master=self.FRAME0, text="     Customize", height=40, anchor="w", corner_radius=0, fg_color="transparent", hover_color=['#ae1d4f', '#ae1d4f'], text_color=['#0d0c1d', '#f1f0ea'], font=CTkFont(family="SF Display", size=20))
+        self.BUTTON6_copy = CTkButton(master=self.FRAME0, text="     Customize", height=40, anchor="w", corner_radius=0, fg_color="transparent", font=CTkFont(family="SF Display", size=20))
         #self.BUTTON6_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.FRAME3_copy = CTkFrame(master=self, width=300, fg_color=['#e0ddcf', '#161b33'])
+        self.FRAME3_copy = CTkFrame(master=self, width=300)
         self.FRAME3_copy.pack_propagate(False)
         self.FRAME3_copy.pack(pady=['10', 10], anchor="center", expand=1, fill="both", ipadx=0, ipady=0, padx=[0, 10], side="left")
 
-        self.FRAME6 = CTkFrame(master=self.FRAME3_copy, height=55, fg_color=['#e0ddcf', '#161b33'])
+        self.FRAME6 = CTkFrame(master=self.FRAME3_copy, height=55)
         self.FRAME6.pack_propagate(False)
         self.FRAME6.pack(pady=['10', 10], anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=10, side="top")
-        self.FRAME7 = CTkFrame(master=self.FRAME6, fg_color=['#e0ddcf', '#161b33'])
+        self.FRAME7 = CTkFrame(master=self.FRAME6)
         self.FRAME7.pack_propagate(False)
         self.FRAME7.pack(pady=['5', 5], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, padx=5, side="left")
         self.LABEL8 = CTkLabel(master=self.FRAME7, text="", image=CTkImage(Image.open(resource_path(
@@ -39,15 +39,15 @@ class Root(CTk):
         self.LABEL8.pack(padx=[10, '0'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
         self.var = StringVar()
         self.var.set("Search Projects")
-        self.ENTRY9 = CTkEntry(master=self.FRAME7, placeholder_text="Search Projects", fg_color=['#e0ddcf', '#161b33'], border_width=0, text_color=['#0d0c1d', '#f1f0ea'], placeholder_text_color=['#161b33', '#e0ddcf'], font=CTkFont(family="SF Display", size=14), textvariable=self.var)
+        self.ENTRY9 = CTkEntry(master=self.FRAME7, placeholder_text="Search Projects", border_width=0, font=CTkFont(family="SF Display", size=14), textvariable=self.var)
         self.ENTRY9.pack(padx=['10', 10], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=0, side="left")
         self.var.trace_add("write", self.search)
-        self.BUTTON10 = CTkButton(master=self.FRAME6, text="New Project", corner_radius=3, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['gray98', '#f1f0ea'], font=CTkFont(family="SF Display", size=14), command=lambda: SaveFileDialog(callback=self.create_project, theme=True))
+        self.BUTTON10 = CTkButton(master=self.FRAME6, text="New Project", corner_radius=3, font=CTkFont(family="SF Display", size=14), fg_color="#0099FF", hover=False, command=lambda: SaveFileDialog(callback=self.create_project, theme=True))
         self.BUTTON10.pack(padx=[5, '5'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.BUTTON13_copy = CTkButton(master=self.FRAME6, text="Open", corner_radius=3, fg_color=['#cf245e', '#cf245e'], hover_color=['#ae1d4f', '#ae1d4f'], text_color=['gray98', '#f1f0ea'], width=90, font=CTkFont(family="SF Display", size=14), command=self.open_project_from_disk)
+        self.BUTTON13_copy = CTkButton(master=self.FRAME6, text="Open", corner_radius=3, width=90, font=CTkFont(family="SF Display", size=14), command=self.open_project_from_disk)
         self.BUTTON13_copy.pack(padx=['5', 10], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
 
-        self.FRAME20_copy = CTkScrollableFrame(master=self.FRAME3_copy, width=300, fg_color=['#e0ddcf', '#161b33'])
+        self.FRAME20_copy = CTkScrollableFrame(master=self.FRAME3_copy, width=300)
 
         self.FRAME20_copy.pack(pady=[10, 10], anchor="center", expand=1, fill="both", ipadx=0, ipady=0, padx=[10, 10])
 
@@ -114,26 +114,30 @@ class Root(CTk):
             self.show_project(short_name, file[1], file[0])
 
     def show_project(self, short_name, name, dir_):
-        FRAME13 = CTkFrame(master=self.FRAME20_copy, height=65, fg_color=['#f1f0ea', '#0d0c1d'])
+        FRAME13 = CTkFrame(master=self.FRAME20_copy, height=65)
         FRAME13.pack_propagate(False)
         FRAME13.pack(padx=['15', 20], anchor="center", expand=0, fill="x", ipadx=0, ipady=0, pady=[10, 0],
                           side="bottom")
         LABEL14 = CTkLabel(master=FRAME13, text=short_name.upper(), width=50, height=50,
-                                fg_color=['#cf245e', '#cf245e'], corner_radius=3, text_color=['#f1f0ea', '#f1f0ea'],
+                                corner_radius=3,
                                 font=CTkFont(family="SF Display", size=14))
-        LABEL14.pack(padx=[8, '0'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        FRAME15 = CTkFrame(master=FRAME13, height=45, fg_color=['#f1f0ea', '#0d0c1d'])
+        #LABEL14.pack(padx=[8, '0'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
+        FRAME15 = CTkFrame(master=FRAME13, height=45)
         FRAME15.pack_propagate(False)
         FRAME15.pack(padx=['10', 10], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="top")
-        LABEL16 = CTkLabel(master=FRAME15, text=name, text_color=['gray10', '#f1f0ea'], anchor="w", height=22,
-                                font=CTkFont(family="SF Display", size=14))
+        LABEL16 = CTkLabel(master=FRAME15, text=name, anchor="w", height=22,
+                                font=CTkFont(family="SF Display", size=14, weight="bold"))
         LABEL16.pack(expand="true", anchor="center", fill="x", ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        LABEL18_copy = CTkLabel(master=FRAME15, text=dir_, text_color=['#adaba7', '#adaba7'], anchor="w",
+        LABEL18_copy = CTkLabel(master=FRAME15, text=dir_, anchor="w",
                                      font=CTkFont(family="SF Display", size=14))
         LABEL18_copy.pack(expand="true", anchor="center", fill="x", ipadx=0, ipady=0, padx=0, pady=0, side="top")
         #self.FRAME13.bind('<Double-Button-1>', lambda e, dir_=dir_, name=name: self.open_project_in_editor(dir_=dir_, name=name))
+
         for x in [FRAME13, FRAME15, LABEL14, LABEL16, LABEL18_copy]:
-            x.bind('<Double-Button-1>', lambda e, dir_=dir_, name=name: (self.bring_to_top(dir_, name), self.open_project_in_editor(dir_=dir_, name=name)))
+            x.bind('<Button-1>', lambda e, dir_=dir_, name=name: (self.bring_to_top(dir_, name), self.open_project_in_editor(dir_=dir_, name=name)))
+            x.bind('<Enter>', lambda e: [y.configure(fg_color="#0099FF") for y in [FRAME13, FRAME15, LABEL14, LABEL16, LABEL18_copy]])
+            x.bind('<Leave>', lambda e: [y.configure(fg_color="transparent") for y in [FRAME13, FRAME15, LABEL14, LABEL16, LABEL18_copy]])
+
 
     def bring_to_top(self, dir_, name):
         with open(resource_path("config.json"), 'r') as openfile:
