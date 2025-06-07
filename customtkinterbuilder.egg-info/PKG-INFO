@@ -1,6 +1,6 @@
-Metadata-Version: 2.2
+Metadata-Version: 2.4
 Name: customtkinterbuilder
-Version: 1.0.4
+Version: 1.0.6
 Summary: This is a Free and Open Source RAD tool for Custom Tkinter. This software allows you to create complex UI faster than ever⚡
 Home-page: https://github.com/rigvedmaanas/CustomTkinterBuilder
 Author: Rigved Maanas M
@@ -56,12 +56,14 @@ Requires-Dist: typing_extensions==4.13.2
 Requires-Dist: urllib3==2.4.0
 Requires-Dist: userpaths==0.1.3
 Requires-Dist: zipp==3.22.0
+Requires-Dist: CustomTkinterThemes==1.0.0
 Dynamic: author
 Dynamic: author-email
 Dynamic: classifier
 Dynamic: description
 Dynamic: description-content-type
 Dynamic: home-page
+Dynamic: license-file
 Dynamic: project-url
 Dynamic: requires-dist
 Dynamic: requires-python

@@ -2,7 +2,8 @@ import os.path
 import shutil
 from customtkinterbuilder.get_path import resource_path, tempify
 from customtkinterbuilder.Widgets.Button import Button
-
+from customtkinterbuilder.Widgets.Frame import Frame
+from customtkinterbuilder.Widgets.ScrollableFrame import ScrollableFrame
 
 class Button_1(Button):
     def __init__(self, *args, properties, **kwargs):
@@ -23,33 +24,23 @@ class Button_1(Button):
         self.save(lambda val: self.configure(border_width=val), "border_width", 1, 1)
 
 
-class Button_2(Button):
+class Button_2(Frame):
     def __init__(self, *args, properties, **kwargs):
         super().__init__(*args, properties=properties, **kwargs)
-
-    def pack(self, **kwargs):
-        super().pack(**kwargs)
-        shutil.copy2(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Button_2", "baseline_arrow_forward_white_18dp_1x.png")), tempify("temp"))
-
-        #self.set_image(os.path.join("ThemeAssets", "ThemedButton", "Button_2", "baseline_arrow_forward_white_18dp_1x.png"), size=(18, 18))
-        self.set_image(tempify(os.path.join("temp", "baseline_arrow_forward_white_18dp_1x.png")), size=(18, 18))
-
-        self.save(lambda val: self.configure(width=val), "width", 140, 140)
-        self.save(lambda val: self.configure(height=val), "height", 38, 38)
-        self.save(lambda val: self.configure(compound=val), "compound", "right", "right")
-
-        self.save(lambda val: self.configure(text=val), "text", "Next", "Next")
-        self.save(lambda val: self.configure(corner_radius=val), "corner_radius", 30, 30)
-        self.save(lambda val: self.configure(fg_color=val), "fg_color", ["#2CC985", "#2FA572"], ["#2CC985", "#2FA572"])
-        self.save(lambda val: self.configure(text_color=val), "text_color", ["gray98", "#DCE4EE"], ["gray98", "#DCE4EE"])
-        self.save(lambda val: self.configure(hover_color=val), "hover_color", ["#0C955A", "#106A43"], ["#0C955A", "#106A43"])
-        self.save(lambda val: self.configure(border_color=val), "border_color", ["#3E454A", "#949A9F"], ["#3E454A", "#949A9F"])
-        self.save(lambda val: self.configure(border_width=val), "border_width", 0, 0)
-        self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", ["gray78", "gray68"], ["gray78", "gray68"])
+        self.component = True
 
 
-        self.save(lambda val: self.cget("font").configure(size=val), "font_size", int(15), int(15))
-        self.save(lambda val: self.cget("font").configure(weight=val), "font_weight", "normal", "normal")
+    def add_widgets(self, func, properties, widget):
+
+        # func(Button_1, x=0, y=0, properties=properties, widget=widget, part_of_component=True)
+        properties["orientation"] = "vertical"
+        scrl = func(ScrollableFrame, x=0, y=0, properties=properties, widget=widget, part_of_component=True, return_widget=True)
+        properties.pop("orientation")
+
+        for a in range(10):
+            func(Button_1, x=0, y=0, properties=properties, widget=scrl.get_me(), part_of_component=True,
+                 return_widget=True)
+
 
 class Button_3(Button):
     def __init__(self, *args, properties, **kwargs):

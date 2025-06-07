@@ -34,6 +34,7 @@ class Main(CTkFrame, BaseWidgetClass):
     def get_name(self):
         return self.name.replace(" ", "_")
 
+
     def save(self, func, key, val, arg):
         self.props[key] = val
         func(arg)

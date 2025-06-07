@@ -1,51 +1,34 @@
 import json
 import platform
-import shutil
 import threading
 import tkinter.messagebox
 import uuid
+from pathlib import Path
 from tkinter import messagebox
 from tkinter.colorchooser import askcolor
-from .properties import Spinbox
 import pyperclip
 from jinja2 import Environment, FileSystemLoader
 import darkdetect
 import userpaths
 from icecream import ic
-from .Widgets import ThemedText
-from .Widgets import ThemedButton
+from .Widgets import *
 from .properties import PropertiesManager
 from tkinter.filedialog import asksaveasfilename, askdirectory
 from customtkinter import *
 from .dragndrop import DragManager
-from .Widgets.Button import Button
-from .Widgets.Label import Label
-from .Widgets.Frame import Frame
-from .Widgets.Entry import Entry
-from .Widgets.Switch import Switch
-from .Widgets.TextBox import TextBox
-from .Widgets.ProgressBar import ProgressBar
-from .Widgets.SegmentedButton import SegmentedButton
-from .Widgets.Slider import Slider
-from .Widgets.OptionMenu import OptionMenu
-from .Widgets.CheckBox import CheckBox
-from .Widgets.ScrollableFrame import ScrollableFrame
-from .Widgets.RadioButton import RadioButton
-from .Widgets.Scrollbar import Scrollbar
-from .Widgets.ComboBox import ComboBox
-from .Widgets.Main import Main
 from .CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image, ImageTk
 from .get_path import resource_path, tempify, joinpath
 import autopep8
 from customtkinterthemes import theme_manager
-from .utils import *
 from .CustomWidgets.ToolBar import ToolBar
 from .CustomWidgets.AppearanceButton import AppearanceButton
 from .CustomWidgets.MessageBox import MessageBox
+from .Components import *
+from re import sub
 
-ic.disable()
+#ic.disable()
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')
 #blockPrint()
@@ -160,7 +143,23 @@ class MainWindow:
         self.theme = self.theme_manager.get_theme_by_name()
         self.template_env = Environment(loader=FileSystemLoader(os.path.dirname(os.path.abspath(__file__))))
         self.scale = 1
-
+        self.class_map = {
+            "CTkButton": "Button",
+            "CTkCheckBox": "CheckBox",
+            "CTkComboBox": "ComboBox",
+            "CTkEntry": "Entry",
+            "CTkFrame": "Frame",
+            "CTkLabel": "Label",
+            "CTkOptionMenu": "OptionMenu",
+            "CTkProgressBar": "ProgressBar",
+            "CTkRadioButton": "RadioButton",
+            "CTkScrollableFrame": "ScrollableFrame",
+            "CTkScrollbar": "Scrollbar",
+            "CTkSegmentedButton": "SegmentedButton",
+            "CTkSlider": "Slider",
+            "CTkSwitch": "Switch",
+            "CTkTextbox": "TextBox"
+        }
         self.windows_open = []
 
         self.widget_colors = {
@@ -183,6 +182,237 @@ class MainWindow:
             "CTkScrollableFrame": ["label_fg_color"],
             "DropdownMenu": ["fg_color", "hover_color", "text_color"]
         }
+
+    def to_camelcase(self, s):
+        s = sub(r"(_|-)+", " ", s).title().replace(" ", "").replace("*", "")
+        return ''.join([s[0].lower(), s[1:]])
+
+    def generate_component_code(self, class_name):
+        component = {self.current_selected_widget: self.traverse_widgets_till_found(self.current_selected_widget, self.widgets)}
+        print(component)
+
+        oop_code = CodeGenerator(indentation="    ")
+
+        if self.current_selected_widget.type not in ["FRAME", "SCROLLABLEFRAME", "SLIDER", "SCROLLBAR"]:
+            oop_code.add_line(f"""
+from .BaseComponent import BaseComponent
+from customtkinterbuilder.Widgets import *
+from customtkinter import CTkImage
+from PIL import Image
+
+class {self.to_camelcase(class_name)}({self.class_map[self.current_selected_widget.get_class()]}, BaseComponent):
+    def __init__(self, *args, properties, **kwargs):
+        BaseComponent.__init__(self)
+        {self.class_map[self.current_selected_widget.get_class()]}.__init__(self, *args, properties=properties, **kwargs)""")
+            parameters = self.current_selected_widget.props
+            print(parameters)
+            if "image" in parameters:
+                dst = f"./customtkinterbuilder/ComponentAssets/{class_name}"
+                src = parameters["image"].cget("dark_image").filename
+                parameters["image"] = "ahifhyhmacpopgbbjajsrwjrvfnmzsikrymjfgjakcjyjtdtfxcxqiowpbrheqlhbvgkhckncvdqjxhisnnvzuayoqpdhuiqlolhblocdokaoaroqwfkqbmtfcnoajnqszlgefvvmzhanfeqmtzkrlivydjigeodcezyahakdilbxlkcbyuchwnotsokqbisednbxethehnmepprylstzkakkmpdnwedvjnrzsvwktiyejzrshqklqnhoimdszccokywzuoboruzpcdqkblxdegiljcyyertfvynbgqdzsvjfqvgxtcqozgzuvcbtgbkdcorikwfqkqlsefoqdcxkkagjunbkhvlpulj" # Just a work around
+                parameters = str(parameters)
+                parameters = parameters.replace("'ahifhyhmacpopgbbjajsrwjrvfnmzsikrymjfgjakcjyjtdtfxcxqiowpbrheqlhbvgkhckncvdqjxhisnnvzuayoqpdhuiqlolhblocdokaoaroqwfkqbmtfcnoajnqszlgefvvmzhanfeqmtzkrlivydjigeodcezyahakdilbxlkcbyuchwnotsokqbisednbxethehnmepprylstzkakkmpdnwedvjnrzsvwktiyejzrshqklqnhoimdszccokywzuoboruzpcdqkblxdegiljcyyertfvynbgqdzsvjfqvgxtcqozgzuvcbtgbkdcorikwfqkqlsefoqdcxkkagjunbkhvlpulj'", f"CTkImage(light_image=Image.open(os.path.join(tempify('temp'), '{os.path.basename(src)}')), dark_image=Image.open(os.path.join(tempify('temp'), '{os.path.basename(src)}')))")
+                self.copy_file_to_nested_dir(src, dst)
+                # print(parameters["image"], parameters["image"].dark_image)
+                oop_code.add_line(f"        self.copy('{os.path.join(dst, os.path.basename(src))}')")
+            oop_code.add_line(f"        {self.class_map[self.current_selected_widget.get_class()]}.save_properties(self, properties={parameters})")
+            oop_code.add_line(f"""
+    @classmethod
+    def as_str(cls):
+        return "{class_name}"
+
+    def add_widgets(self, func, properties, widget):
+        pass""")
+        elif self.current_selected_widget.type in ["SCROLLABLEFRAME", "SLIDER", "SCROLLBAR"]:
+            string_ = '{"properties": properties, "orientation": "' + self.current_selected_widget.props.pop("orientation") + '"}'
+
+
+            oop_code.add_line(f"""
+from .BaseComponent import BaseComponent
+from customtkinterbuilder.Widgets import *
+from customtkinter import CTkImage
+from PIL import Image
+
+class {self.to_camelcase(class_name)}({self.class_map[self.current_selected_widget.get_class()]}, BaseComponent):
+    def __init__(self, *args, properties, **kwargs):
+        BaseComponent.__init__(self)
+        prop = {string_}
+        {self.class_map[self.current_selected_widget.get_class()]}.__init__(self, *args, **prop, **kwargs)
+        {self.class_map[self.current_selected_widget.get_class()]}.save_properties(self, properties={self.current_selected_widget.props})
+
+    @classmethod
+    def as_str(cls):
+        return "{class_name}"
+
+    def add_widgets(self, func, properties, widget):
+        """)
+        else:
+            oop_code.add_line(f"""
+from .BaseComponent import BaseComponent
+from customtkinterbuilder.Widgets import *
+from customtkinter import CTkImage
+from PIL import Image
+
+class {self.to_camelcase(class_name)}(Frame, BaseComponent):
+    def __init__(self, *args, properties, **kwargs):
+        BaseComponent.__init__(self)
+        Frame.__init__(self, *args, properties=properties, **kwargs)
+    
+    @classmethod
+    def as_str(cls):
+        return "{class_name}"
+    
+    def add_widgets(self, func, properties, widget):""")
+        oop_code.indent()
+        oop_code.indent()
+        self.loop_generate_component(d=component[self.current_selected_widget], p="self", code=oop_code, class_name=class_name)
+        oop_code.add_line("pass") # If there are no widgets in frame or Scrollable Frame
+        return oop_code.get_code()
+
+    def create_component_code(self, class_name):
+
+        if self.current_selected_widget.type == "MAIN":
+            self.r.winfo_toplevel().message_box.show(f"{self.current_selected_widget.get_name()} isn't supported in a component")
+            return
+        if class_name.strip() == "":
+            class_name = "Default Component"
+
+        code = self.generate_component_code(class_name)
+
+        file = Path(f"./customtkinterbuilder/Components/{self.to_camelcase(class_name)}.py")
+        if file.is_file():
+            reply = messagebox.askyesno("Warning", f"{self.to_camelcase(class_name)}.py exists. Do you want to replace the file?")
+            if not reply:
+                return None
+        with open(file, "w") as f:
+            f.write(code)
+
+
+    def create_component(self):
+
+        self.clear_toplevels()
+        root = CTkToplevel()
+
+        root.geometry("400x150+500+100")
+        root.title("Create Component")
+        root.after(20, root.lift)
+        root.after(25, root.focus_get)
+        self.windows_open.append(root)
+        root.wm_iconbitmap()
+        root.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
+        root.after(100, lambda: root.iconphoto(False, root.iconpath))
+
+
+        FRAME28 = CTkFrame(master=root, fg_color="transparent")
+        FRAME28.pack(fill="both", padx=10, pady=10)
+        LABEL29 = CTkLabel(master=FRAME28, text="Component Name (Should be a valid python file name)", anchor="w", padx=10, pady=0,
+                           font=CTkFont(weight="bold", size=17))
+        LABEL29.pack(fill="x")
+        ENTRY30 = CTkEntry(master=FRAME28, placeholder_text="Component Name")
+        ENTRY30.pack(pady=(10, 0), fill="x", padx=10)
+        BUTTON32 = CTkButton(master=FRAME28, text="Create New Component", fg_color=("#008fff", "#008fff"), hover=False, command=lambda: (self.create_component_code(ENTRY30.get()), root.destroy()))
+        BUTTON32.pack(pady=(10, 10), padx=10, side="right")
+
+
+    def traverse_widgets_till_found(self, widget, widget_list):
+        for key, value in widget_list.items():
+            if widget == key:
+                return value
+            else:
+                result = self.traverse_widgets_till_found(widget, value)
+                if result is not None:
+                    return result
+        return None
+
+
+    def loop_generate_component(self, d, p, code, class_name):
+        try:
+            widget_code = self.template_env.get_template("component.py.j2")
+
+        except Exception as e:
+            print(f"Error loading Jinja2 template 'ctk_widget.py.j2': {e}")
+
+            return
+        for parent, children in d.items():
+            #ic(parent, children, type(parent))
+            widget_type = parent.type
+            widget_id = parent.get_name()
+            parameters = parent.props
+            pack_options = parent.pack_options
+            ic(parameters)
+            if parent.type == "Frame":
+                pack_propagate = parent.propagate_on_pack
+            else:
+                pack_propagate = None
+            children = {k: v for k, v in children.items() if
+                        k not in ["TYPE", "parameters", "pack_options", "ID", "PACK_PROPAGATE"]}
+            widget_class = parent.get_class()
+            orientation = parameters.pop('orientation', None)
+            prop = '{"properties": properties["properties"]'
+            if orientation is not None:
+                prop += f', "orientation": "{orientation}"'
+            prop += "}"
+
+            rendered_code = widget_code.render(
+                widget_id=widget_id,
+                widget_class=self.class_map[widget_class],
+                parent=p,
+                properties=prop,
+                pack_options=pack_options,
+                pack_propagate=pack_propagate,
+                os=os,
+                platform=platform,
+                theme=self.theme,
+                escape_special_chars=self.escape_chars,
+                bool_change=self._bool_change,
+                widget_type=widget_type,
+                format_pack_options=self.format_pack_options,
+            )
+            code.add_line(rendered_code)
+
+            if "image" in parameters:
+                dst = f"./customtkinterbuilder/ComponentAssets/{class_name}"
+                src = parameters["image"].cget("dark_image").filename
+                parameters["image"] = "ahifhyhmacpopgbbjajsrwjrvfnmzsikrymjfgjakcjyjtdtfxcxqiowpbrheqlhbvgkhckncvdqjxhisnnvzuayoqpdhuiqlolhblocdokaoaroqwfkqbmtfcnoajnqszlgefvvmzhanfeqmtzkrlivydjigeodcezyahakdilbxlkcbyuchwnotsokqbisednbxethehnmepprylstzkakkmpdnwedvjnrzsvwktiyejzrshqklqnhoimdszccokywzuoboruzpcdqkblxdegiljcyyertfvynbgqdzsvjfqvgxtcqozgzuvcbtgbkdcorikwfqkqlsefoqdcxkkagjunbkhvlpulj" # Just a work around
+                parameters = str(parameters)
+                parameters = parameters.replace("'ahifhyhmacpopgbbjajsrwjrvfnmzsikrymjfgjakcjyjtdtfxcxqiowpbrheqlhbvgkhckncvdqjxhisnnvzuayoqpdhuiqlolhblocdokaoaroqwfkqbmtfcnoajnqszlgefvvmzhanfeqmtzkrlivydjigeodcezyahakdilbxlkcbyuchwnotsokqbisednbxethehnmepprylstzkakkmpdnwedvjnrzsvwktiyejzrshqklqnhoimdszccokywzuoboruzpcdqkblxdegiljcyyertfvynbgqdzsvjfqvgxtcqozgzuvcbtgbkdcorikwfqkqlsefoqdcxkkagjunbkhvlpulj'", f"CTkImage(light_image=Image.open(os.path.join(tempify('temp'), '{os.path.basename(src)}')), dark_image=Image.open(os.path.join(tempify('temp'), '{os.path.basename(src)}')))")
+                self.copy_file_to_nested_dir(src, dst)
+                #print(parameters["image"], parameters["image"].dark_image)
+                code.add_line(f"self.copy('{os.path.join('temp', os.path.basename(src))}')")
+
+            code.add_line(f"self.{widget_id}.save_properties({parameters})")
+            if children != {}:
+                self.loop_generate_component(children, f"self.{parent.get_name()}", code, class_name)
+
+    def copy_file_to_nested_dir(self, source_file_path, destination_dir_path):
+        """
+        Creates a nested directory and copies the file into it.
+
+        Parameters:
+        - source_file_path (str): The path to the file to copy.
+        - destination_dir_path (str): The nested directory path where the file should be copied.
+
+        Returns:
+        - str: The full path to the copied file.
+        """
+        try:
+            # Create nested directory if it doesn't exist
+            os.makedirs(destination_dir_path, exist_ok=True)
+
+            # Get the filename from the source path
+            file_name = os.path.basename(source_file_path)
+
+            # Full path for the destination file
+            destination_file_path = os.path.join(destination_dir_path, file_name)
+
+            # Copy the file
+            shutil.copy2(source_file_path, destination_file_path)
+
+            return destination_file_path
+
+        except Exception as e:
+            print(f"Error copying file: {e}")
+            return None
 
     def change_appearance_mode(self, mode):
         wgts = list(self.id_mapped_widgets.values())
@@ -260,16 +490,18 @@ class MainWindow:
                 d[key] = x[key]
 
         if widget.__class__ not in [Frame, ProgressBar, Scrollbar, Slider, Main, ScrollableFrame]:
-            for y in list(self.theme["CTkFont"].keys()):
-                if sys.platform == "darwin":
-                    d["font"] = CTkFont(family=self.theme["CTkFont"]["macOS"]["family"], size=self.theme["CTkFont"]["macOS"]["size"],
-                                      weight=self.theme["CTkFont"]["macOS"]["weight"])
-                elif sys.platform.startswith("win"):
-                    d["font"] = CTkFont(family=self.theme["CTkFont"]["Windows"]["family"], size=self.theme["CTkFont"]["Windows"]["size"],
-                                      weight=self.theme["CTkFont"]["Windows"]["weight"])
-                else:
-                    d["font"] = CTkFont(family=self.theme["CTkFont"]["Linux"]["family"], size=self.theme["CTkFont"]["Linux"]["size"],
-                                      weight=self.theme["CTkFont"]["Linux"]["weight"])
+            if widget.type not in ["FRAME", "PROGRESSBAR", "SCROLLBAR", "SLIDER", "MAIN", "SCROLLABLEFRAME"]:
+                ic(widget.type)
+                for y in list(self.theme["CTkFont"].keys()):
+                    if sys.platform == "darwin":
+                        d["font"] = CTkFont(family=self.theme["CTkFont"]["macOS"]["family"], size=self.theme["CTkFont"]["macOS"]["size"],
+                                          weight=self.theme["CTkFont"]["macOS"]["weight"])
+                    elif sys.platform.startswith("win"):
+                        d["font"] = CTkFont(family=self.theme["CTkFont"]["Windows"]["family"], size=self.theme["CTkFont"]["Windows"]["size"],
+                                          weight=self.theme["CTkFont"]["Windows"]["weight"])
+                    else:
+                        d["font"] = CTkFont(family=self.theme["CTkFont"]["Linux"]["family"], size=self.theme["CTkFont"]["Linux"]["size"],
+                                          weight=self.theme["CTkFont"]["Linux"]["weight"])
         widget.configure(**d)
 
         if widget.get_class() == "CTkScrollableFrame":
@@ -1299,20 +1531,26 @@ for x in {x.get_name()}._buttons_dict.values():
 
         return new_d
 
-    def add_widget(self, w, properties, widget, x=0, y=0):
+    def add_widget(self, w, properties, widget, x=0, y=0, part_of_component=False, return_widget=False, **kwargs):
 
-        if widget.master.master.__class__ == ScrollableFrame:
-            new_widget = w(master=widget.master.master.get_me(), **properties)
+        old_properties = properties
+        if not part_of_component:
+            if widget.master.master.__class__ == ScrollableFrame:
+                new_widget = w(master=widget.master.master.get_me(), **properties, **kwargs)
 
-        elif widget.master.master.master.__class__ == ScrollableFrame:
-            new_widget = w(master=widget.master.master.master.get_me(), **properties)
-        else:
-            if widget.master.__class__ not in [ScrollableFrame, Frame, Main]:
-
-                new_widget = w(master=widget.master.master, **properties)
-
+            elif widget.master.master.master.__class__ == ScrollableFrame:
+                new_widget = w(master=widget.master.master.master.get_me(), **properties, **kwargs)
             else:
-                new_widget = w(master=widget.master, **properties)
+                if widget.master.__class__ not in [ScrollableFrame, Frame, Main]:
+
+                    new_widget = w(master=widget.master.master, **properties, **kwargs)
+
+                else:
+                    new_widget = w(master=widget.master, **properties, **kwargs)
+        else:
+            if widget.__class__ == ScrollableFrame:
+                widget = widget.get_me()
+            new_widget = w(master=widget, **properties, **kwargs)
 
         new_widget.num = self.total_num
         new_widget.name = new_widget.type + str(new_widget.num)
@@ -1339,7 +1577,16 @@ for x in {x.get_name()}._buttons_dict.values():
         else:
             new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
 
+        component = None
 
+        try:
+            component = new_widget.component
+        except Exception as e:
+            pass
+
+        if component:
+            new_widget.add_widgets(self.add_widget, properties=old_properties, widget=new_widget)
+            ic(new_widget)
 
         #new_widget.bind("<Button-1>", new_widget.on_drag_start)
 
@@ -1353,7 +1600,8 @@ for x in {x.get_name()}._buttons_dict.values():
                 self.drag_manager.update_children(children=widget.master.master.master.winfo_children())
             else:
                 self.drag_manager.update_children(children=widget.master.winfo_children())
-
+        if return_widget:
+            return new_widget
 
     def delete_from_dict(self, my_dict, key_list, value):
         current_dict = my_dict
@@ -1552,13 +1800,13 @@ class WidgetButton(CTkButton):
 
     def pack(self, **kwargs):
         try:
-            self.master.master.master.master.master.dragndrop_list.append(self)
+            self.master.master.master.master.master.dragndrop_list.append(self) # OH MY GOD. WHY DID IT DO THIS!!!! REFACTOR REQUIRED!!
         except AttributeError as e:
             # There is a parent widget
             try:
-                self.master.master.master.master.master.master.dragndrop_list.append(self)
+                self.master.master.master.master.master.master.dragndrop_list.append(self) # OH MY GOD. WHY DID IT DO THIS!!!! REFACTOR REQUIRED!!
             except AttributeError as e:
-                self.master.master.master.master.master.master.master.dragndrop_list.append(self)
+                self.master.master.master.master.master.master.master.dragndrop_list.append(self) # OH MY GOD. WHY DID IT DO THIS!!!! REFACTOR REQUIRED!!
 
         super().pack(**kwargs)
 
@@ -1685,7 +1933,7 @@ class Hierarchy(CTkScrollableFrame):
             self.widget = None
             for x in list(d.keys()):
                 if d[x] != {}:
-                    btn = CTkButton(self, text=x.get_name(), fg_color="#2B2B2B")
+                    btn = CTkButton(self, text=x.get_name(), fg_color="#2B2B2B", hover=False)
                     #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                     btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                     btn.widget = x
@@ -1693,7 +1941,7 @@ class Hierarchy(CTkScrollableFrame):
                     self.update_list(d[x], pad+20)
                 else:
 
-                    btn = CTkButton(self, text=x.get_name(), fg_color="#2B2B2B")
+                    btn = CTkButton(self, text=x.get_name(), fg_color="#2B2B2B", hover=False)
                     #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                     btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                     btn.widget = x
@@ -1771,7 +2019,7 @@ class Hierarchy(CTkScrollableFrame):
 
         arr = self.get_frames_scrollbar_only()
         for x in arr:
-            btn = CTkButton(self.scrl, text=x[2].get_name(), fg_color="#2B2B2B")
+            btn = CTkButton(self.scrl, text=x[2].get_name(), fg_color="#2B2B2B", hover=False)
             # x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
             btn.configure(command=lambda x=x[2], btn=btn: (self.set_change_parent_selection(x, btn)))
             btn.widget = x[2]
@@ -2051,6 +2299,9 @@ class App(CTkToplevel):
         self.export_code_btn = CTkButton(self.tool_bar, text="Export Code", fg_color="transparent", width=50)
         self.export_code_btn.pack(side="right", padx=5, pady=5)
 
+        self.create_component_btn = CTkButton(self.tool_bar, text="Create Component", fg_color="transparent", width=50)
+        #self.create_component_btn.pack(side="right", padx=5, pady=5)
+
         self.appearance_mode_switch = AppearanceButton(self.tool_bar)
         self.appearance_mode_switch.pack(side="right", padx=5, pady=5)
 
@@ -2214,6 +2465,17 @@ class App(CTkToplevel):
         self.vert_scrlbar.pack(side="left", fill="y", padx=(10, 0), pady=10)
 
         # Themed Widgets
+
+        classes = self.get_component()
+        for class_ in classes:
+
+            self.btn = WidgetButton(master=self.widget_panel_themed, text=class_.as_str(), height=50,
+                                                 on_drag=lambda x, y, widget: self.main.add_widget(
+                                                     class_, properties={"properties": self.properties_panel}, x=x, y=y, widget=widget))
+            self.btn.pack(fill="x", expand=True, padx=5, pady=(10, 0))
+
+
+
         t = CTkFrame(self.widget_panel_themed)
         t.pack(fill="x")
         self.add_button_1_btn = WidgetButton(master=t, text="Button 1", height=50,
@@ -2426,10 +2688,29 @@ class App(CTkToplevel):
         self.toolbar = ToolBar(self, mainwindow=self.main, height=50, bg_color=self.main_window_panel.cget("fg_color"))
         self.toolbar.place(relx=0.5, rely=1, y=-50, anchor="s")
         self.main.change_appearance_mode(self.appearance_mode_switch.get())
-
+        #self.create_component_btn.configure(command=self.main.create_component)
         self.wm_iconbitmap()
         self.iconpath = ImageTk.PhotoImage(file=resource_path('Logo.ico'))
         self.after(100, lambda: self.iconphoto(False, self.iconpath))
+
+
+
+    def get_component(self):
+        files = os.listdir("./customtkinterbuilder/Components")
+        files.remove("__init__.py")
+        files.remove("BaseComponent.py")
+        try:
+            files.remove("__pycache__")
+        except Exception as e:
+            pass
+
+        classes = []
+        for file in files:
+            module_name = file.replace(".py", "")
+            print(module_name)
+            classname = eval(module_name)  # I know its dangerous
+            classes.append(classname)
+        return classes
 
     def hotkey_manager(self, event):
         key = event.keysym

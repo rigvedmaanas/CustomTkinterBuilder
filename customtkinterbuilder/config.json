@@ -1,32 +1,3 @@
 {
-    "project_files": [
-        {
-            "Name": "CTkTest",
-            "Directory": "/Users/rigvedmaanas/Downloads"
-        },
-        {
-            "Name": "ThemeTest",
-            "Directory": "/Users/rigvedmaanas/Downloads"
-        },
-        {
-            "Name": "ThemeTest2",
-            "Directory": "/Users/rigvedmaanas/Downloads"
-        },
-        {
-            "Name": "Spotify-Demo",
-            "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/customtkinterbuilder/Examples"
-        },
-        {
-            "Name": "Login-Demo",
-            "Directory": "/Users/rigvedmaanas/Development/CustomTkinterBuilder/customtkinterbuilder/Examples"
-        },
-        {
-            "Name": "Untitled356",
-            "Directory": "/Users/rigvedmaanas/Downloads"
-        },
-        {
-            "Name": "Components",
-            "Directory": "/Users/rigvedmaanas"
-        }
-    ]
+    "project_files": []
 }
