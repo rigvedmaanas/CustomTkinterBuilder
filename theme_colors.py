@@ -1,4 +1,3 @@
-import copy
 import json
 import os
 
@@ -19,4 +18,4 @@ def get_ui_color(key):
     colors = _load_colors()
     if key not in colors:
         raise KeyError(f"Color key '{key}' not found in ThemeAssets/ui_colors.json")
-    return copy.copy(colors[key])
+    return colors[key]

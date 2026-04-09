@@ -46,7 +46,7 @@ class Button_2(Button):
         self.save(lambda val: self.configure(hover_color=val), "hover_color", get_ui_color("themed_button_2_hover"), get_ui_color("themed_button_2_hover"))
         self.save(lambda val: self.configure(border_color=val), "border_color", get_ui_color("themed_button_2_border"), get_ui_color("themed_button_2_border"))
         self.save(lambda val: self.configure(border_width=val), "border_width", 0, 0)
-        self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", ["gray78", "gray68"], ["gray78", "gray68"])
+        self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", get_ui_color("pair_gray78_gray68"), get_ui_color("pair_gray78_gray68"))
 
 
         self.save(lambda val: self.cget("font").configure(size=val), "font_size", int(15), int(15))
@@ -69,7 +69,7 @@ class Button_3(Button):
         self.save(lambda val: self.configure(hover_color=val), "hover_color", get_ui_color("themed_button_3_hover"), get_ui_color("themed_button_3_hover"))
         self.save(lambda val: self.configure(border_color=val), "border_color", get_ui_color("themed_button_3_border"), get_ui_color("themed_button_3_border"))
         self.save(lambda val: self.configure(border_width=val), "border_width", 1, 1)
-        self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", ["gray78", "gray68"], ["gray78", "gray68"])
+        self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", get_ui_color("pair_gray78_gray68"), get_ui_color("pair_gray78_gray68"))
 
         self.save(lambda val: self.cget("font").configure(size=val), "font_size", int(15), int(15))
         self.save(lambda val: self.cget("font").configure(weight=val), "font_weight", "bold", "bold")
@@ -89,7 +89,7 @@ class Button_Icon_white(Button):
         self.save(lambda val: self.configure(hover_color=val), "hover_color", get_ui_color("themed_icon_white_hover"), get_ui_color("themed_icon_white_hover"))
         self.save(lambda val: self.configure(border_color=val), "border_color", get_ui_color("themed_icon_white_border"), get_ui_color("themed_icon_white_border"))
         self.save(lambda val: self.configure(border_width=val), "border_width", 0, 0)
-        self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", ["gray78", "gray68"], ["gray78", "gray68"])
+        self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", get_ui_color("pair_gray78_gray68"), get_ui_color("pair_gray78_gray68"))
         shutil.copy2(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Icon_White", "baseline_people_white_18dp_1x.png")), tempify("temp"))
         #self.set_image(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Icon_White", "baseline_people_white_18dp_1x.png")), size=(18, 18))
         self.set_image(tempify(os.path.join("temp", "baseline_people_white_18dp_1x.png")), size=(18, 18))
@@ -110,8 +110,7 @@ class Button_Icon_black(Button):
         self.save(lambda val: self.configure(hover_color=val), "hover_color", get_ui_color("themed_icon_black_hover"), get_ui_color("themed_icon_black_hover"))
         self.save(lambda val: self.configure(border_color=val), "border_color", get_ui_color("themed_icon_black_border"), get_ui_color("themed_icon_black_border"))
         self.save(lambda val: self.configure(border_width=val), "border_width", 0, 0)
-        self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", ["gray78", "gray68"], ["gray78", "gray68"])
+        self.save(lambda val: self.configure(text_color_disabled=val), "text_color_disabled", get_ui_color("pair_gray78_gray68"), get_ui_color("pair_gray78_gray68"))
         shutil.copy2(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Icon_Black", "baseline_people_black_18dp_1x.png")), tempify("temp"))
         #self.set_image(resource_path(os.path.join("ThemeAssets", "ThemedButton", "Icon_Black", "baseline_people_black_18dp_1x.png")), size=(18, 18))
         self.set_image(tempify(os.path.join("temp", "baseline_people_black_18dp_1x.png")), size=(18, 18))
-
