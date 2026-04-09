@@ -1,6 +1,8 @@
 import sys
 import os
 import shutil
+import json
+import tempfile
 
 APP_NAME = "CustomTkinterBuilder"
 
@@ -43,7 +45,8 @@ def tempify(path):
 
 
     except Exception:
-        base_path = get_config_directory()
+        base_path = os.path.join(tempfile.gettempdir(), APP_NAME)
+        os.makedirs(base_path, exist_ok=True)
 
     return os.path.join(base_path, path)
 
@@ -102,6 +105,6 @@ def get_settings_path(filename="config.json"):
             shutil.copy2(default_config, settings_path)
         else:
             with open(settings_path, "w", encoding="utf-8") as f:
-                f.write('{"project_files": []}')
+                f.write(json.dumps({"project_files": []}, indent=4))
 
     return settings_path
