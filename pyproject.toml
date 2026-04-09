@@ -36,7 +36,6 @@ py-modules = [
   "properties",
   "WelcomePage",
   "widgets",
-  "hook-tkinterdnd2"
 ]
 
 [tool.setuptools.packages.find]
@@ -45,7 +44,7 @@ include = ["Widgets*"]
 namespaces = true
 
 [tool.setuptools.package-data]
-"" = [
+"*" = [
   "Assets/*",
   "Assets/**/*",
   "ThemeAssets/*",
