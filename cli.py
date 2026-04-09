@@ -1,10 +1,11 @@
 import argparse
 import subprocess
 import sys
+from get_path import APP_NAME
 
 
 def update_package():
-    package_name = "CustomTkinterBuilder"
+    package_name = APP_NAME
     command = [sys.executable, "-m", "pip", "install", "--upgrade", package_name]
     try:
         subprocess.check_call(command)
