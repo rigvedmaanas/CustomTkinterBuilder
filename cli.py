@@ -9,10 +9,11 @@ def update_package():
     try:
         subprocess.check_call(command)
         print("CustomTkinterBuilder updated successfully.")
+        return 0
     except subprocess.CalledProcessError as error:
         print(f"Update failed (exit code {error.returncode}). Please run the command manually:")
         print(" ".join(command))
-        raise SystemExit(error.returncode) from error
+        return error.returncode
 
 
 def main():
@@ -21,8 +22,7 @@ def main():
     args = parser.parse_args()
 
     if args.update:
-        update_package()
-        return
+        raise SystemExit(update_package())
 
     from WelcomePage import launch
     launch()
