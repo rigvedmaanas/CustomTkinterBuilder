@@ -1,3 +1,4 @@
+# Since Customtkinterbuilder is going to be a package this file is almost obsolete
 import sys
 import os
 import shutil
@@ -27,7 +28,7 @@ def resource_path(relative_path):
         if os.path.exists(path):
             return path
 
-    return os.path.join(candidate_base_paths[0], relative_path)
+    return os.path.join('', relative_path)
 
 def tempify(path):
     try:
@@ -49,7 +50,7 @@ def tempify(path):
         base_path = os.path.join(tempfile.gettempdir(), APP_NAME)
         os.makedirs(base_path, exist_ok=True)
 
-    return os.path.join(base_path, path)
+    return os.path.join("", path)
 
 def joinpath(rootdir, targetdir):
     return os.path.join(rootdir, targetdir)
@@ -109,3 +110,4 @@ def get_settings_path(filename="config.json"):
                 f.write(json.dumps(DEFAULT_SETTINGS, indent=4))
 
     return settings_path
+
