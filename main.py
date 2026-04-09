@@ -367,154 +367,141 @@ root.mainloop()
             formatted_text = formatted_text.replace(char, escape_seq)
         return formatted_text
 
-    def loop_generate(self, d, parent, code, run=False):
-        for x in list(d.keys()):
-            if x.props == {}:
-                code.add_line(f"{x.get_name()} = {x.get_class()}(master={parent})")
-                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
-                    code.add_line(f"{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
-            else:
-                p = ""
-                font = "font=CTkFont("
-                f2 = "hover_font=CTkFont("
-                for key in list(x.props.keys()):
-                    if key == "image" and x.props["image"] != None:
-                        if not run:
-                            ic("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))
-                            ic(joinpath("Assets", os.path.basename(x.props["image"].cget("dark_image").filename)))
-                            p += f'image=CTkImage(Image.open(r"{joinpath("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
-                        else:
-                            val = x.props["image"].cget("dark_image").filename
+    def _build_props_string(self, x, run=False):
+        """Build the constructor keyword-arguments string from a widget's props dict.
 
-                            ic(val)
-                            ic(fr'image=CTkImage(Image.open(r"{val}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), ')
-                            p += fr'image=CTkImage(Image.open(r"{val}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
-                    elif key == "hover_image":
-                        if not run:
-                            p += f'hover_image=CTkImage(Image.open("{joinpath("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
-                        else:
-                            p += f'hover_image=CTkImage(Image.open("{x.props["hover_image"].cget("dark_image").filename}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
-                    elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
-                               "font_overstrike"]:
-                        if key == "font_family":
-                            current_os = platform.system()
-                            if current_os == "Darwin":
-                                current_os = "macOS"
-                            elif current_os == "Windows":
-                                current_os = "Windows"
-                            elif current_os == "Linux":
-                                current_os = "Linux"
-                            if x.props[key] == self.theme["CTkFont"][current_os]["family"]:
-                                pass
-                            else:
-                                if type(x.props[key]) == str:
-
-                                    font += f'{key[5::]}="{x.props[key]}", '
-                                else:
-                                    font += f'{key[5::]}={x.props[key]}, '
-                        else:
-                            if type(x.props[key]) == str:
-
-                                font += f'{key[5::]}="{x.props[key]}", '
-                            else:
-                                font += f'{key[5::]}={x.props[key]}, '
-                    elif key in ["hover_font_family", "hover_font_size", "hover_font_weight", "hover_font_slant", "hover_font_underline",
-                               "hover_font_overstrike"]:
-                        ic(key, x.props[key])
-                        if type(x.props[key]) == str:
-
-                            f2 += f'{key[11::]}="{x.props[key]}", '
-                        else:
-                            f2 += f'{key[11::]}={x.props[key]}, '
+        Returns a tuple (p, font_str, hover_font_str) where:
+          - p           is the non-font kwargs string (e.g. 'text="Hello", width=100, ')
+          - font_str    is the CTkFont() call string for 'font' (may be empty if unchanged)
+          - hover_font_str is the CTkFont() call string for 'hover_font' (may be empty if unchanged)
+        The caller is responsible for assembling the final constructor string.
+        """
+        p = ""
+        font = "font=CTkFont("
+        f2 = "hover_font=CTkFont("
+        for key in list(x.props.keys()):
+            if key == "image" and x.props["image"] is not None:
+                if not run:
+                    p += (
+                        f'image=CTkImage(Image.open(r"{joinpath("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}")'
+                        f', size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                    )
+                else:
+                    val = x.props["image"].cget("dark_image").filename
+                    p += (
+                        fr'image=CTkImage(Image.open(r"{val}")'
+                        fr', size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
+                    )
+            elif key == "hover_image":
+                if not run:
+                    p += (
+                        f'hover_image=CTkImage(Image.open("{joinpath("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}")'
+                        f', size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
+                    )
+                else:
+                    p += (
+                        f'hover_image=CTkImage(Image.open("{x.props["hover_image"].cget("dark_image").filename}")'
+                        f', size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
+                    )
+            elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline", "font_overstrike"]:
+                if key == "font_family":
+                    current_os = platform.system()
+                    if current_os == "Darwin":
+                        current_os = "macOS"
+                    elif current_os == "Windows":
+                        current_os = "Windows"
+                    elif current_os == "Linux":
+                        current_os = "Linux"
+                    if x.props[key] == self.theme["CTkFont"][current_os]["family"]:
+                        pass
                     else:
                         if type(x.props[key]) == str:
-                            k = self.escape_special_chars(x.props[key])
-                            p += f'{key}="{k}", '
-                        elif type(x.props[key]) == tuple or type(x.props[key]) == list and len(x.props[key]) == 2:
-                            if type(x.props[key][0]) == str and type(x.props[key][1]) == str:
-                                p += f'{key}=("{x.props[key][0]}", "{x.props[key][1]}"), '
-                            else:
-                                p += f"{key}=({x.props[key][0]}, {x.props[key][1]}), "
+                            font += f'{key[5::]}="{x.props[key]}", '
                         else:
-                            p += f"{key}={x.props[key]}, "
-
-                font = font[0:-2] # Delete ', ' at last part
-                f2 = f2[0:-2]
-                f2 += ")"
-                font += ")"
-
-                if font != "font=CTkFon)": # Which means there is no change in font
-                    p += font
-                    p += ", "
-                if f2 != "hover_font=CTkFon)": # Which means there is no change in font
-                    p += f2
-                    p += ", "
-
-
-                p = p[0:-2]
-                code.add_line(f"{x.get_name()} = {x.get_class()}(master={parent}, {p})")
-                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
-                    code.add_line(f"{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
-
-                    #code.add_line(f"{x.get_name()}.pack_propagate(False)")
-            if x.pack_options == {}:
-                code.add_line(f"{x.get_name()}.pack()")
-
-                if run:
-                    if x.get_class() != "CTkSegmentedButton":
-                        code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
-                        if x.get_class() == "CTkScrollableFrame":
-                            code.add_line(f"{x.get_name()}._parent_frame._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
-                            code.add_line(f"{x.get_name()}._scrollbar._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
-                            #code.add_line(f"{x.get_name()}._parent_frame.configure(fg_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}], border_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}])")
+                            font += f'{key[5::]}={x.props[key]}, '
+                else:
+                    if type(x.props[key]) == str:
+                        font += f'{key[5::]}="{x.props[key]}", '
                     else:
-                        code.add_line(f"""
-for x in {x.get_name()}._buttons_dict.values():
-    x._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')
-
-""")
-
-
+                        font += f'{key[5::]}={x.props[key]}, '
+            elif key in ["hover_font_family", "hover_font_size", "hover_font_weight", "hover_font_slant",
+                         "hover_font_underline", "hover_font_overstrike"]:
+                ic(key, x.props[key])
+                if type(x.props[key]) == str:
+                    f2 += f'{key[11::]}="{x.props[key]}", '
+                else:
+                    f2 += f'{key[11::]}={x.props[key]}, '
             else:
-                p = ""
-                default_pack_options = {"expand": False, "anchor": "center", "fill": "none", "padx": 0, "pady": 0, "side": "top", "ipadx": 0, "ipady": 0}
-                modified_pack_options = x.pack_options
-                for i in list(modified_pack_options.keys()):
-                    if modified_pack_options[i] == default_pack_options[i]:
-                        modified_pack_options.pop(i)
-
-                for key in list(modified_pack_options.keys()):
-
-                    if type(modified_pack_options[key]) == str:
-                        p += f'{key}="{modified_pack_options[key]}", '
-                    elif type(modified_pack_options[key]) == tuple or type(modified_pack_options[key]) == list:
-                        """if type(x.pack_options[key][0]) == str and type(x.pack_options[key][1]) == str:
-                            p += f'{key}=("{x.pack_options[key][0]}", "{x.pack_options[key][1]}"), '
-                        else:"""
-                        p += f"{key}=({int(modified_pack_options[key][0])}, {int(modified_pack_options[key][1])}), "
+                if type(x.props[key]) == str:
+                    k = self.escape_special_chars(x.props[key])
+                    p += f'{key}="{k}", '
+                elif type(x.props[key]) == tuple or type(x.props[key]) == list and len(x.props[key]) == 2:
+                    if type(x.props[key][0]) == str and type(x.props[key][1]) == str:
+                        p += f'{key}=("{x.props[key][0]}", "{x.props[key][1]}"), '
                     else:
-                        p += f"{key}={modified_pack_options[key]}, "
+                        p += f"{key}=({x.props[key][0]}, {x.props[key][1]}), "
+                else:
+                    p += f"{key}={x.props[key]}, "
 
-                p = p[0:-2]  # Delete ', ' at last part
-                code.add_line(f"{x.get_name()}.pack({p})")
-                if run:
-                    code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
-                    if x.get_class() == "CTkScrollableFrame":
-                        code.add_line(f"{x.get_name()}._parent_frame._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
-                        code.add_line(f"{x.get_name()}._scrollbar._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+        font = font[0:-2]  # Delete ', ' at last part
+        f2 = f2[0:-2]
+        f2 += ")"
+        font += ")"
 
-            if d[x] != {}:
-                #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
+        if font != "font=CTkFon)":  # Which means there is no change in font
+            p += font
+            p += ", "
+        if f2 != "hover_font=CTkFon)":  # Which means there is no change in font
+            p += f2
+            p += ", "
 
-                self.loop_generate(d=d[x], parent=x.get_name(), code=code, run=run)
+        if p:
+            p = p[0:-2]
+        return p
 
-    def open_file_without_asking(self):
-        file = os.path.join(self.file[0], self.file[1])
-        print(self.file, file)
+    def _build_pack_options_string(self, x):
+        """Build the .pack() keyword-arguments string from a widget's pack_options dict.
+
+        Strips options that match the CTk defaults so only non-default values are emitted.
+        Returns the arguments string (without surrounding parens), e.g. 'fill="x", expand=True'.
+        """
+        p = ""
+        default_pack_options = {
+            "expand": False, "anchor": "center", "fill": "none",
+            "padx": 0, "pady": 0, "side": "top", "ipadx": 0, "ipady": 0,
+        }
+        modified_pack_options = x.pack_options
+        for i in list(modified_pack_options.keys()):
+            if modified_pack_options[i] == default_pack_options[i]:
+                modified_pack_options.pop(i)
+        for key in list(modified_pack_options.keys()):
+            if type(modified_pack_options[key]) == str:
+                p += f'{key}="{modified_pack_options[key]}", '
+            elif type(modified_pack_options[key]) == tuple or type(modified_pack_options[key]) == list:
+                p += f"{key}=({int(modified_pack_options[key][0])}, {int(modified_pack_options[key][1])}), "
+            else:
+                p += f"{key}={modified_pack_options[key]}, "
+        if p:
+            p = p[0:-2]  # Delete ', ' at last part
+        return p
+
+    def _bind_widget_selection(self, new_widget):
+        """Bind the correct click event so that clicking a widget selects it in the hierarchy."""
+        if new_widget.__class__ == SegmentedButton:
+            new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+        elif new_widget.__class__ == ScrollableFrame:
+            new_widget.scrollwindow.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+            new_widget.canv.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+        else:
+            new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+
+    def _load_project_data(self, file_path):
+        """Load a project file from *file_path*, update the root widget, and return the
+        remaining widget-tree dict (ready to be passed to loop_open / get_number_of_widgets)."""
         shutil.rmtree(tempify('temp'))
-        shutil.copytree(os.path.join(file, "Assets"), tempify("temp"))
+        shutil.copytree(os.path.join(file_path, "Assets"), tempify("temp"))
 
-        with open(os.path.join(file, f"{os.path.basename(file)}.json"), 'r') as openfile:
+        with open(os.path.join(file_path, f"{os.path.basename(file_path)}.json"), 'r') as openfile:
             d = json.load(openfile)
         d = d["MAIN-1"]
 
@@ -541,6 +528,56 @@ for x in {x.get_name()}._buttons_dict.values():
         d.pop("theme")
         d.pop("palette")
         d.pop("palette_on_change")
+        return d
+
+    def loop_generate(self, d, parent, code, run=False):
+        for x in list(d.keys()):
+            if x.props == {}:
+                code.add_line(f"{x.get_name()} = {x.get_class()}(master={parent})")
+                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
+                    code.add_line(f"{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
+            else:
+                p = self._build_props_string(x, run=run)
+                code.add_line(f"{x.get_name()} = {x.get_class()}(master={parent}, {p})")
+                if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
+                    code.add_line(f"{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
+
+                    #code.add_line(f"{x.get_name()}.pack_propagate(False)")
+            if x.pack_options == {}:
+                code.add_line(f"{x.get_name()}.pack()")
+
+                if run:
+                    if x.get_class() != "CTkSegmentedButton":
+                        code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                        if x.get_class() == "CTkScrollableFrame":
+                            code.add_line(f"{x.get_name()}._parent_frame._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                            code.add_line(f"{x.get_name()}._scrollbar._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                            #code.add_line(f"{x.get_name()}._parent_frame.configure(fg_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}], border_color={x.get_name()}.cget('fg_color')[{self.appearance.get()}])")
+                    else:
+                        code.add_line(f"""
+for x in {x.get_name()}._buttons_dict.values():
+    x._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')
+
+""")
+
+            else:
+                p = self._build_pack_options_string(x)
+                code.add_line(f"{x.get_name()}.pack({p})")
+                if run:
+                    code.add_line(f"{x.get_name()}._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                    if x.get_class() == "CTkScrollableFrame":
+                        code.add_line(f"{x.get_name()}._parent_frame._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+                        code.add_line(f"{x.get_name()}._scrollbar._set_appearance_mode('{'light' if self.appearance.get() == 0 else 'dark'}')")
+
+            if d[x] != {}:
+                #btn = CTkButton(self, text=x.type, command=lambda x=x: x.on_drag_start(None))
+
+                self.loop_generate(d=d[x], parent=x.get_name(), code=code, run=run)
+
+    def open_file_without_asking(self):
+        file = os.path.join(self.file[0], self.file[1])
+        print(self.file, file)
+        d = self._load_project_data(file)
         self.current_widget_count = IntVar(value=0)
         self.current_widget_count.trace("w", self.changed_value)
         self.widgetnumber = IntVar(value=1)
@@ -628,37 +665,7 @@ for x in {x.get_name()}._buttons_dict.values():
         file = askdirectory()
         if file != "":
             self.file = [os.path.dirname(file), os.path.basename(file)]
-
-            shutil.rmtree(tempify('temp'))
-            shutil.copytree(os.path.join(file, "Assets"), tempify("temp"))
-
-            with open(os.path.join(file, f"{os.path.basename(file)}.json"), 'r') as openfile:
-                d = json.load(openfile)
-            d = d["MAIN-1"]
-
-            self.r.props = d["parameters"]
-            self.r._inner_id = d["ID"]
-            for key in list(d["parameters"].keys()):
-                if key == "width":
-                    self.r.configure(width=d["parameters"]["width"])
-                elif key == "height":
-                    self.r.configure(height=d["parameters"]["height"])
-                elif key == "fg_color":
-                    self.r.configure(fg_color=d["parameters"]["fg_color"])
-                elif key == "title":
-                    self.title = d["parameters"]["title"]
-            d.pop("TYPE")
-            d.pop("parameters")
-            d.pop("pack_options")
-            d.pop("ID")
-
-            self.theme_manager = ThemeUtl(theme_dir=f"Themes", theme_name=d["theme"])
-            self.theme = self.theme_manager.get_theme_by_name()
-            self.properties.color_manager.colors = d["palette"]
-            self.properties.color_manager.on_change_list = d["palette_on_change"]
-            d.pop("theme")
-            d.pop("palette")
-            d.pop("palette_on_change")
+            d = self._load_project_data(file)
             self.current_widget_count = IntVar(value=0)
             self.current_widget_count.trace("w", self.changed_value)
             self.widgetnumber = IntVar(value=1)
@@ -852,13 +859,7 @@ for x in {x.get_name()}._buttons_dict.values():
             new_widget.pack_options = d[x]["pack_options"]
             #new_widget.configure(bg_color=parent.cget("fg_color"))
 
-            if new_widget.__class__ == SegmentedButton:
-                new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
-            elif new_widget.__class__ == ScrollableFrame:
-                new_widget.scrollwindow.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
-                new_widget.canv.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
-            else:
-                new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
+            self._bind_widget_selection(new_widget)
 
             if new_widget.__class__ in [ComboBox, OptionMenu]:
                 try:
@@ -1027,74 +1028,8 @@ for x in {x.get_name()}._buttons_dict.values():
                 if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
                     code.add_line(f"self.{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
             else:
-
-                p = ""
-                font = "font=CTkFont("
-                f2 = "hover_font=CTkFont("
-                for key in list(x.props.keys()):
-                    if key == "image" and x.props["image"] != None:
-
-                        p += f'image=CTkImage(Image.open(r"{os.path.join("Assets", os.path.basename(x.props["image"].cget("dark_image").filename))}"), size=({x.props["image"].cget("size")[0]}, {x.props["image"].cget("size")[1]})), '
-                    elif key == "hover_image":
-                        p += f'hover_image=CTkImage(Image.open("{os.path.join("Assets", os.path.basename(x.props["hover_image"].cget("dark_image").filename))}"), size=({x.props["hover_image"].cget("size")[0]}, {x.props["hover_image"].cget("size")[1]})), '
-                    elif key in ["font_family", "font_size", "font_weight", "font_slant", "font_underline",
-                                 "font_overstrike"]:
-                        if key == "font_family":
-                            current_os = platform.system()
-                            if current_os == "Darwin":
-                                current_os = "macOS"
-                            elif current_os == "Windows":
-                                current_os = "Windows"
-                            elif current_os == "Linux":
-                                current_os = "Linux"
-                            if x.props[key] == self.theme["CTkFont"][current_os]["family"]:
-                                pass
-                            else:
-                                if type(x.props[key]) == str:
-
-                                    font += f'{key[5::]}="{x.props[key]}", '
-                                else:
-                                    font += f'{key[5::]}={x.props[key]}, '
-                        else:
-                            if type(x.props[key]) == str:
-
-                                font += f'{key[5::]}="{x.props[key]}", '
-                            else:
-                                font += f'{key[5::]}={x.props[key]}, '
-                    elif key in ["hover_font_family", "hover_font_size", "hover_font_weight", "hover_font_slant",
-                                 "hover_font_underline",
-                                 "hover_font_overstrike"]:
-                        ic(key, x.props[key])
-                        if type(x.props[key]) == str:
-
-                            f2 += f'{key[11::]}="{x.props[key]}", '
-                        else:
-                            f2 += f'{key[11::]}={x.props[key]}, '
-                    else:
-                        if type(x.props[key]) == str:
-                            k = self.escape_special_chars(x.props[key])
-                            p += f'{key}="{k}", '
-                        elif type(x.props[key]) == tuple or type(x.props[key]) == list and len(x.props[key]) == 2:
-                            if type(x.props[key][0]) == str and type(x.props[key][1]) == str:
-                                p += f'{key}=("{x.props[key][0]}", "{x.props[key][1]}"), '
-                            else:
-                                p += f"{key}=({x.props[key][0]}, {x.props[key][1]}), "
-                        else:
-                            p += f"{key}={x.props[key]}, "
-
-                font = font[0:-2]  # Delete ', ' at last part
-                f2 = f2[0:-2]
-                f2 += ")"
-                font += ")"
-                ic(f2)
-                if font != "font=CTkFon)":  # Which means there is no change in font
-                    p += font
-                    p += ", "
-                if f2 != "hover_font=CTkFon)":  # Which means there is no change in font
-                    p += f2
-                    p += ", "
-
-                p = p[0:-2]
+                p = self._build_props_string(x)
+                ic(p)
                 code.add_line(f"self.{x.get_name()} = {x.get_class()}(master={parent}, {p})")
                 if x.type == "FRAME" and not x._bool_change(x.propagate_on_pack):
                     code.add_line(f"self.{x.get_name()}.pack_propagate({x._bool_change(x.propagate_on_pack)})")
@@ -1104,25 +1039,7 @@ for x in {x.get_name()}._buttons_dict.values():
 
                 code.add_line(f"self.{x.get_name()}.pack()")
             else:
-                p = ""
-                default_pack_options = {"expand": False, "anchor": "center", "fill": "none", "padx": 0, "pady": 0, "side": "top", "ipadx": 0, "ipady": 0}
-                modified_pack_options = x.pack_options
-                for i in list(modified_pack_options.keys()):
-                    if modified_pack_options[i] == default_pack_options[i]:
-                        modified_pack_options.pop(i)
-                ic(modified_pack_options)
-                for key in list(modified_pack_options.keys()):
-                    if type(modified_pack_options[key]) == str:
-                        p += f'{key}="{modified_pack_options[key]}", '
-                    elif type(modified_pack_options[key]) == tuple or type(modified_pack_options[key]) == list:
-                        """if type(modified_pack_options[key][0]) == str and type(x.pack_options[key][1]) == str:
-                            p += f'{key}=("{x.pack_options[key][0]}", "{x.pack_options[key][1]}"), '
-                        else:"""
-                        p += f"{key}=({int(modified_pack_options[key][0])}, {int(modified_pack_options[key][1])}), "
-                    else:
-                        p += f"{key}={modified_pack_options[key]}, "
-
-                p = p[0:-2]  # Delete ', ' at last part
+                p = self._build_pack_options_string(x)
                 code.add_line(f"self.{x.get_name()}.pack({p})")
 
 
@@ -1263,15 +1180,7 @@ for x in {x.get_name()}._buttons_dict.values():
         new_widget.configure(bg_color="transparent")
         new_widget.pack(padx=(0, 0), pady=(0, 0))
 
-        if new_widget.__class__ == SegmentedButton:
-            new_widget.configure(command=lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
-        elif new_widget.__class__ == ScrollableFrame:
-            new_widget.scrollwindow.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
-            new_widget.canv.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
-        else:
-            new_widget.bind("<Button-1>", lambda e, nw=new_widget: (nw.on_drag_start(None), self.hierarchy.set_current_selection(nw)))
-
-
+        self._bind_widget_selection(new_widget)
 
         #new_widget.bind("<Button-1>", new_widget.on_drag_start)
 
