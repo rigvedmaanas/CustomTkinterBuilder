@@ -6,7 +6,13 @@ import sys
 def update_package():
     package_name = "CustomTkinterBuilder"
     command = [sys.executable, "-m", "pip", "install", "--upgrade", package_name]
-    subprocess.check_call(command)
+    try:
+        subprocess.check_call(command)
+        print("CustomTkinterBuilder updated successfully.")
+    except subprocess.CalledProcessError as error:
+        print(f"Update failed (exit code {error.returncode}). Please run the command manually:")
+        print(" ".join(command))
+        raise SystemExit(error.returncode) from error
 
 
 def main():
