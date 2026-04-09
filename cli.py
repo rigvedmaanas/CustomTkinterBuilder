@@ -5,8 +5,7 @@ from get_path import APP_NAME
 
 
 def update_package():
-    package_name = APP_NAME
-    command = [sys.executable, "-m", "pip", "install", "--upgrade", package_name]
+    command = [sys.executable, "-m", "pip", "install", "--upgrade", APP_NAME]
     try:
         subprocess.check_call(command)
         print("CustomTkinterBuilder updated successfully.")
