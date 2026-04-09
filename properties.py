@@ -13,6 +13,7 @@ from tkinter import font, messagebox
 from PIL import Image, ImageTk
 import requests
 from get_path import resource_path, tempify
+from theme_colors import get_ui_color
 
 
 class Toplevel(CTkToplevel, TkinterDnD.DnDWrapper):
@@ -94,7 +95,7 @@ class ImageChooser(Toplevel):
         #                                  values=["Black", "White"])
         #self.icon_color.pack(pady=10, side="left", padx=20)
 
-        self.icon_color = CTkButton(self.color_fr, width=250, border_width=2, border_color="#FFFFFF", fg_color="#FFFFFF", command=self.get_color, hover=False, text="")
+        self.icon_color = CTkButton(self.color_fr, width=250, border_width=2, border_color=get_ui_color("white"), fg_color=get_ui_color("white"), command=self.get_color, hover=False, text="")
         self.icon_color.pack(pady=10, side="left", padx=20)
         self.icon_color.color = (255, 255, 255)
 
@@ -579,7 +580,7 @@ class ColorPicker(CTkToplevel):
             for y in x:
                 y.configure(fg_color="transparent")
         for x in clr:
-            x.configure(fg_color="#1F6AA5")
+            x.configure(fg_color=get_ui_color("selection"))
 
     def rgb2hex(self, c):
         return '#%02x%02x%02x' % c
