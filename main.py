@@ -36,6 +36,7 @@ from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image, ImageTk
 from get_path import resource_path, tempify, joinpath, get_settings_path
+from theme_colors import get_ui_color
 
 
 ic.disable()
@@ -1469,7 +1470,7 @@ class WidgetButton(CTkButton):
         self.on_drag = on_drag
 
         super().__init__(**kwargs)
-        self.configure(fg_color=("#0d0c1d", "#0d0c1d"), border_width=1, border_color=["#3b82f6", "#3b82f6"], height=40)
+        self.configure(fg_color=(get_ui_color("legacy_dark"), get_ui_color("legacy_dark")), border_width=1, border_color=get_ui_color("pair_primary"), height=40)
 
     def pack(self, **kwargs):
         try:
@@ -1512,10 +1513,10 @@ class Hierarchy(CTkScrollableFrame):
         for child in self.winfo_children():
 
             if child.cget("text") != self.widget.get_name():
-                child.configure(fg_color="#27272a")
+                child.configure(fg_color=get_ui_color("neutral_800"))
             else:
                 self.current_selection = child
-                child.configure(fg_color="#3b82f6")
+                child.configure(fg_color=get_ui_color("primary"))
 
 
     def update_text(self, old_name, new_text):
@@ -1606,7 +1607,7 @@ class Hierarchy(CTkScrollableFrame):
             self.widget = None
             for x in list(d.keys()):
                 if d[x] != {}:
-                    btn = CTkButton(self, text=x.get_name(), fg_color="#27272a")
+                    btn = CTkButton(self, text=x.get_name(), fg_color=get_ui_color("neutral_800"))
                     #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                     btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                     btn.widget = x
@@ -1614,7 +1615,7 @@ class Hierarchy(CTkScrollableFrame):
                     self.update_list(d[x], pad+20)
                 else:
 
-                    btn = CTkButton(self, text=x.get_name(), fg_color="#27272a")
+                    btn = CTkButton(self, text=x.get_name(), fg_color=get_ui_color("neutral_800"))
                     #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                     btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                     btn.widget = x
@@ -1692,7 +1693,7 @@ class Hierarchy(CTkScrollableFrame):
 
         arr = self.get_frames_scrollbar_only()
         for x in arr:
-            btn = CTkButton(self.scrl, text=x[2].get_name(), fg_color="#27272a")
+            btn = CTkButton(self.scrl, text=x[2].get_name(), fg_color=get_ui_color("neutral_800"))
             # x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
             btn.configure(command=lambda x=x[2], btn=btn: (self.set_change_parent_selection(x, btn)))
             btn.widget = x[2]
@@ -1745,7 +1746,7 @@ class PaletteEditor(CTkToplevel):
     def __init__(self, *args, color_manager, **kwargs):
         super().__init__(*args, **kwargs)
         self.geometry("500x500")
-        self.color = "#FFFFFF"
+        self.color = get_ui_color("white")
         self.title("Palette Editor")
         self.after(20, self.lift)
         self.after(25, self.focus_get)
@@ -1821,7 +1822,7 @@ class PaletteEditor(CTkToplevel):
         lbl2 = CTkLabel(fr, text=val, anchor="w")
         lbl2.pack(fill="x", expand=True, padx=10, pady=(0, 10))
 
-        btn = CTkButton(c, text="X",fg_color="#D0255E", hover_color="#AE1E4F", width=50, height=50)
+        btn = CTkButton(c, text="X",fg_color=get_ui_color("danger"), hover_color=get_ui_color("danger_hover"), width=50, height=50)
         btn.pack(side="left", padx=10)
 
 
@@ -1849,7 +1850,7 @@ class PaletteEditor(CTkToplevel):
             for y in x:
                 y.configure(fg_color="transparent")
         for x in clr:
-            x.configure(fg_color="#1F6AA5")
+            x.configure(fg_color=get_ui_color("selection"))
 
     def rgb2hex(self, c):
         return '#%02x%02x%02x' % c
@@ -1964,7 +1965,7 @@ class App(CTkToplevel):
         self.palette_btn = CTkButton(self.tool_bar, text="Edit Palette", fg_color="transparent", width=50)
         self.palette_btn.pack(side="left", padx=5, pady=5)
 
-        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode", border_color=("#3b82f6", "#3b82f6"), text_color="white")
+        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode", border_color=get_ui_color("pair_primary"), text_color="white")
         self.appearance_mode_switch.pack(side="left", padx=5, pady=5)
         if darkdetect.isDark():
             self.appearance_mode_switch.toggle()
@@ -2132,13 +2133,13 @@ class App(CTkToplevel):
                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_1, properties={
                                                "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_button_1_btn.pack(side="left", fill="x", expand=True, padx=5, pady=(10, 0))
-        self.add_button_1_btn.configure(text="Button 1", width=140, height=38, corner_radius=3, fg_color=("#797979", "#000000"), hover_color=("#4e4e4e", "#434343"), border_color=("#000000", "#a2a2a2"), border_width=1, font=CTkFont(size=15, weight="normal"))
+        self.add_button_1_btn.configure(text="Button 1", width=140, height=38, corner_radius=3, fg_color=get_ui_color("themed_button_1_fg"), hover_color=get_ui_color("themed_button_1_hover"), border_color=get_ui_color("themed_button_1_border"), border_width=1, font=CTkFont(size=15, weight="normal"))
 
         self.add_button_2_btn = WidgetButton(master=t, text="Button 2", height=50,
                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_2, properties={
                                                "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_button_2_btn.pack(side="right", fill="x", expand=True, padx=5, pady=(10, 0))
-        self.add_button_2_btn.configure(image=CTkImage(Image.open(resource_path(os.path.join("Assets", "baseline_arrow_forward_white_18dp_1x.png"))), size=(18, 18)), width=140, height=38, compound="right", text="Next", corner_radius=30, fg_color=("#2CC985", "#2FA572"), text_color=("gray98", "#DCE4EE"), hover_color=("#0C955A", "#106A43"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), font=CTkFont(size=15, weight="normal"))
+        self.add_button_2_btn.configure(image=CTkImage(Image.open(resource_path(os.path.join("Assets", "baseline_arrow_forward_white_18dp_1x.png"))), size=(18, 18)), width=140, height=38, compound="right", text="Next", corner_radius=30, fg_color=get_ui_color("themed_button_2_fg"), text_color=get_ui_color("themed_button_2_text"), hover_color=get_ui_color("themed_button_2_hover"), border_color=get_ui_color("themed_button_2_border"), border_width=0, text_color_disabled=get_ui_color("pair_gray78_gray68"), font=CTkFont(size=15, weight="normal"))
         t = CTkFrame(self.widget_panel_themed)
         t.pack(fill="x")
 
@@ -2146,7 +2147,7 @@ class App(CTkToplevel):
                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_3, properties={
                                                "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_button_3_btn.pack(fill="x", side="left", expand=True, pady=(10, 0), padx=(5, 0))
-        self.add_button_3_btn.configure(width=140, height=38, text="Purchase", corner_radius=3, fg_color=("#993500", "#282525"), text_color=("gray98", "#ffffff"), hover_color=("#2d2929", "#993500"), border_color=("#5f5f5f", "#ffffff"), border_width=1, text_color_disabled=("gray78", "gray68"), font=CTkFont(size=15, weight="bold"))
+        self.add_button_3_btn.configure(width=140, height=38, text="Purchase", corner_radius=3, fg_color=get_ui_color("themed_button_3_fg"), text_color=get_ui_color("themed_button_3_text"), hover_color=get_ui_color("themed_button_3_hover"), border_color=get_ui_color("themed_button_3_border"), border_width=1, text_color_disabled=get_ui_color("pair_gray78_gray68"), font=CTkFont(size=15, weight="bold"))
 
         o = CTkFrame(t, width=self.add_button_3_btn.cget("width"), height=50, fg_color="transparent")
         o.pack(fill="x", side="right", expand=True, padx=5, pady=(10, 0))
@@ -2155,13 +2156,13 @@ class App(CTkToplevel):
                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_white, properties={
                                                "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_icon_white_btn.pack(side="left", expand=True)
-        self.add_icon_white_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=("#3965FF", "#3965FF"), text_color=("#ffffff", "#ffffff"), hover_color=("#2B4DC6", "#2B4DC6"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), image=CTkImage(Image.open(resource_path(os.path.join("Assets", "baseline_people_white_18dp_1x.png"))), size=(18, 18)))
+        self.add_icon_white_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=get_ui_color("themed_icon_white_fg"), text_color=get_ui_color("themed_icon_white_text"), hover_color=get_ui_color("themed_icon_white_hover"), border_color=get_ui_color("themed_icon_white_border"), border_width=0, text_color_disabled=get_ui_color("pair_gray78_gray68"), image=CTkImage(Image.open(resource_path(os.path.join("Assets", "baseline_people_white_18dp_1x.png"))), size=(18, 18)))
 
         self.add_icon_black_btn = WidgetButton(master=o, text="Icon Black", height=50,
                                            on_drag=lambda x, y, widget: self.main.add_widget(ThemedButton.Button_Icon_black, properties={
                                                "properties": self.properties_panel}, x=x, y=y, widget=widget))
         self.add_icon_black_btn.pack(side="right", expand=True)
-        self.add_icon_black_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=("#40B6FF", "#40B6FF"), text_color=("#ffffff", "#ffffff"), hover_color=("#00D9FF", "#00D9FF"), border_color=("#3E454A", "#949A9F"), border_width=0, text_color_disabled=("gray78", "gray68"), image=CTkImage(Image.open(resource_path(os.path.join("Assets", "baseline_people_black_18dp_1x.png"))), size=(18, 18)))
+        self.add_icon_black_btn.configure(width=40, height=40, text="", corner_radius=3, fg_color=get_ui_color("themed_icon_black_fg"), text_color=get_ui_color("themed_icon_black_text"), hover_color=get_ui_color("themed_icon_black_hover"), border_color=get_ui_color("themed_icon_black_border"), border_width=0, text_color_disabled=get_ui_color("pair_gray78_gray68"), image=CTkImage(Image.open(resource_path(os.path.join("Assets", "baseline_people_black_18dp_1x.png"))), size=(18, 18)))
 
         self.add_heading_1_btn = WidgetButton(master=self.widget_panel_themed, text="Heading 1", height=50,
                                           on_drag=lambda x, y, widget: self.main.add_widget(ThemedText.Heading_1, properties={

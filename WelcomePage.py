@@ -10,43 +10,44 @@ from PIL import Image
 from main import SaveFileDialog, App
 from thefuzz import process
 from get_path import resource_path, tempify, get_settings_path
+from theme_colors import get_ui_color
 
 class Root(CTk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.FRAME0 = CTkFrame(master=self, width=300, fg_color=['#fafafa', '#09090b'])
+        self.FRAME0 = CTkFrame(master=self, width=300, fg_color=get_ui_color("pair_neutral_50_950"))
         self.FRAME0.pack_propagate(False)
         self.FRAME0.pack(fill="y", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="left")
-        self.LABEL3 = CTkLabel(master=self.FRAME0, text="Custom Tkinter\nBuilder", compound="left", justify="left", image=CTkImage(Image.open(resource_path("Logo-WelcomePage.png")), size=(96, 96)), text_color=['#09090b', '#fafafa'], font=CTkFont(family="SF Display", size=25))
+        self.LABEL3 = CTkLabel(master=self.FRAME0, text="Custom Tkinter\nBuilder", compound="left", justify="left", image=CTkImage(Image.open(resource_path("Logo-WelcomePage.png")), size=(96, 96)), text_color=get_ui_color("pair_neutral_900_100"), font=CTkFont(family="SF Display", size=25))
         self.LABEL3.pack(pady=['20', 30], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, side="top")
-        self.BUTTON4 = CTkButton(master=self.FRAME0, text="     Projects", height=40, anchor="w", corner_radius=0, fg_color=['#3b82f6', '#3b82f6'], hover_color=['#2563eb', '#2563eb'], text_color=['#fafafa', '#fafafa'], font=CTkFont(family="SF Display", size=20))
+        self.BUTTON4 = CTkButton(master=self.FRAME0, text="     Projects", height=40, anchor="w", corner_radius=0, fg_color=get_ui_color("pair_primary"), hover_color=get_ui_color("pair_primary_hover"), text_color=get_ui_color("pair_neutral_50_50"), font=CTkFont(family="SF Display", size=20))
         self.BUTTON4.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.BUTTON6_copy = CTkButton(master=self.FRAME0, text="     Customize", height=40, anchor="w", corner_radius=0, fg_color="transparent", hover_color=['#2563eb', '#2563eb'], text_color=['#09090b', '#fafafa'], font=CTkFont(family="SF Display", size=20))
+        self.BUTTON6_copy = CTkButton(master=self.FRAME0, text="     Customize", height=40, anchor="w", corner_radius=0, fg_color="transparent", hover_color=get_ui_color("pair_primary_hover"), text_color=get_ui_color("pair_neutral_900_100"), font=CTkFont(family="SF Display", size=20))
         #self.BUTTON6_copy.pack(fill="x", anchor="center", expand=0, ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        self.FRAME3_copy = CTkFrame(master=self, width=300, fg_color=['#f4f4f5', '#18181b'])
+        self.FRAME3_copy = CTkFrame(master=self, width=300, fg_color=get_ui_color("pair_neutral_100_900"))
         self.FRAME3_copy.pack_propagate(False)
         self.FRAME3_copy.pack(pady=['10', 10], anchor="center", expand=1, fill="both", ipadx=0, ipady=0, padx=[0, 10], side="left")
 
-        self.FRAME6 = CTkFrame(master=self.FRAME3_copy, height=55, fg_color=['#f4f4f5', '#18181b'])
+        self.FRAME6 = CTkFrame(master=self.FRAME3_copy, height=55, fg_color=get_ui_color("pair_neutral_100_900"))
         self.FRAME6.pack_propagate(False)
         self.FRAME6.pack(pady=['10', 10], anchor="center", expand=0, fill="x", ipadx=0, ipady=0, padx=10, side="top")
-        self.FRAME7 = CTkFrame(master=self.FRAME6, fg_color=['#f4f4f5', '#18181b'])
+        self.FRAME7 = CTkFrame(master=self.FRAME6, fg_color=get_ui_color("pair_neutral_100_900"))
         self.FRAME7.pack_propagate(False)
         self.FRAME7.pack(pady=['5', 5], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, padx=5, side="left")
         self.LABEL8 = CTkLabel(master=self.FRAME7, text="", image=CTkImage(Image.open(resource_path("Assets/baseline_search_white_24dp_1x.png")), size=(24, 24)), font=CTkFont(family="SF Display"))
         self.LABEL8.pack(padx=[10, '0'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
         self.var = StringVar()
         self.var.set("Search Projects")
-        self.ENTRY9 = CTkEntry(master=self.FRAME7, placeholder_text="Search Projects", fg_color=['#f4f4f5', '#18181b'], border_width=0, text_color=['#09090b', '#fafafa'], placeholder_text_color=['#18181b', '#f4f4f5'], font=CTkFont(family="SF Display", size=14), textvariable=self.var)
+        self.ENTRY9 = CTkEntry(master=self.FRAME7, placeholder_text="Search Projects", fg_color=get_ui_color("pair_neutral_100_900"), border_width=0, text_color=get_ui_color("pair_neutral_900_100"), placeholder_text_color=get_ui_color("pair_neutral_900_100"), font=CTkFont(family="SF Display", size=14), textvariable=self.var)
         self.ENTRY9.pack(padx=['10', 10], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=0, side="left")
         self.var.trace_add("write", self.search)
-        self.BUTTON10 = CTkButton(master=self.FRAME6, text="New Project", corner_radius=3, fg_color=['#3b82f6', '#3b82f6'], hover_color=['#2563eb', '#2563eb'], text_color=['gray98', '#fafafa'], font=CTkFont(family="SF Display", size=14), command=lambda: SaveFileDialog(callback=self.create_project, theme=True))
+        self.BUTTON10 = CTkButton(master=self.FRAME6, text="New Project", corner_radius=3, fg_color=get_ui_color("pair_primary"), hover_color=get_ui_color("pair_primary_hover"), text_color=get_ui_color("pair_gray98_neutral50"), font=CTkFont(family="SF Display", size=14), command=lambda: SaveFileDialog(callback=self.create_project, theme=True))
         self.BUTTON10.pack(padx=[5, '5'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        self.BUTTON13_copy = CTkButton(master=self.FRAME6, text="Open", corner_radius=3, fg_color=['#3b82f6', '#3b82f6'], hover_color=['#2563eb', '#2563eb'], text_color=['gray98', '#fafafa'], width=90, font=CTkFont(family="SF Display", size=14), command=self.open_project_from_disk)
+        self.BUTTON13_copy = CTkButton(master=self.FRAME6, text="Open", corner_radius=3, fg_color=get_ui_color("pair_primary"), hover_color=get_ui_color("pair_primary_hover"), text_color=get_ui_color("pair_gray98_neutral50"), width=90, font=CTkFont(family="SF Display", size=14), command=self.open_project_from_disk)
         self.BUTTON13_copy.pack(padx=['5', 10], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
 
-        self.FRAME20_copy = CTkScrollableFrame(master=self.FRAME3_copy, width=300, fg_color=['#f4f4f5', '#18181b'])
+        self.FRAME20_copy = CTkScrollableFrame(master=self.FRAME3_copy, width=300, fg_color=get_ui_color("pair_neutral_100_900"))
 
         self.FRAME20_copy.pack(pady=[10, 10], anchor="center", expand=1, fill="both", ipadx=0, ipady=0, padx=[10, 10])
 
@@ -113,21 +114,21 @@ class Root(CTk):
             self.show_project(short_name, file[1], file[0])
 
     def show_project(self, short_name, name, dir_):
-        FRAME13 = CTkFrame(master=self.FRAME20_copy, height=65, fg_color=['#fafafa', '#09090b'])
+        FRAME13 = CTkFrame(master=self.FRAME20_copy, height=65, fg_color=get_ui_color("pair_neutral_50_950"))
         FRAME13.pack_propagate(False)
         FRAME13.pack(padx=['15', 20], anchor="center", expand=0, fill="x", ipadx=0, ipady=0, pady=[10, 0],
                           side="bottom")
         LABEL14 = CTkLabel(master=FRAME13, text=short_name.upper(), width=50, height=50,
-                                fg_color=['#3b82f6', '#3b82f6'], corner_radius=3, text_color=['#fafafa', '#fafafa'],
+                                fg_color=get_ui_color("pair_primary"), corner_radius=3, text_color=get_ui_color("pair_neutral_50_50"),
                                 font=CTkFont(family="SF Display", size=14))
         LABEL14.pack(padx=[8, '0'], anchor="center", expand=0, fill="none", ipadx=0, ipady=0, pady=0, side="left")
-        FRAME15 = CTkFrame(master=FRAME13, height=45, fg_color=['#fafafa', '#09090b'])
+        FRAME15 = CTkFrame(master=FRAME13, height=45, fg_color=get_ui_color("pair_neutral_50_950"))
         FRAME15.pack_propagate(False)
         FRAME15.pack(padx=['10', 10], anchor="center", expand=1, fill="x", ipadx=0, ipady=0, pady=1, side="top")
-        LABEL16 = CTkLabel(master=FRAME15, text=name, text_color=['gray10', '#fafafa'], anchor="w", height=22,
+        LABEL16 = CTkLabel(master=FRAME15, text=name, text_color=get_ui_color("pair_gray10_neutral50"), anchor="w", height=22,
                                 font=CTkFont(family="SF Display", size=14))
         LABEL16.pack(expand="true", anchor="center", fill="x", ipadx=0, ipady=0, padx=0, pady=0, side="top")
-        LABEL18_copy = CTkLabel(master=FRAME15, text=dir_, text_color=['#a1a1aa', '#a1a1aa'], anchor="w",
+        LABEL18_copy = CTkLabel(master=FRAME15, text=dir_, text_color=get_ui_color("pair_neutral_400_400"), anchor="w",
                                      font=CTkFont(family="SF Display", size=14))
         LABEL18_copy.pack(expand="true", anchor="center", fill="x", ipadx=0, ipady=0, padx=0, pady=0, side="top")
         #self.FRAME13.bind('<Double-Button-1>', lambda e, dir_=dir_, name=name: self.open_project_in_editor(dir_=dir_, name=name))
@@ -207,7 +208,7 @@ def launch():
     root = Root()
     root.geometry("1000x600")
     root.title("Welcome To Custom Tkinter Builder")
-    root.configure(fg_color=['#fafafa', '#09090b'])
+    root.configure(fg_color=get_ui_color("pair_neutral_50_950"))
     with open(get_settings_path(), 'r') as openfile:
         configure = json.load(openfile)
     root.project_files = configure["project_files"]
@@ -223,4 +224,3 @@ def launch():
 
 if __name__ == "__main__":
     launch()
-
