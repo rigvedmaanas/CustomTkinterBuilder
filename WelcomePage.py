@@ -149,7 +149,7 @@ class Root(CTk):
         for widget in self.FRAME20_copy.winfo_children():
             widget.destroy()
         for project in self.project_files:
-            root.show_project(project["Name"][0:2].upper(), project["Name"], project["Directory"])
+            self.show_project(project["Name"][0:2].upper(), project["Name"], project["Directory"])
 
 
     def create_project(self, name="Project 1", dir_="~/Project 1", theme="green"):
