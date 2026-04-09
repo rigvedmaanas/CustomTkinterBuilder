@@ -1,5 +1,8 @@
 import sys
 import os
+import shutil
+
+APP_NAME = "CustomTkinterBuilder"
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -7,7 +10,7 @@ def resource_path(relative_path):
         # PyInstaller creates a temp folder and stores path in _MEIPASS
         base_path = sys._MEIPASS
     except Exception:
-        base_path = os.path.abspath(".")
+        base_path = os.path.dirname(os.path.abspath(__file__))
 
     return os.path.join(base_path, relative_path)
 
@@ -28,7 +31,7 @@ def tempify(path):
 
 
     except Exception:
-        base_path = os.path.abspath(".")
+        base_path = os.path.dirname(os.path.abspath(__file__))
 
     return os.path.join(base_path, path)
 
@@ -65,3 +68,28 @@ def rawify(text):
         except KeyError:
             new_string += char
     return new_string
+
+
+def get_config_directory():
+    if sys.platform.startswith("win"):
+        root = os.getenv("APPDATA") or os.path.join(os.path.expanduser("~"), "AppData", "Roaming")
+    else:
+        root = os.getenv("XDG_CONFIG_HOME") or os.path.join(os.path.expanduser("~"), ".config")
+
+    config_dir = os.path.join(root, APP_NAME)
+    os.makedirs(config_dir, exist_ok=True)
+    return config_dir
+
+
+def get_settings_path(filename="config.json"):
+    settings_path = os.path.join(get_config_directory(), filename)
+
+    if not os.path.exists(settings_path):
+        default_config = resource_path(filename)
+        if os.path.exists(default_config):
+            shutil.copy2(default_config, settings_path)
+        else:
+            with open(settings_path, "w", encoding="utf-8") as f:
+                f.write('{"project_files": []}')
+
+    return settings_path

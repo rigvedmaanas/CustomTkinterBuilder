@@ -35,7 +35,7 @@ from Widgets.Main import Main
 from CodeGenerator import CodeGenerator
 from CustomtkinterCodeViewer import CTkCodeViewer
 from PIL import Image, ImageTk
-from get_path import resource_path, tempify, joinpath
+from get_path import resource_path, tempify, joinpath, get_settings_path
 
 
 ic.disable()
@@ -940,14 +940,14 @@ for x in {x.get_name()}._buttons_dict.values():
 
             self.r.winfo_toplevel().title(f"Custom Tkinter Builder - {os.path.join(dir_, name)}")
 
-            with open(resource_path("config.json"), 'r') as openfile:
+            with open(get_settings_path(), 'r') as openfile:
                 configure = json.load(openfile)
 
             self.project_files = configure["project_files"]
             self.project_files.append({"Name": name, "Directory": dir_})
             configure["project_files"] = self.project_files
             json_object = json.dumps(configure, indent=4)
-            with open(resource_path("config.json"), 'w') as f:
+            with open(get_settings_path(), 'w') as f:
                 f.write(json_object)
             short_name = name[0:2].upper()
             self.r.winfo_toplevel().master.show_project(short_name, name, dir_)
@@ -1469,7 +1469,7 @@ class WidgetButton(CTkButton):
         self.on_drag = on_drag
 
         super().__init__(**kwargs)
-        self.configure(fg_color=("#0d0c1d", "#0d0c1d"), border_width=1, border_color=["#CF245E", "#CF245E"], height=40)
+        self.configure(fg_color=("#0d0c1d", "#0d0c1d"), border_width=1, border_color=["#3b82f6", "#3b82f6"], height=40)
 
     def pack(self, **kwargs):
         try:
@@ -1512,10 +1512,10 @@ class Hierarchy(CTkScrollableFrame):
         for child in self.winfo_children():
 
             if child.cget("text") != self.widget.get_name():
-                child.configure(fg_color="#87163D")
+                child.configure(fg_color="#27272a")
             else:
                 self.current_selection = child
-                child.configure(fg_color="#CF245E")
+                child.configure(fg_color="#3b82f6")
 
 
     def update_text(self, old_name, new_text):
@@ -1606,7 +1606,7 @@ class Hierarchy(CTkScrollableFrame):
             self.widget = None
             for x in list(d.keys()):
                 if d[x] != {}:
-                    btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
+                    btn = CTkButton(self, text=x.get_name(), fg_color="#27272a")
                     #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                     btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                     btn.widget = x
@@ -1614,7 +1614,7 @@ class Hierarchy(CTkScrollableFrame):
                     self.update_list(d[x], pad+20)
                 else:
 
-                    btn = CTkButton(self, text=x.get_name(), fg_color="#87163D")
+                    btn = CTkButton(self, text=x.get_name(), fg_color="#27272a")
                     #x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
                     btn.configure(command=lambda x=x: (x.on_drag_start(None), self.set_current_selection(x)))
                     btn.widget = x
@@ -1692,7 +1692,7 @@ class Hierarchy(CTkScrollableFrame):
 
         arr = self.get_frames_scrollbar_only()
         for x in arr:
-            btn = CTkButton(self.scrl, text=x[2].get_name(), fg_color="#87163D")
+            btn = CTkButton(self.scrl, text=x[2].get_name(), fg_color="#27272a")
             # x.bind("<Button-1>", lambda e, x=x, btn=btn: (x.on_drag_start(None), self.set_current_selection(btn, x)))
             btn.configure(command=lambda x=x[2], btn=btn: (self.set_change_parent_selection(x, btn)))
             btn.widget = x[2]
@@ -1964,7 +1964,7 @@ class App(CTkToplevel):
         self.palette_btn = CTkButton(self.tool_bar, text="Edit Palette", fg_color="transparent", width=50)
         self.palette_btn.pack(side="left", padx=5, pady=5)
 
-        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode", border_color=("#CF245E", "#CF245E"), text_color="white")
+        self.appearance_mode_switch = CTkSwitch(self.tool_bar, text="Dark Mode", border_color=("#3b82f6", "#3b82f6"), text_color="white")
         self.appearance_mode_switch.pack(side="left", padx=5, pady=5)
         if darkdetect.isDark():
             self.appearance_mode_switch.toggle()
