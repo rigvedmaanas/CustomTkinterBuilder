@@ -6,13 +6,25 @@ APP_NAME = "CustomTkinterBuilder"
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
+    candidate_base_paths = []
     try:
         # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
+        candidate_base_paths.append(sys._MEIPASS)
     except Exception:
-        base_path = os.path.dirname(os.path.abspath(__file__))
+        pass
 
-    return os.path.join(base_path, relative_path)
+    candidate_base_paths.extend([
+        os.path.dirname(os.path.abspath(__file__)),
+        os.path.abspath("."),
+        os.path.join(sys.prefix, "share", APP_NAME),
+    ])
+
+    for base_path in candidate_base_paths:
+        path = os.path.join(base_path, relative_path)
+        if os.path.exists(path):
+            return path
+
+    return os.path.join(candidate_base_paths[0], relative_path)
 
 def tempify(path):
     try:
@@ -31,7 +43,7 @@ def tempify(path):
 
 
     except Exception:
-        base_path = os.path.dirname(os.path.abspath(__file__))
+        base_path = get_config_directory()
 
     return os.path.join(base_path, path)
 
