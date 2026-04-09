@@ -5,6 +5,7 @@ import json
 import tempfile
 
 APP_NAME = "CustomTkinterBuilder"
+DEFAULT_SETTINGS = {"project_files": []}
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -105,6 +106,6 @@ def get_settings_path(filename="config.json"):
             shutil.copy2(default_config, settings_path)
         else:
             with open(settings_path, "w", encoding="utf-8") as f:
-                f.write(json.dumps({"project_files": []}, indent=4))
+                f.write(json.dumps(DEFAULT_SETTINGS, indent=4))
 
     return settings_path
