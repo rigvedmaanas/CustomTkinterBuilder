@@ -240,61 +240,29 @@ class ScrollableFrame(ScrollFrame, PackArgs, BaseWidgetClass):
         self.type = "SCROLLABLEFRAME"
         self.properties = properties
         #print(self.properties)
-        self.pack_options = {}
         self.self_configure(bg_color="transparent")
         #self.pack_propagate(False)
         #self.configure(bg_color=self.master.cget("fg_color"))
-        self.order = 0
-        self.num = None
-        self.name = None
-
-
 
         #self.bind("<B1-Motion>", self.on_drag_motion)
-        self.props = {}
         self.scrollwindow.bind("<MouseWheel>", properties.main.on_vert_mouse)
         self.scrollwindow.bind("<Shift-MouseWheel>", properties.main.on_horiz_mouse)
         self.canv.bind("<MouseWheel>", properties.main.on_vert_mouse)
         self.canv.bind("<Shift-MouseWheel>", properties.main.on_horiz_mouse)
 
-    def __repr__(self):
-
-        return f"{self.type}_{str(self.order)}"
-
     def get_class(self):
         return "CTkScrollableFrame"
-
-
-    def get_name(self):
-        return self.name.replace(" ", "_")
-
-    def save(self, func, key, val, arg):
-        self.props[key] = val
-        func(arg)
-
-
 
     def self_configure(self, require_redraw=False, **kwargs):
         kwargs["require_redraw"] = require_redraw
         super().configure(**kwargs)
 
-
-
-    def _bool_change(self, val):
-        if val == "True":
-            return True
-        elif val == "False":
-            return False
-
-    def change_name(self, name):
-        self.name = name
-
     def on_drag_start(self, event):
         #self._drag_start_x = event.x
         #self._drag_start_y = event.y
-        self.properties.destroy_children()
+        self._begin_drag_start()
         #self.properties.add_seperator("Properties")
-        self.properties.add_option(self.properties.GEOMETRY_CONTENT, "ID", "SINGLELINE_TEXT", "id", {"val": self.name, "callback": lambda val: (self.properties.main.hierarchy.update_text(self.name, val), self.change_name(val))})
+        self._add_id_option()
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Width", "SPINBOX", "Width", {"to": 500, "from": 0, "val": int(self.cget("width")), "callback": lambda val: self.save(lambda val: self.self_configure(width=val), "width", int(val), int(val))})
         self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Height", "SPINBOX", "Height", {"to": 500, "from": 0, "val": int(self.cget("height")), "callback": lambda val: self.save(lambda val: self.self_configure(height=val), "height", int(val), int(val))})
         #self.properties.add_option(self.properties.GEOMETRY_CONTENT, "Label Text", "TEXT", "label_text", {"val": self.cget("label_text"), "callback": lambda val: self.save(lambda val: self.self_configure(label_text=val), "label_text", val, val)})
@@ -323,19 +291,3 @@ class ScrollableFrame(ScrollFrame, PackArgs, BaseWidgetClass):
 
         self.default()
         self.on_drag_motion(event)  # Some awkward problem
-
-
-    def on_drag_motion(self, event):
-        #x = self.winfo_x() - self._drag_start_x + event.x
-        #y = self.winfo_y() - self._drag_start_y + event.y
-        #self.properties.update_options("X", "SPINBOX", {"val": int(x)})
-        #self.properties.update_options("Y", "SPINBOX", {"val": int(y)})
-
-        pass
-        #self.properties.update_options("Width", "SPINBOX", {"val": int(self.cget("width"))})
-        #self.properties.update_options("Height", "SPINBOX", {"val": int(self.cget("height"))})
-        #self.properties.update_options("Text", "TEXT", {"val": self.cget("text")})
-        #self.properties.update_options("Corner Radius", "SPINBOX", {"val": self.cget("corner_radius")})
-        #self.properties.update_options("Border Width", "SPINBOX", {"val": self.cget("border_width")})
-
-        #self.place(x=x, y=y)
